@@ -1,0 +1,41 @@
+name: 功能建议 / Feature request
+description: 提议新功能、预设或改进
+title: "[Feature] "
+labels: ["enhancement"]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 当前哪里不顺手，或缺少什么能力
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 适用宿主
+      options:
+        - 桌面端与 Web 都要
+        - 仅桌面端
+        - 仅 Web
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: 边界确认
+      options:
+        - label: 不要求放宽本机/私网靶场限制
+          required: true
+        - label: 不要求付费版或倒卖渠道
+          required: true

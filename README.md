@@ -4,7 +4,7 @@
 
 <h1 align="center">⚔️ DeepSeek Harness cybersecurity red-team tool (dsh-purge)</h1>
 
-<p align="center"><strong>Version 1.1.81</strong></p>
+<p align="center"><strong>Version 1.1.84-rc1</strong></p>
 
 <p align="center">
   <em>DeepSeek Harness jailbreak: every model, swap prompts per model. Default prompt for 小码酱. Please star ⭐ If you build on this, see Attribution required.</em>
@@ -12,10 +12,12 @@
 
 <p align="center">
   <a href="https://github.com/qiuqianyi66/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/qiuqianyi66/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
+  <a href="https://github.com/qiuqianyi66/dsh-purge/releases/latest"><img src="https://img.shields.io/github/v/release/qiuqianyi66/dsh-purge?label=Release" alt="Latest release"></a>
+  <a href="https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/qiuqianyi66/dsh-purge/test.yml?branch=main&label=Tests" alt="Test workflow"></a>
   <a href="https://github.com/qiuqianyi66/dsh-purge/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat" alt="Apache-2.0"></a>
   <a href="https://awesome-dsh-plugin.com"><img src="https://awesome-dsh-plugin.com/badge.svg" alt="awesome · DSH plugin"></a>
   <a href="https://deepseek.stream/plugins/dsh-purge"><img src="https://img.shields.io/badge/Hub-dsh--purge-1a73e8" alt="DeepSeek Harness Hub"></a>
-  <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.0--rc.2%20%2F%200.2.1--rc.2-blue" alt="DSH"></a>
+  <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.2--rc.1-blue" alt="DSH"></a>
   <br>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff" alt="Node.js">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000" alt="JavaScript">
@@ -142,8 +144,6 @@ This repo is [Apache License 2.0](./LICENSE). Forks and redistributions must kee
 - **dsh 0.2.0-rc.2**: use **1.1.40** or newer.
 - **dsh 0.1.7** (incl. rc.1 / rc.2): use **1.1.39** or older — pick the tag on this repo's [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
 - Unmatched patches stay pending or skipped; nothing is rewritten blindly.
-
-Unmatched patches stay pending or skipped; nothing is rewritten blindly.
 
 ---
 

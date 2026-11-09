@@ -22,9 +22,9 @@ test("settleMayRestart 桌面或密封包不重启", () => {
   assert.equal(settleMayRestart({ surface: "web", sealed: true }), false);
 });
 
-test("settleMayReapply 只有桌面密封包禁止", () => {
+test("settleMayReapply 桌面一律禁止自动重打，网页允许", () => {
   assert.equal(settleMayReapply({ surface: "desktop", sealed: true }), false);
-  assert.equal(settleMayReapply({ surface: "desktop" }), true);
+  assert.equal(settleMayReapply({ surface: "desktop" }), false);
   assert.equal(settleMayReapply({ surface: "web" }), true);
 });
 

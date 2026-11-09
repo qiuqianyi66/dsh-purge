@@ -1,0 +1,86 @@
+name: 缺陷报告 / Bug report
+description: 安装、补丁、注入、更新或还原出现异常时使用
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先确认：仅在你本机回环或 RFC1918 私网靶场环境使用；公网攻击、外挂制作与倒卖不在支持范围。
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: dsh-purge 版本
+      description: 面板上显示的版本号，例如 1.1.84-rc1
+    validations:
+      required: true
+
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DeepSeek Harness 版本
+      description: 例如 0.2.2-rc.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 宿主形态
+      options:
+        - 桌面端（Desktop EXE）
+        - Web（dsh web）
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: 例如 Windows 11 23H2 / macOS 15 / Linux
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 按顺序写清点了什么、看到什么
+      placeholder: |
+        1. 打开面板…
+        2. 点击「应用」…
+        3. 出现…
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志 / 报错文本
+      description: 可粘贴脱敏后的报错堆栈；不要贴账号 Cookie、令牌或他人对话内容
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: local-lab
+    attributes:
+      label: 环境确认
+      options:
+        - label: 我确认复现环境为本机回环或已获授权的私网靶场
+          required: true

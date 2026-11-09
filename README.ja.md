@@ -4,7 +4,7 @@
 
 <h1 align="center">⚔️ DeepSeek Harness サイバーセキュリティ レッドチームツール (dsh-purge)</h1>
 
-<p align="center"><strong>バージョン 1.1.81</strong></p>
+<p align="center"><strong>バージョン 1.1.84-rc1</strong></p>
 
 <p align="center">
   <em>DeepSeek Harness のジェイルブレイク: すべてのモデルに対応し、モデルごとにプロンプトを切り替え。デフォルトプロンプトは 小码酱 用。ぜひ Star ⭐ を。これをベースに開発する場合は「要帰属表示」をご覧ください。</em>
@@ -12,10 +12,12 @@
 
 <p align="center">
   <a href="https://github.com/qiuqianyi66/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/qiuqianyi66/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
+  <a href="https://github.com/qiuqianyi66/dsh-purge/releases/latest"><img src="https://img.shields.io/github/v/release/qiuqianyi66/dsh-purge?label=Release" alt="Latest release"></a>
+  <a href="https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/qiuqianyi66/dsh-purge/test.yml?branch=main&label=Tests" alt="Test workflow"></a>
   <a href="https://github.com/qiuqianyi66/dsh-purge/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat" alt="Apache-2.0"></a>
   <a href="https://awesome-dsh-plugin.com"><img src="https://awesome-dsh-plugin.com/badge.svg" alt="awesome · DSH plugin"></a>
   <a href="https://deepseek.stream/plugins/dsh-purge"><img src="https://img.shields.io/badge/Hub-dsh--purge-1a73e8" alt="DeepSeek Harness Hub"></a>
-  <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.0--rc.2%20%2F%200.2.1--rc.2-blue" alt="DSH"></a>
+  <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.2--rc.1-blue" alt="DSH"></a>
   <br>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff" alt="Node.js">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000" alt="JavaScript">
@@ -26,7 +28,7 @@
 </p>
 
 > **メンテナー（2026-11）**
-> このリポジトリは元の dsh-purge プロジェクト（作者 **YuJunZhiXue**、上流リポジトリは公開終了）の派生作品で、[@qiuqianyi66](https://github.com/qiuqianyi66) が維持・配布しており、Issue、更新、インストール元はすべて本リポジトリに従います。ライセンスと元の著作権表示は [LICENSE](./LICENSE) と [NOTICE](./NOTICE) を参照してください。転売は禁止です。
+> このリポジトリは元の dsh-purge プロジェクト（作者 **YuJunZhiXue**、上流リポジトリは公開終了）の派生作品で、[@qiuqianyi66](https://github.com/qiuqianyi66) が維持・配布しており、Issue、更新、インストール元はすべて本リポジトリに従います。このビルドは DeepSeek Harness 0.2.2-rc.1 向けに適応（dshTarget 0.2.2-rc.1、バージョン 1.1.84-rc1）、パッチ #82 は import 行のみをアンカーにして挿入リージョンのドリフトを修正します。ライセンスと元の著作権表示は [LICENSE](./LICENSE) と [NOTICE](./NOTICE) を参照してください。転売は禁止です。
 
 ## 作者より
 
@@ -54,7 +56,7 @@
 
 ## これは何か
 
-**dsh-purge** は、お使いのマシンにすでにインストールされている公式 [DeepSeek Harness](https://www.deepseek.com/harness/) 向けのサイバーセキュリティ レッドチームプラグインです。**1.1.81** は **DSH 0.2.1-rc.2** を対象とします（0.2.0 も動作します）。**DSH 0.2.1-rc.3 以降の新しい RC は非対応です。** 公式 **Web**（`dsh web`）と公式 **デスクトップ EXE** の両方に対応します。インストールと Apply はそれぞれ別々に行います。
+**dsh-purge** は、お使いのマシンにすでにインストールされている公式 [DeepSeek Harness](https://www.deepseek.com/harness/) 向けのサイバーセキュリティ レッドチームプラグインです。**1.1.84-rc1** は **DSH 0.2.2-rc.1** を対象とします。公式 **Web**（`dsh web`）と公式 **デスクトップ EXE** の両方に対応します。インストールと Apply はそれぞれ別々に行います。
 
 Harness は単にプロンプトを転送するだけではありません。プロンプトの書き換え、承認ゲート、サンドボックスポリシー、セッション移行を実行時に行います。「モデルは答えるか」だけを問うと、ホスト層のブロックをモデルの拒否と取り違えてしまいます。このプラグインは、あなた自身のインストール環境でこの 2 つの層を分離し、制御された評価や、どのデフォルトポリシーが過度に厳しいかを確認するために使います。
 
@@ -128,12 +130,12 @@ Harness は単にプロンプトを転送するだけではありません。プ
 
 ## 対応ホスト
 
-**1.1.81 は DSH 0.2.1-rc.2 を対象とします。** 0.2.0 も動作します。0.1.x には適用しないでください。
+**1.1.84-rc1 は DSH 0.2.2-rc.1 を対象とします。** 0.1.x には適用しないでください。
 
-- **dsh 0.2.1-rc.2**（公式デスクトップ / 公式 `dsh web`）: **1.1.81** を使用。`{{cwd}}` / `[cwd]` クラッシュ、patch #40 のマッチ、削除された `toolFilter`、ホスト `dsh-tools` の解決、hostFs の fd、デスクトップヘルパーの自己終了、`file:` アーカイブ更新、Ctrl+Enter ステアを修正。
+- **dsh 0.2.2-rc.1**（公式デスクトップ / 公式 `dsh web`）: **1.1.84-rc1** を使用。
 - **dsh 0.2.0-rc.2**: **1.1.40** 以降を使用。このラインもインストールできます。
 - **dsh 0.1.7**（rc.1 / rc.2 を含む）: **1.1.39** 以前を使用 — 本リポジトリの [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) で該当タグを選択。
-- **dsh 0.2.1-rc.3 / rc.4 以降は非対応です。** マッチしないパッチは pending または skipped のままで、盲目的な書き換えはしません。**0.2.1-rc.2** に留まってください。
+- マッチしないパッチは pending または skipped のままで、盲目的な書き換えはしません。
 
 マッチしないパッチは pending または skipped のままで、盲目的な書き換えはしません。
 
