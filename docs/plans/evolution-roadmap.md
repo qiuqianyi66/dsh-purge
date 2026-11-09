@@ -102,7 +102,8 @@
 - 背景：旧 `dock-clean.png`（v1.1.31 / 44/44）与 `settings.png`（31/32、8/9）带过期版本号与补丁计数，与当前 1.1.84-rc1 / 0.2.2-rc.1 事实矛盾。
 - 本轮：从三语 README 与 `screenshots.json` 移除这两张并 `git rm`；保留无版本戳的 `dock-drill.png` / `rules.png`。
 - 二次复核（2026-11-09）：`dock-auth.png` 拍的是旧中文三段免责声明，当前打包的授权弹窗为英文八段（`docs/drill-auth-legal.html` 与 `client.js` 内嵌常量一致），已过时，一并从 README 与 `screenshots.json` 移除并 `git rm`；`own-servers.png` / `own-servers-en.png` 拍的是已下线的可编辑名单面板（前端不再渲染 textarea/保存按钮，后端 `/own-servers` 路由与 `ownServers` 状态为遗留残留），同样移除并 `git rm`。
-- 遗留代码瑕疵（P2，未动工）：`client.js` 中 `ownServers`/`ownLoaded`/`own.save` 死状态与死 i18n；`docs/drill-auth-legal.html` 第 6 节仍写 "MIT License"，实际许可证为 Apache-2.0，内嵌常量 `AUTH_LEGAL_HTML` 同文，需同步更正。
+- 三次复核（2026-11-09，用户决策）：剩余 `dock-drill.png` / `rules.png` 一并 `git rm`，`screenshots.json` 置空；README 不再挂任何面板截图，改用功能表格。同时按用户本人风格（对齐 yg-gateway / tea-ceremony：居中双语标题、中文优先、事实表格、单册）把三语分册合并为单个 `README.md`，删除 `README.zh-CN.md` / `README.ja.md` 及 `package.json.files`、`lib/update.js` COPY_NAMES 中的对应条目；10 条合规法条段保留。
+- 遗留代码瑕疵（P2，未动工）：`client.js` 中 `ownServers`/`ownLoaded`/`own.save` 死状态与死 i18n；`docs/drill-auth-legal.html` 第 6 节仍写 "MIT License"，实际许可证为 Apache-2.0，内嵌常量 `AUTH_LEGAL_HTML` 同文，需同步更正；`docs/notice/` 下 4 张照片未被任何 README 引用，待用户确认是否清理。
 - 阻塞：桌面接管不可用——PIP 虚拟桌面 RDP reason=516（提示需重启 Windows），main 独占授权超时；未能在 DSH 会话内打开清洗/补丁面板重新实拍。
 - 待办（GWT）：Given 桌面控制恢复，When 在本机 DSH 打开 dsh-purge 清洗页与补丁列表，Then 仅裁剪面板区域、不含会话/账号信息，替换回 `docs/preview/` 并在三语 README 与 screenshots.json 重新登记；截图内不写死会漂移的补丁计数，版本戳以当前发版为准。
 
