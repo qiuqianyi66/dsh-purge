@@ -7,7 +7,7 @@
 <p align="center"><strong>Version 1.1.84-rc1</strong></p>
 
 <p align="center">
-  <em>DeepSeek Harness 破甲：让所有模型都能破甲，不同模型可换不同提示词；默认提示词面向国模「小码酱」。Jailbreak for every model — swap prompts per model. 求 Star 收藏 ⭐ 如要二开，请查看署名要求部分</em>
+  <em>DeepSeek Harness 红队评测插件：用分组补丁与可按模型替换的提示词，把宿主层拦截与模型层回答分开观测。求 Star 收藏 ⭐；如要二开，请查看署名要求部分。</em>
 </p>
 
 <p align="center">
@@ -73,12 +73,12 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 | ---------------- | ----------------------------------------------- |
 | **dsh-purge 侧栏** | 会话标题旁的按钮打开右侧栏。里面两页：清洗、演练台                       |
 | **清洗**           | 分组查看补丁，应用、还原、卸载；编辑提示词和多套规则                      |
-| **演练台**          | 正式版内置。授权后查看资产和本机环境。开源版不下发技能库和知识库。只用于本机/内网本地靶场 |
+| **演练台**          | 本版本内置。授权后查看资产和本机环境。开源版不下发预制技能库和知识库。只用于本机/内网本地靶场 |
 | **宿主策略**         | 调整默认文案、权限策略和工具上限。官方能力保留，不另写一套身份                 |
-| **启动时**          | 自动再检查并应用。npm 升级盖掉 `node_modules` 之后不用手改文件       |
+| **启动时**          | 检查状态并保留已应用标记；宿主文件在「应用」时重写（开启自动应用后启动时重打）。npm 升级盖掉 `node_modules` 后在清洗页重新应用即可，不用手改文件 |
 
 
-不写死盘符。按 `$DSH_HOME`、dsh 启动器旁边的 `.dsh`，再退回 `~/.dsh`。不改 Harness 源码仓库，在 **dsh-purge** 的「清洗」里点「应用」才写入。身份来自插件里的加密提示词，也就是提示词框默认显示的那一份。不读取宿主磁盘上的提示词文件。
+不写死盘符。按 `$DSH_HOME`、dsh 启动器旁边的 `.dsh`，再退回 `~/.dsh`。不改 Harness 源码仓库，在 **dsh-purge** 的「清洗」里点「应用」才写入。默认身份文案来自插件内置的加密密封提示词（也就是提示词框默认显示的那一份）；已保存的覆盖段或当前规则集优先级更高。插件不读取宿主自己的身份提示词文件。
 
 本插件只处理使用者本机已安装的官方 `@deepseek-ai` 包和本机配置。它不是公网扫描器，也不是针对第三方站点的攻击套件。仓库内不含木马、未授权渗透脚本或对外攻击载荷。
 
@@ -140,11 +140,12 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 ## 适配范围
 
-**1.1.84-rc1 已适配 DSH 0.2.2-rc.1**。不要拿它去打 0.1.x。
+**1.1.84-rc1 已适配 DSH 0.2.2-rc.1**。不要拿本版本去打 0.1.x 或 0.2.1-rc.x。
 
 - **dsh 0.2.2-rc.1**（官方桌面 / 官方 `dsh web`）：用 **1.1.84-rc1**。含 #82 单行锚点修复（region drift）与新布局下的路径分区/aiBase 处理。
-- **dsh 0.2.0-rc.2**：用 **1.1.40** 及以上。
-- **dsh 0.1.7**（含 rc.1 / rc.2）：用 **1.1.39** 及更早 —— 在本仓库 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 里选对应标签。
+- **dsh 0.2.1-rc.x**：不是 1.1.84-rc1 的适配目标；请到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签。
+- **dsh 0.2.0-rc.2**（旧线）：用 **1.1.40** 及以上，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases)。
+- **dsh 0.1.7**（含 rc.1 / rc.2，旧线）：用 **1.1.39** 及更早 —— 在本仓库 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 里选对应标签。
 - 宿主对不上时补丁会显示待应用或跳过，不会乱改文件。
 
 ---
@@ -370,7 +371,7 @@ dsh-purge --uninstall
       name: 'dsh-purge'
       config:
         enabled: true
-        autoApplyOnStart: true
+        autoApplyOnStart: false
         autoUpdateOnStart: false
         autoRevertOnMissing: false
         verbose: false
@@ -409,7 +410,7 @@ dsh-purge --uninstall
 | --------- | ---------------------------------------------------------------------------------------------------------- |
 | dsh-purge | 会话标题旁的按钮，打开或收起右侧栏                                                                                          |
 | 清洗        | 补丁、提示词、规则集                                                                                                 |
-| 演练台       | 授权后的资产与环境页。开源版不下发技能库和知识库。未授权时按钮标「未授权」                                                                   |
+| 演练台       | 授权后的资产与环境页。开源版不下发预制技能库和知识库。未授权时按钮标「未授权」                                                                   |
 | 补丁        | 分组查看状态，应用、还原或卸载                                                                                            |
 | 提示词       | 编辑 `prompt-inject.md`，作为会话覆盖段                                                                              |
 | 本地靶场      | 只放行本机/私网 IP；域名先解析，全部地址都必须是私网或回环                                                         |
@@ -420,7 +421,7 @@ dsh-purge --uninstall
 
 ## 目录结构
 
-`bin/` 是命令行，`lib/` 是补丁和演练台，`presets/redteam/` 是红队预设，`client.js` 是侧栏。开源版不下发 `skills/` 和知识库。
+`bin/` 是命令行，`lib/` 是补丁、规则、技能、演练台与红队运行时，`presets/redteam/` 是红队预设，`scripts/` 是安装/构建辅助脚本，`cordis.patch.yml` 是 profile 打包补丁，`client.js` 是侧栏。开源版不下发预制技能库和知识库。
 
 运行时文件在 `$DSH_HOME`：`prompt-inject.md`、`rules/`、`redteam/`。未设 `DSH_HOME` 时，优先用 dsh 安装目录旁边的 `.dsh`，再退回 `~/.dsh`。Web 和桌面端各用自己那一份主目录。
 
@@ -431,14 +432,18 @@ dsh-purge --uninstall
 ```sh
 # CLI
 dsh-purge --status
+dsh-purge --diagnose [--json] [--all-hosts]   # 只读：补丁漂移诊断
+dsh-purge --preupdate [--json]                # 只读：升级前预检
 dsh-purge --apply
 dsh-purge --revert
 dsh-purge --uninstall
 dsh-purge --edit
+dsh-purge --help
 
-# 聊天
+# 聊天命令
 /purge status | apply | revert | uninstall | edit | help
 /rules list | use <id> | create <id> | delete <id> | reset | help
+/skills list | import <路径> | create <id> [说明] | delete <id> | help
 /rewind
 
 # 其它插件已占 /rewind（或 /purge、/rules、/skills）时，这条命令会跳过或改挂
@@ -450,9 +455,9 @@ purge_status   purge_apply   purge_revert
 
 设置页「应用」成功后会自动重启，以加载已改的包文件；也可手动点「重启」。补丁标题下有正式版和测试版。测试版跟 `beta` 分支。点「切换到正式版」会装回 main，并清掉钉选。正式版里选旧版本会固定在该版本，要回到最新再点「更新」。旧的测试标签不再列出。
 
-输入框旁的「回退一次」和「回退上一轮」都留在当前这条对话里，不另开分支。已发送的那句会回到输入框，这一轮已经发出的内容和已完成的任务会从当前对话撤掉，改字后**重新发送**即可。从 **1.1.61** 起，多轮对话后回退按**当前这一轮**定位，不会又退到第一条用户消息。聊天里 `/rewind` 同样可用。
+输入框旁的「回退一次」和「回退上一轮」都留在当前这条对话里，不另开分支。已发送的那句会回到输入框，这一轮已经发出的内容和已完成的任务会从当前对话撤掉，改字后**重新发送**即可。从 **1.1.60** 起，多轮对话后回退按**当前这一轮**定位，不会又退到第一条用户消息。聊天里 `/rewind` 同样可用。
 
-**极简 / PTC 与标准不一致时**：同一任务在标准模式能跑、在极简或 PTC 被拦，通常是 preset 里 `run_code` 或 plan 拦截句没洗净，或内置 minimal 缺少 `agent-instructions`。请升到 **1.1.61+**，**完全退出宿主 → 清洗里应用 → 自动重启 → 新开一轮对话** 再试；只换 preset 不重应用，旧进程里的补丁不会更新。
+**极简 / PTC 与标准不一致时**：同一任务在标准模式能跑、在极简或 PTC 被拦，通常是 preset 里 `run_code` 或 plan 拦截句没洗净，或内置 minimal 缺少 `agent-instructions`。请升到 **1.1.60+**，**完全退出宿主 → 清洗里应用 → 自动重启 → 新开一轮对话** 再试；只换 preset 不重应用，旧进程里的补丁不会更新。
 
 ### 响应速度
 
@@ -468,13 +473,13 @@ DSH 会按顺序执行同一批中的 Bash 调用。旧版 dsh-purge 把默认�
 
 使用标准 jobs 服务且 `promoteOnTimeout: true` 时，未完成的命令会在 10 秒后返回后台任务 id，并继续运行。用 `job_output` 读取结果、用 `job_kill` 停止。这个设置缩短前台等待，不会让命令本身跑得更快。没有 jobs 服务或关闭自动转后台时，超时会终止命令。单次调用传入的 `timeoutMs` 优先于这里的默认值；`run_in_background: true` 可立即返回任务 id。
 
-日常任务还可以选择让新会话默认使用 Low 推理：
+日常任务还可以选择让新会话默认使用 Low 推理。`provider`、`model` 填你本机宿主配置里已注册的 id：
 
 ```yaml
 - id: agent-default-model
   config:
-    provider: deepseek-official
-    model: deepseek-flash
+    provider: <你的 provider id>
+    model: <你的 model id>
     reasoningEffort: low
 ```
 
@@ -491,6 +496,10 @@ DSH 会按顺序执行同一批中的 Bash 调用。旧版 dsh-purge 把默认�
 ```sh
 node --check lib/index.js
 node --check lib/core.js
+node --check lib/surface.js
+node --check lib/web.js
+node --check lib/desktop.js
+node --check lib/host.js
 node --check lib/rewind.js
 node --check lib/skills.js
 node --check client.js
@@ -509,7 +518,7 @@ flowchart TD
   B -->|否| D["备份原件为 .dshpurge.bak"]
   D --> E["按补丁列表替换对应文件"]
   E --> F["覆盖 shim"]
-  F --> G["注入插件加密默认（提示词框默认显示的那份）"]
+  F --> G["密封插件内置的加密默认提示词（提示词框默认显示的那份）"]
 ```
 
 
@@ -518,7 +527,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  A["重启或新会话"] --> B["注入插件加密默认，不必点保存，不读宿主磁盘"]
+  A["重启或新会话"] --> B["有已保存覆盖段/规则集则注入它，否则注入加密密封默认值；不读取宿主自己的身份提示词文件"]
 ```
 
 
@@ -583,7 +592,7 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 - 每个目标文件在应用前备份为 `<文件>.dshpurge.bak`。
 - 「还原」或 `/purge revert` 用备份覆盖回去并删除备份；没有备份时去掉 shim 里由本插件写入的行。
 - `prompt-inject.md` 是用户文件，还原时保留。
-- 「卸载」会先还原（若已应用），再删除注入文件、规则库和插件本身。
+- 「卸载」会先还原（若已应用），再删除注入文件和规则库；已安装的插件目录在宿主重启后清理。
 - 重复应用是幂等的。
 
 ---
@@ -602,7 +611,7 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 
 **官方桌面：** 只改当前正在运行的官方桌面安装。点「应用」成功后会自动重启一次。社区桌面端不维护。
 
-找不到目标时提示设置 `DSH_BASE`，不改文件。
+找不到目标时提示设置 `DSH_BASE` / `DSH_DESKTOP_INSTALL`，不改文件。
 
 ---
 
@@ -616,7 +625,3 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 - 升级后原文对不上会显示跳过，这次应用仍算完成，不会乱改。
 - 不改动非 `@deepseek-ai` 的第三方插件源仓库（启动时的 CMD 无感会**尽力**修补已装的 doctor / market / 梁神 / mnemon，属运行时补丁）。
 - 安装走 GitHub 压缩包（npm 仓库没有这个名字，也不要走插件市场）。有 `dsh`：`dsh plugin --profile web add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main`。只有 pnpm：在 `$DSH_HOME/profiles/web` 里 `pnpm add` 同一地址。桌面把 `web` 换成 `desktop`。当前目录已是本仓库时 `add .`。
-
----
-
-感谢 [LINUX DO](https://linux.do) 社区

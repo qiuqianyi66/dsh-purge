@@ -7,7 +7,7 @@
 <p align="center"><strong>Version 1.1.84-rc1</strong></p>
 
 <p align="center">
-  <em>DeepSeek Harness jailbreak: every model, swap prompts per model. Default prompt for 小码酱. Please star ⭐ If you build on this, see Attribution required.</em>
+  <em>DeepSeek Harness red-team evaluation plugin: separate host-layer blocking from model-layer answers with grouped patches and swappable per-model prompts. Please star ⭐. If you build on this, see Attribution required.</em>
 </p>
 
 <p align="center">
@@ -41,7 +41,7 @@
 
 People have been selling this open-source work in the open.
 
-From now on the **public internet is closed**. The open-source build only allows **local lab IPs**: loopback and RFC1918. Domains are resolved first (including hosts); every answer must be private or loopback. A hosts trick that points `.lab` at a public IP, a failed lookup, or a mixed public answer is blocked. **Game cheats are forbidden** (aimbot, wallhack, memory edits against a game, anti-cheat bypass); the prompt and the session gate both stop them. This build does not ship the skill library or the knowledge base.
+From now on the **public internet is closed**. The open-source build only allows **local lab IPs**: loopback and RFC1918. Domains are resolved first (including hosts); every answer must be private or loopback. A hosts trick that points `.lab` at a public IP, a failed lookup, or a mixed public answer is blocked. **Game cheats are forbidden** (aimbot, wallhack, memory edits against a game, anti-cheat bypass); the prompt and the session gate both stop them. This build does not ship a prebuilt skill library or knowledge base.
 
 **This project may not be resold.** Charging for it, skinning it, or hawking it in groups is not allowed. Forks are fine, but **you must attribute** and name the source: [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge). Hide the source or pass it off as your own, and you are on the other side.
 
@@ -72,11 +72,11 @@ Harness does more than forward a prompt. It rewrites prompts, approval gates, sa
 |---|---|
 | **dsh-purge dock** | A button beside the session title opens the right dock. Two pages: Clean and Drill |
 | **Clean** | Grouped patch status, Apply / Restore / Uninstall, prompt editor, multiple rule sets |
-| **Drill** | Built into the stable release. After authorization: assets and the local environment. This build does not ship skills or the knowledge base. Local lab only |
+| **Drill** | Bundled in this build. After authorization: assets and the local environment. This build does not ship a prebuilt skill library or knowledge base. Local lab only |
 | **Host policy** | Default copy, permission policy, and tool limits. Official capabilities stay. No second invented identity |
-| **On start** | Checks and reapplies. After npm overwrites `node_modules`, you do not hand-edit files |
+| **On start** | Checks state and keeps the applied stamp; host files are rewritten on Apply (or auto-applied when enabled). After npm overwrites `node_modules`, re-apply from the Clean page — no hand-editing needed |
 
-No hardcoded drive letters. It looks at `$DSH_HOME`, `.dsh` next to the dsh launcher, then `~/.dsh`. It does not patch the Harness source tree. **Apply** on the **Clean** page of **dsh-purge** is what writes the changes. Identity comes from the encrypted prompt shipped in the plugin, the text the prompt box shows by default. The host prompt file is not read.
+No hardcoded drive letters. It looks at `$DSH_HOME`, `.dsh` next to the dsh launcher, then `~/.dsh`. It does not patch the Harness source tree. **Apply** on the **Clean** page of **dsh-purge** is what writes the changes. The default identity text is the encrypted sealed prompt shipped in the plugin (what the prompt box shows by default); a saved override or an active rule set takes priority over it. The plugin does not read the host's own identity prompt file.
 
 It only touches the official `@deepseek-ai` packages and local config on the user's machine. It is not a public scanner and not an attack kit for third-party sites. The repo does not ship malware, unauthorized-exploit scripts, or payloads aimed at the public internet.
 
@@ -138,11 +138,12 @@ This repo is [Apache License 2.0](./LICENSE). Forks and redistributions must kee
 
 ## Supported hosts
 
-**1.1.84-rc1 targets DSH 0.2.2-rc.1.** Do not apply it to 0.1.x.
+**1.1.84-rc1 targets DSH 0.2.2-rc.1.** Do not apply this build to 0.1.x or to 0.2.1-rc.x.
 
 - **dsh 0.2.2-rc.1** (official desktop / official `dsh web`): use **1.1.84-rc1**. Includes the #82 single-line anchor fix for region drift and the path-zone/aiBase handling for the new layout.
-- **dsh 0.2.0-rc.2**: use **1.1.40** or newer.
-- **dsh 0.1.7** (incl. rc.1 / rc.2): use **1.1.39** or older — pick the tag on this repo's [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+- **dsh 0.2.1-rc.x**: not a target of 1.1.84-rc1; pick a matching legacy tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+- **dsh 0.2.0-rc.2** (legacy): use **1.1.40** or newer from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+- **dsh 0.1.7** (incl. rc.1 / rc.2, legacy): use **1.1.39** or older — pick the matching tag on this repo's [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
 - Unmatched patches stay pending or skipped; nothing is rewritten blindly.
 
 ---
@@ -368,7 +369,7 @@ Plugin config lives in `cordis.patch.yml` (`postPrompt` is empty by default):
       name: 'dsh-purge'
       config:
         enabled: true
-        autoApplyOnStart: true
+        autoApplyOnStart: false
         autoUpdateOnStart: false
         autoRevertOnMissing: false
         verbose: false
@@ -402,7 +403,7 @@ The open-source build only allows localhost/private nets. The Clean page says so
 |---|---|
 | dsh-purge | button beside the session title; opens or collapses the dock |
 | Clean | patches, prompt, rule sets |
-| Drill | assets and environment after authorization. This build does not ship skills or the knowledge base. The tab says Unauthorized until then |
+| Drill | assets and environment after authorization. This build does not ship a prebuilt skill library or knowledge base. The tab says Unauthorized until then |
 | Patches | grouped status, Apply, Restore, or Uninstall |
 | Prompt | edit `prompt-inject.md` as the session override |
 | Local lab | loopback / RFC1918 only; names are resolved, and every address must be private |
@@ -412,7 +413,7 @@ The open-source build only allows localhost/private nets. The Clean page says so
 
 ## Layout
 
-`bin/` is the CLI, `lib/` is patches and the drill console, `presets/redteam/` is the red-team preset, and `client.js` is the dock. This build does not ship `skills/` or the knowledge base.
+`bin/` is the CLI, `lib/` is the patches, rules, skills, drill console and red-team runtime, `presets/redteam/` is the red-team preset, `scripts/` holds install/build helpers, `cordis.patch.yml` is the profile bundle patch, and `client.js` is the dock. This build does not ship a prebuilt skill library or knowledge base.
 
 Runtime files live under `$DSH_HOME`: `prompt-inject.md`, `rules/`, `redteam/`. If `DSH_HOME` is unset, the launcher-adjacent `.dsh` wins over `~/.dsh`. Web and the desktop app each use their own home.
 
@@ -421,28 +422,35 @@ Runtime files live under `$DSH_HOME`: `prompt-inject.md`, `rules/`, `redteam/`. 
 ## Usage
 
 ```sh
+# CLI
 dsh-purge --status
+dsh-purge --diagnose [--json] [--all-hosts]   # read-only patch drift diagnosis
+dsh-purge --preupdate [--json]                # read-only pre-upgrade check
 dsh-purge --apply
 dsh-purge --revert
 dsh-purge --uninstall
 dsh-purge --edit
+dsh-purge --help
 
+# Chat commands
 /purge status | apply | revert | uninstall | edit | help
 /rules list | use <id> | create <id> | delete <id> | reset | help
+/skills list | import <path> | create <id> [note] | delete <id> | help
 /rewind
 
 # If another plugin already owns /rewind (or /purge, /rules, /skills), that
 # name is skipped or remounted as /purge-rewind. Other commands, tools, and
 # /dsh-purge/* routes keep working.
 
+# Model tools
 purge_status   purge_apply   purge_revert
 ```
 
 After a successful Apply, the host restarts so patched packages load; you can also click **Restart** manually. Under the patch title are the stable release and the test release. The test release follows the `beta` branch. **Switch to stable** installs `main` and clears any pin. Picking an older stable version pins it; click **Update** to return to the latest. Old test tags are not listed.
 
-The composer **Undo once** and **Undo last round** stay in the current conversation and do not open a branch. The sent line goes back into the input, and that cut's already-sent messages and completed tasks leave the current conversation; edit and **send again**. From **1.1.61**, rewind bounds follow the **current turn**, not the first user message. `/rewind` does the same.
+The composer **Undo once** and **Undo last round** stay in the current conversation and do not open a branch. The sent line goes back into the input, and that cut's already-sent messages and completed tasks leave the current conversation; edit and **send again**. From **1.1.60**, rewind bounds follow the **current turn**, not the first user message. `/rewind` does the same.
 
-If the **same task works in standard but fails in minimal or PTC**, preset `run_code`, sandbox, or plan intercept text is often still uncleared, or built-in minimal is missing `agent-instructions`. Use **1.1.61+**, then **quit the host fully → Apply in Clean → restart → start a new chat**. Switching preset alone does not reload patches in the running process.
+If the **same task works in standard but fails in minimal or PTC**, preset `run_code`, sandbox, or plan intercept text is often still uncleared, or built-in minimal is missing `agent-instructions`. Use **1.1.60+**, then **quit the host fully → Apply in Clean → restart → start a new chat**. Switching preset alone does not reload patches in the running process.
 
 ### Response speed
 
@@ -458,13 +466,13 @@ For a shorter wait in `dsh web` on macOS/Linux, add this entry to `$DSH_HOME/pro
 
 With the standard jobs service and `promoteOnTimeout: true`, an unfinished command returns a background job id after 10 seconds and keeps running. Read it with `job_output` or stop it with `job_kill`. This changes the foreground wait, not the command's speed. Without that service or with promotion disabled, the timeout kills the command. A per-call `timeoutMs` overrides this default; `run_in_background: true` returns a job id immediately.
 
-For routine tasks, you can also opt into Low reasoning for new sessions:
+For routine tasks, you can also opt into Low reasoning for new sessions. Set `provider` and `model` to ids registered in your own host profile:
 
 ```yaml
 - id: agent-default-model
   config:
-    provider: deepseek-official
-    model: deepseek-flash
+    provider: <your-provider-id>
+    model: <your-model-id>
     reasoningEffort: low
 ```
 
@@ -503,14 +511,14 @@ flowchart TD
   B -->|no| D["Back up the original as .dshpurge.bak"]
   D --> E["Replace the matched files"]
   E --> F["Override the shim"]
-  F --> G["Inject the encrypted prompt shipped in the plugin, the text the prompt box shows by default"]
+  F --> G["Seal the encrypted default prompt shipped in the plugin (shown in the prompt box by default)"]
 ```
 
 Override on each session:
 
 ```mermaid
 flowchart TD
-  A["Restart or new session"] --> B["Inject the plugin's encrypted default. No save click, and no host prompt file"]
+  A["Restart or new session"] --> B["Inject saved override/rule set if present; otherwise the encrypted sealed default. The host's own identity prompt file is not read"]
 ```
 
 Prompt injection and ruleset decision at every turn. The three inputs on the left are what you control in the dsh-purge panel; the dotted edges show which decision each one drives:
@@ -571,7 +579,7 @@ No. The open-source build allows only loopback and RFC1918 private lab ranges; a
 - Each target is copied to `<file>.dshpurge.bak` before the first apply.
 - **Restore** or `/purge revert` copies backups back and deletes them. With no backup, shim lines written by this plugin are stripped.
 - `prompt-inject.md` is a user file and is kept.
-- **Uninstall** restores first if patches were applied, then deletes the inject file, rule library, and the plugin itself.
+- **Uninstall** restores first if patches were applied, then removes the inject file and rule library; the installed plugin tree is cleaned up after the host restarts.
 - Apply is idempotent.
 
 ---
@@ -608,8 +616,4 @@ Updates and older packages are on this repo's [Releases](https://github.com/qiuq
 - After an upgrade, unmatched originals show as skipped. Apply still completes, and those files are left unchanged.
 - Third-party plugin *source repos* outside `@deepseek-ai` are left alone (CMD silence may **best-effort** patch installed doctor / market / liangshen / mnemon at runtime).
 - Install from the GitHub tarball (the name is not on npm; skip the plugin market). With `dsh`: `dsh plugin --profile web add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main`. pnpm only: `pnpm add` that URL inside `$DSH_HOME/profiles/web`. Use `desktop` for the EXE. From this repo, `add .`.
-
----
-
-Thanks to the [LINUX DO](https://linux.do) community
 
