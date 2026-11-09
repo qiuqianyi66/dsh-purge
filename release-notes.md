@@ -1,3 +1,21 @@
+# 1.1.84-rc1
+
+## 中文
+
+- 适配 **DeepSeek Harness 0.2.2-rc.1**（dshTarget 0.2.2-rc.1），离线 dry-run 复核 compat ok、drifted=0、二次 apply 幂等。
+- 修复补丁 #82（DESKTOP_SHELL_PROFILE_FALLBACK）：锚点改为仅锚定 import 单行；旧 pattern 把 import 行与相隔 1700+ 行的 home-paths region 拼接，新版中间插入多个 region 后无法命中。
+- 路径分区判定按 aiBase 归属放行，修复隔离/嵌套包布局被误判为 Web 树的问题；新增嵌套包布局识别。
+- 单元测试 74 项通过 73 项；唯一失败 settleMayReapply 为基线遗留，与本版本无关。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- Adapted for **DeepSeek Harness 0.2.2-rc.1** (dshTarget 0.2.2-rc.1); offline dry-run verified compat ok, drifted=0, second apply idempotent.
+- Fix patch #82: anchor on the import line alone; the old pattern stitched the import line to a home-paths region 1700+ lines away and missed after new regions were inserted.
+- Path zone check assigns by aiBase; fixes isolated/nested package layout being misjudged as Web tree; adds nested layout detection.
+- 74 tests, 73 pass; the single settleMayReapply failure is a pre-existing baseline issue, unrelated to this release.
+- Maintainer qiuqianyi66; this is a derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notice retained in LICENSE/NOTICE.
+
 # 1.1.83
 
 ## 中文
