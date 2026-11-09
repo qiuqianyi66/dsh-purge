@@ -176,7 +176,6 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"override.title": "提示词",
 			"own.title": "本地靶场",
 			"own.hint": "开源版攻击任务只放行本机/内网 IP。域名会先解析，解析到的每一个地址都必须是私网或回环；hosts 把 .lab 指到公网 IP 也会拦。解析失败或混有公网地址一律拦截。",
-			"own.save": "保存名单",
 			"saved.own": "已保存自己的服务器",
 			"saved.own.dropped": "已保存。有 {n} 行不是单个 IP 或主机名，已丢掉",
 			"metric.purged": "已写入",
@@ -537,7 +536,6 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"override.title": "Prompt",
 			"own.title": "Local lab only",
 			"own.hint": "The open-source build only allows localhost/private IPs. Domains are resolved first; every A/AAAA must be loopback or RFC1918. A hosts entry that points .lab at a public IP is blocked. Failed or mixed public answers are denied.",
-			"own.save": "Save list",
 			"saved.own": "Own servers saved",
 			"saved.own.dropped": "Saved. {n} lines were not a single IP or hostname and were dropped",
 			"metric.purged": "Written",
@@ -1558,8 +1556,6 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 			const [override, setOverride] = useState("");
 			const [defaultOverride, setDefaultOverride] = useState("");
 			const [overrideLoaded, setOverrideLoaded] = useState(false);
-			const [ownServers, setOwnServers] = useState("");
-			const [ownLoaded, setOwnLoaded] = useState(false);
 			const [patchBusy, setPatchBusy] = useState(false);
 			const [updateBusy, setUpdateBusy] = useState(false);
 			const [canApplyUpdate, setCanApplyUpdate] = useState(false);
@@ -1768,14 +1764,6 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 						else setNotice({ kind: "error", text: tr("err.override", { error: (d && d.error) || "" }) });
 					})
 					.catch((e) => setNotice({ kind: "error", text: tr("err.override", { error: e.message }) }));
-				apiJson("/dsh-purge/own-servers")
-					.then((d) => {
-						if (d && d.ok) {
-							setOwnServers(typeof d.content === "string" ? d.content : "");
-							setOwnLoaded(true);
-						}
-					})
-					.catch(() => {});
 			}, []);
 
 			useEffect(() => {
