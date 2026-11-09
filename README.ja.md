@@ -383,10 +383,6 @@ dsh-purge --uninstall
 
 Drill を初めて開くときは、通知を読み、カウントダウンを待ち、末尾までスクロールして 3 つのチェックボックスにチェックします。Clean にこのステップは不要です。Drill は、あなたが管理するホスト、オフラインターゲット、またはすでに書面による認可のある演習にのみ使えます。
 
-**Drill 認可**
-
-![Drill authorization](docs/preview/dock-auth.png)
-
 **Drill**
 
 ![Drill](docs/preview/dock-drill.png)
