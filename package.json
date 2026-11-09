@@ -40,14 +40,13 @@
     "test": "node --test"
   },
   "license": "Apache-2.0",
-  "author": "qiuqianyi66 (forked from YuJunZhiXue/dsh-purge)",
+  "author": "qiuqianyi66",
   "maintainers": [
     {
       "name": "qiuqianyi66",
       "url": "https://github.com/qiuqianyi66"
     }
   ],
-  "upstream": "https://github.com/YuJunZhiXue/dsh-purge",
   "keywords": [
     "dsh",
     "dsh-plugin",

@@ -1,10 +1,8 @@
 dsh-purge
 Copyright 2026 YuJunZhiXue
 
-Source: https://github.com/YuJunZhiXue/dsh-purge
-
-Derivative (2026-11): https://github.com/qiuqianyi66/dsh-purge
-Maintainer: qiuqianyi66 — adapted for DeepSeek Harness 0.2.2-rc.1 (1.1.84-rc1)
+Maintainer: qiuqianyi66 — https://github.com/qiuqianyi66
+Adapted for DeepSeek Harness 0.2.2-rc.1 (1.1.84-rc1), 2026-11.
 
 This product is licensed under the Apache License, Version 2.0.
-Derivative works must retain this NOTICE and attribution.
+Derivative works must retain this NOTICE and the copyright notice in LICENSE.

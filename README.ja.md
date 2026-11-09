@@ -22,22 +22,19 @@
 </p>
 
 <p align="center">
-  <a href="https://dsh-plugin.org/plugins/yujunzhixue/dsh-purge"><img src="https://dsh-plugin.org/badges/listed.svg" alt="Listed on dsh-plugin.org"></a>
-</p>
-
-<p align="center">
   <a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a> | <a href="README.ja.md">日本語</a>
 </p>
 
+> **メンテナー（2026-11）**
+> このリポジトリは [@qiuqianyi66](https://github.com/qiuqianyi66) が維持・配布しており、Issue、更新、インストール元はすべて本リポジトリに従います。ライセンスと元の著作権表示は [LICENSE](./LICENSE) と [NOTICE](./NOTICE) を参照してください。転売は禁止です。
+
 ## 作者より
 
-このオープンソースの成果物を、公然と売りさばく人たちがいました。その後、作者は呼び出されて話をすることになりました。あとは言わずもがな。行間を読んでください。
+このオープンソースの成果物を、公然と売りさばく人たちがいました。
 
 今後、**公開インターネットは閉じます**。オープンソース版では **ローカルのラボ IP のみ** を許可します（ループバックと RFC1918）。ドメインは先に名前解決され（hosts も含む）、すべての応答がプライベートまたはループバックでなければなりません。`.lab` を公開 IP に向ける hosts トリック、名前解決の失敗、公開 IP が混じった応答はブロックされます。**ゲームチートは禁止です**（エイムボット、ウォールハック、メモリ改ざん、アンチチート回避）。プロンプトとセッションゲートの両方で阻止します。このビルドにはスキルライブラリやナレッジベースは同梱されません。
 
-**オリジナルビルドの転売は禁止です。** 課金、スキン変更、グループでの売り込みは許可されません。フォークは自由ですが、**帰属表示が必須** で、出所を明記してください: [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。出所を隠したり、自分のものとして偽ったりすれば、あなたは向こう側です。
-
-作者の個人チャンネル: [t.me/LLM_PoJia](https://t.me/LLM_PoJia)。メモや更新情報はそこに出ます。
+**本プロジェクトの転売は禁止です。** 課金、スキン変更、グループでの売り込みは許可されません。フォークは自由ですが、**帰属表示が必須** で、出所を明記してください: [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。出所を隠したり、自分のものとして偽ったりすれば、あなたは向こう側です。
 
 ## 目次
 
@@ -81,13 +78,13 @@ Harness は単にプロンプトを転送するだけではありません。プ
 
 **オリジナルビルドの転売は禁止です。** 有料での転売、スキン変更したストア掲載、グループでの売り込みは禁止です。
 
-**フォークは帰属表示が必須** で、出所のリポジトリを明記してください: [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。名前、アイデア、コード、プロンプトを借用する場合も同様です。
+**フォークは帰属表示が必須** で、出所のリポジトリを明記してください: [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。名前、アイデア、コード、プロンプトを借用する場合も同様です。
 
 出所を隠す、自分のものとして偽る、オリジナルを転売する行為は追及します。
 
 ## ライセンス
 
-本リポジトリは [Apache License 2.0](./LICENSE) です。フォークおよび再配布では著作権表示と [NOTICE](./NOTICE) を保持し、[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge) を明記してください。オリジナルの転売は禁止です。
+本リポジトリは [Apache License 2.0](./LICENSE) です。フォークおよび再配布では著作権表示と [NOTICE](./NOTICE) を保持し、[qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) を明記してください。転売は禁止です。
 
 ---
 
@@ -135,7 +132,7 @@ Harness は単にプロンプトを転送するだけではありません。プ
 
 - **dsh 0.2.1-rc.2**（公式デスクトップ / 公式 `dsh web`）: **1.1.81** を使用。`{{cwd}}` / `[cwd]` クラッシュ、patch #40 のマッチ、削除された `toolFilter`、ホスト `dsh-tools` の解決、hostFs の fd、デスクトップヘルパーの自己終了、`file:` アーカイブ更新、Ctrl+Enter ステアを修正。
 - **dsh 0.2.0-rc.2**: **1.1.40** 以降を使用。このラインもインストールできます。
-- **dsh 0.1.7**（rc.1 / rc.2 を含む）: **1.1.39** 以前を使用 — [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases) で該当タグを選択。
+- **dsh 0.1.7**（rc.1 / rc.2 を含む）: **1.1.39** 以前を使用 — 本リポジトリの [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) で該当タグを選択。
 - **dsh 0.2.1-rc.3 / rc.4 以降は非対応です。** マッチしないパッチは pending または skipped のままで、盲目的な書き換えはしません。**0.2.1-rc.2** に留まってください。
 
 マッチしないパッチは pending または skipped のままで、盲目的な書き換えはしません。
@@ -581,7 +578,7 @@ Community Desktop はメンテナンスされていません。
 
 ## リリース
 
-作者の個人チャンネル: [t.me/LLM_PoJia](https://t.me/LLM_PoJia)。メモや更新情報はそこに出ます。GitHub [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases) には古いパッケージもあります。オリジナルの転売は禁止、フォークは帰属表示が必須です。
+更新と旧パッケージは本リポジトリの [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) を参照してください。転売は禁止、フォークには帰属表示が必須です。
 
 ## 備考
 

@@ -22,33 +22,26 @@
 </p>
 
 <p align="center">
-  <a href="https://dsh-plugin.org/plugins/yujunzhixue/dsh-purge"><img src="https://dsh-plugin.org/badges/listed.svg" alt="Listed on dsh-plugin.org"></a>
-</p>
-
-<p align="center">
   <a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-> **Fork 说明（2026-11）**
-> 上游原作：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。本仓库为其二次开发版本，基于 Apache-2.0 发布，保留原 LICENSE 与 NOTICE 及全部上游署名。
-> **当前维护者：** [@qiuqianyi66](https://github.com/qiuqianyi66)（本仓库问题、更新与分发由其负责；上游版权仍归原作者）。
-> 本版本改动：适配 DeepSeek Harness 0.2.2-rc.1（dshTarget 0.2.2-rc.1，版本号 1.1.84-rc1），并将补丁 #82 的锚点改为仅锚定 import 单行，修复新版宿主中因中间插入 region 导致的 drift。版权归原作者所有，禁止倒卖。
+> **维护者（2026-11）**
+> 本仓库由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护与分发，问题、更新与安装源均以本仓库为准。
+> 本版本：适配 DeepSeek Harness 0.2.2-rc.1（dshTarget 0.2.2-rc.1，版本号 1.1.84-rc1），补丁 #82 锚点改为仅锚定 import 单行，修复新版宿主中因中间插入 region 导致的 drift。许可证与原始版权声明见 [LICENSE](./LICENSE) 与 [NOTICE](./NOTICE)，禁止倒卖。
 
-**二次开发（Fork 本仓库）请保留本维护者标识与上游署名；再分发须注明：源自 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，上游 [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。**
+**二次开发（Fork 本仓库）请保留本维护者标识；再分发须注明源自 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，并保留 LICENSE/NOTICE 中的版权声明。**
 
 **一句话定义：** dsh-purge 是一个运行在 DeepSeek Harness（DSH）本机环境内的开源红队评测插件，通过可分组管理的补丁与可替换提示词，把宿主层拦截与模型层回答分开观测，用于受控的 LLM 安全评测。
 
 **关键信息：** 许可证 Apache-2.0；当前版本 1.1.84-rc1；适配 DSH 0.2.2-rc.1；支持 Web 与桌面端；Node.js >= 18；仅允许本机/内网靶场使用，禁止公网攻击与倒卖。
 
+**本项目不允许倒卖。** 收费、当货挂群，一律不行。二开可以，但**必须署名**，写明来源仓库：[qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。不署名、隐瞒来源、改头换面据为己有，一律按对家处理。
+
 ## 作者说几句
 
-市面上有人把这份开源明目张胆挂出去卖。后面作者这边被找去谈过话——经过不必写，你们自己品。
+市面上有人把这份开源明目张胆挂出去卖。
 
 从今往后，**公网一律不许碰**。开源版攻击任务只认**本地靶场 IP**：本机回环和 RFC1918 私网。域名会先按系统解析（含 hosts），解析到的每一个地址都必须是私网或回环；hosts 把 `.lab` 指到公网、解析失败、混有公网地址，一律拦。不是本地靶场就别跑，也跑不过去。**禁止制作外挂**（自瞄、透视、改内存打游戏、过反作弊），提示词和会话门口一起拦。开源版不下发技能库和知识库。
-
-**原版不允许倒卖。** 收费、当货挂群，一律不行。二开可以，但**必须署名**，写明来源仓库：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。不署名、隐瞒来源、改头换面据为己有，作者一律当对家。
-
-作者个人频道：[t.me/LLM_PoJia](https://t.me/LLM_PoJia)。有话、有更新，会发在那里。
 
 ## 目录
 
@@ -95,13 +88,13 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 **原版不允许倒卖。** 不得收费转卖、换皮上架、当货挂群。
 
-**二开必须署名**，并写明来源仓库：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。借用本项目的名称、思路、代码或提示词，同样必须署名。
+**二开必须署名**，并写明来源仓库：[qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。借用本项目的名称、思路、代码或提示词，同样必须署名。
 
 不署名、隐瞒来源、改头换面据为己有，或把原版拿去倒卖，作者将依法追究责任。
 
 ## 许可证
 
-本仓库使用 [Apache License 2.0](./LICENSE)。二开、再分发必须保留版权声明和 [NOTICE](./NOTICE)，写明来源 [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。原版不允许倒卖。
+本仓库使用 [Apache License 2.0](./LICENSE)。二开、再分发必须保留版权声明和 [NOTICE](./NOTICE)，写明来源 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。原版不允许倒卖。
 
 ---
 
@@ -149,7 +142,7 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 - **dsh 0.2.2-rc.1**（官方桌面 / 官方 `dsh web`）：用 **1.1.84-rc1**。含 #82 单行锚点修复（region drift）与新布局下的路径分区/aiBase 处理。
 - **dsh 0.2.0-rc.2**：用 **1.1.40** 及以上。
-- **dsh 0.1.7**（含 rc.1 / rc.2）：用 **1.1.39** 及更早 —— 在 [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases) 里选对应标签。
+- **dsh 0.1.7**（含 rc.1 / rc.2）：用 **1.1.39** 及更早 —— 在本仓库 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 里选对应标签。
 - 宿主对不上时补丁会显示待应用或跳过，不会乱改文件。
 
 ---
@@ -578,7 +571,7 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 当前 1.1.84-rc1 适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1），同时支持官方 Web（`dsh web`）与桌面端 EXE，要求 Node.js >= 18。
 
 **dsh-purge 是免费的吗？许可证是什么？**
-开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与上游署名 [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)，禁止倒卖和收费挂群。
+开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与署名 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，禁止倒卖和收费挂群。
 
 **安装 dsh-purge 会修改 DeepSeek Harness 的源码吗？**
 插件只在你点击「应用」时写入本机目标文件，且每个文件应用前自动生成 `.dshpurge.bak` 备份；可随时在清洗面板一键还原，不改动任何官方远程仓库。
@@ -621,7 +614,7 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 
 ## 更新
 
-作者个人频道：[t.me/LLM_PoJia](https://t.me/LLM_PoJia)。有话、有更新会发在那里。GitHub [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases) 仍可下历史包。原版不允许倒卖；二开必须署名。
+更新与历史包见本仓库 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases)。原版不允许倒卖；二开必须署名。
 
 ## 说明
 
