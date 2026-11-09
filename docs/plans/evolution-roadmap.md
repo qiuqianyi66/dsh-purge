@@ -2,7 +2,7 @@
 
 - 维护者：qiuqianyi66
 - 基线版本：1.1.84-rc1（适配 DSH 0.2.2-rc.1）
-- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）；F10 兼容矩阵门禁已实施（101/101 全绿，compat:check 接入 test.yml）。下文第 1 节为门 1 基线快照。
+- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项代码侧复核完成（teams 启动期注册已核实；壳自身更新回调属宿主黑盒维持 unknown，见 F2 段）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）；F10 兼容矩阵门禁已实施（101/101 全绿，compat:check 接入 test.yml）。下文第 1 节为门 1 基线快照。
 - 证据口径：数据来自本机隔离工作副本实测 + GitHub API 实查（2026-11-09）；推断项已标注 `unknown`。
 
 ## 1. 基线实测（我方现状）
@@ -77,6 +77,11 @@
 - Given 现有遗留未验证项，When 重启验收，Then 逐项给出实测结论（通过 / 失败附日志 / 标 unknown）。
 - 范围：teams（@nanmicoder/dsh-agent-teams）子代理功能；桌面壳自动更新回调；7 条历史 `missing_file` 空目标确认。
 - 验收：产出结论清单，不扩功能范围。
+- 代码侧复核（2026-11-09，非真机运行态）：
+  - **teams 工具注册**：已核实为启动期注册，非会话内惰性注册。`@nanmicoder/dsh-agent-teams` 在 `apply(ctx)` 内调用 `registerAgentTeamsTools(ctx, resolved)`，把 14 个 `agent_teams_*` 工具（见 `lib/tool-names.js`）注册进共享 tools 注册表；`inject: ['tools','llm','subagents','systemPrompt','agents']`。真机会话内实际可见性仍未在 DSH 会话内复现，保留运行态 unknown。
+  - **桌面壳自动更新回调**：插件侧 `autoUpdateIfNeeded()` 已被钉成 `skipped: "manual-only"`（`lib/update.js`），启动路径永不自动升，更新只走面板手动触发；`cordis.patch.yml` / `lib/index.js` 的 `autoUpdateOnStart: false`。桌面壳（Electron / app.asar 主程序）自身是否另有更新回调，不在本仓库代码内，属宿主黑盒，维持 unknown。
+  - 7 条历史 `missing_file` 空目标（#76/#71/#28/#30/#31/#64/#65）保持 pending/skipped，本轮不动。
+
 
 ### P1 工程质量与可发现性（低成本，先做）
 
