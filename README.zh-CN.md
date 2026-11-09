@@ -33,6 +33,10 @@
 > 本仓库是 [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge) 的二次开发版本，基于 Apache-2.0 发布，保留原 LICENSE 与 NOTICE 及全部上游署名。
 > 本版本改动：适配 DeepSeek Harness 0.2.2-rc.1（dshTarget 0.2.2-rc.1，版本号 1.1.84-rc1），并将补丁 #82 的锚点改为仅锚定 import 单行，修复新版宿主中因中间插入 region 导致的 drift。版权归原作者所有，禁止倒卖。
 
+**一句话定义：** dsh-purge 是一个运行在 DeepSeek Harness（DSH）本机环境内的开源红队评测插件，通过可分组管理的补丁与可替换提示词，把宿主层拦截与模型层回答分开观测，用于受控的 LLM 安全评测。
+
+**关键信息：** 许可证 Apache-2.0；当前版本 1.1.84-rc1；适配 DSH 0.2.2-rc.1；支持 Web 与桌面端；Node.js >= 18；仅允许本机/内网靶场使用，禁止公网攻击与倒卖。
+
 ## 作者说几句
 
 市面上有人把这份开源明目张胆挂出去卖。后面作者这边被找去谈过话——经过不必写，你们自己品。
@@ -54,6 +58,7 @@
 - [界面](#界面预览)
 - [使用](#使用)
 - [工作原理](#工作原理)
+- [常见问题（FAQ）](#常见问题faq)
 - [还原](#还原)
 - [更新](#更新)
 
@@ -61,7 +66,7 @@
 
 ## 介绍
 
-**dsh-purge** 是装在本机官方 [DeepSeek Harness](https://www.deepseek.com/harness/) 上的网络安全红队评测插件。当前 **1.1.81** 已适配 **DSH 0.2.1-rc.2**（0.2.0 仍可用）。**不支持 DSH 0.2.1-rc.3 及更新的 rc。** 官方 **Web**（`dsh web`）和官方 **桌面端**（EXE）都支持，两边分开装、分开应用。
+**dsh-purge** 是装在本机官方 [DeepSeek Harness](https://www.deepseek.com/harness/) 上的网络安全红队评测插件（DeepSeek Harness jailbreak / prompt-eval plugin）。当前版本 **1.1.84-rc1** 已适配 **DSH 0.2.2-rc.1**（dshTarget 0.2.2-rc.1）。官方 **Web**（`dsh web`）和官方 **桌面端**（EXE）都支持，两边分开装、分开应用。
 
 Harness 不只是把问题交给模型。它还会在运行时改提示词、审批门、沙箱和会话格式。只看「模型答不答」，会把宿主拦截误当成模型拒绝。这个插件在你自己的安装里把这两层分开，用来做受控评测，也用来看默认策略该不该收紧。
 
@@ -137,14 +142,12 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 ## 适配范围
 
-**1.1.81 已适配 DSH 0.2.1-rc.2**，0.2.0 仍可用。不要拿它去打 0.1.x。
+**1.1.84-rc1 已适配 DSH 0.2.2-rc.1**。不要拿它去打 0.1.x。
 
-- **dsh 0.2.1-rc.2**（官方桌面 / 官方 `dsh web`）：用 **1.1.81**。已修 `{{cwd}}` / `[cwd]` 整轮失败、补丁 #40 命中、`toolFilter` 废弃、`dsh-tools` 解析、hostFs fd、桌面换包自杀、`file:` 归档更新、Ctrl+Enter 插话。
-- **dsh 0.2.0-rc.2**：用 **1.1.40** 及以上；本页这档也能装。
+- **dsh 0.2.2-rc.1**（官方桌面 / 官方 `dsh web`）：用 **1.1.84-rc1**。含 #82 单行锚点修复（region drift）与新布局下的路径分区/aiBase 处理。
+- **dsh 0.2.0-rc.2**：用 **1.1.40** 及以上。
 - **dsh 0.1.7**（含 rc.1 / rc.2）：用 **1.1.39** 及更早 —— 在 [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases) 里选对应标签。
-- **不支持 dsh 0.2.1-rc.3 / rc.4 及更新。** 宿主对不上时补丁会显示待应用或跳过，不会乱改文件。请退回 **0.2.1-rc.2** 再用本插件。
-
-对不上的补丁会显示待应用或跳过，不会乱改文件。
+- 宿主对不上时补丁会显示待应用或跳过，不会乱改文件。
 
 ---
 
@@ -560,6 +563,28 @@ flowchart TD
 ```
 
 
+
+---
+
+## 常见问题（FAQ）
+
+**dsh-purge 是什么？**
+dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中通过补丁与可替换提示词，把宿主层策略拦截和模型层回答分开观测，用于受控 LLM 安全评测。
+
+**dsh-purge 支持哪个版本的 DeepSeek Harness？**
+当前 1.1.84-rc1 适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1），同时支持官方 Web（`dsh web`）与桌面端 EXE，要求 Node.js >= 18。
+
+**dsh-purge 是免费的吗？许可证是什么？**
+开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与上游署名 [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)，禁止倒卖和收费挂群。
+
+**安装 dsh-purge 会修改 DeepSeek Harness 的源码吗？**
+插件只在你点击「应用」时写入本机目标文件，且每个文件应用前自动生成 `.dshpurge.bak` 备份；可随时在清洗面板一键还原，不改动任何官方远程仓库。
+
+**dsh-purge 能用来攻击公网目标吗？**
+不能。开源版攻击任务只允许本机回环与 RFC1918 私网靶场，解析到公网地址一律拦截；禁止制作外挂，仓库内不含公网扫描器或对外攻击载荷。
+
+**补丁 #82 解决什么问题？**
+#82 为主进程兜底 `DSH_PROFILE=desktop`：双击 exe 从资源管理器继承环境时常缺 DSH_PROFILE，导致 host 无法确定启动 profile、插件不激活。本版本将其锚点改为仅锚定 import 单行，修复新版宿主中因插入 region 导致的 drift。
 
 ---
 

@@ -33,6 +33,10 @@
 > This repository is a derivative of [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge), published under Apache-2.0 with the original LICENSE, NOTICE and all upstream attribution retained.
 > Changes: adapted for DeepSeek Harness 0.2.2-rc.1 (dshTarget 0.2.2-rc.1, version 1.1.84-rc1); patch #82 now anchors on the import line alone to fix drift caused by newly inserted regions. Copyright remains with the original author. Reselling is prohibited.
 
+**In one sentence:** dsh-purge is an open-source red-team evaluation plugin that runs inside a local DeepSeek Harness (DSH) install and uses grouped patches plus swappable prompts to separate host-layer blocking from model-layer answers for controlled LLM security testing.
+
+**Key facts:** License Apache-2.0; current version 1.1.84-rc1; targets DSH 0.2.2-rc.1; supports Web and desktop; Node.js >= 18; local/intranet lab use only; public-internet attacks and reselling are prohibited.
+
 ## A note from the author
 
 People have been selling this open-source work in the open. After that, the author was asked to come in and talk. No need to spell out the rest. Read between the lines.
@@ -54,6 +58,7 @@ The author's personal channel: [t.me/LLM_PoJia](https://t.me/LLM_PoJia). Notes a
 - [Preview](#preview)
 - [Usage](#usage)
 - [How it works](#how-it-works)
+- [FAQ](#faq)
 - [Restore](#restore)
 - [Releases](#releases)
 
@@ -61,7 +66,7 @@ The author's personal channel: [t.me/LLM_PoJia](https://t.me/LLM_PoJia). Notes a
 
 ## What this is
 
-**dsh-purge** is a cybersecurity red-team plugin for the official [DeepSeek Harness](https://www.deepseek.com/harness/) already installed on your machine. **1.1.81** targets **DSH 0.2.1-rc.2** (0.2.0 still works). **DSH 0.2.1-rc.3 and newer RCs are not supported.** Official **Web** (`dsh web`) and the official **desktop EXE** are both supported. Install and Apply them separately.
+**dsh-purge** is a cybersecurity red-team plugin (DeepSeek Harness jailbreak / prompt-eval plugin) for the official [DeepSeek Harness](https://www.deepseek.com/harness/) already installed on your machine. **1.1.84-rc1** targets **DSH 0.2.2-rc.1** (dshTarget 0.2.2-rc.1). Official **Web** (`dsh web`) and the official **desktop EXE** are both supported. Install and Apply them separately.
 
 Harness does more than forward a prompt. It rewrites prompts, approval gates, sandbox policy, and session migration at runtime. Asking only “will the model answer” treats a host-layer block as a model refusal. This plugin separates those two layers on your own install, for controlled evaluation and for seeing which default policy is too tight.
 
@@ -135,12 +140,12 @@ This repo is [Apache License 2.0](./LICENSE). Forks and redistributions must kee
 
 ## Supported hosts
 
-**1.1.81 targets DSH 0.2.1-rc.2.** 0.2.0 still works. Do not apply it to 0.1.x.
+**1.1.84-rc1 targets DSH 0.2.2-rc.1.** Do not apply it to 0.1.x.
 
-- **dsh 0.2.1-rc.2** (official desktop / official `dsh web`): use **1.1.81**. Fixes `{{cwd}}` / `[cwd]` crash, patch #40 match, dropped `toolFilter`, host `dsh-tools` resolve, hostFs fd, desktop helper self-kill, `file:` archive update, Ctrl+Enter steer.
-- **dsh 0.2.0-rc.2**: use **1.1.40** or newer; this line also installs.
+- **dsh 0.2.2-rc.1** (official desktop / official `dsh web`): use **1.1.84-rc1**. Includes the #82 single-line anchor fix for region drift and the path-zone/aiBase handling for the new layout.
+- **dsh 0.2.0-rc.2**: use **1.1.40** or newer.
 - **dsh 0.1.7** (incl. rc.1 / rc.2): use **1.1.39** or older — pick the tag on [Releases](https://github.com/YuJunZhiXue/dsh-purge/releases).
-- **dsh 0.2.1-rc.3 / rc.4 and newer are not supported.** Unmatched patches stay pending or skipped; nothing is rewritten blindly. Stay on **0.2.1-rc.2**.
+- Unmatched patches stay pending or skipped; nothing is rewritten blindly.
 
 Unmatched patches stay pending or skipped; nothing is rewritten blindly.
 
@@ -548,6 +553,28 @@ flowchart TD
   W -.-> D
   P -.-> G
 ```
+
+---
+
+## FAQ
+
+**What is dsh-purge?**
+dsh-purge is an open-source red-team evaluation plugin for DeepSeek Harness. On a local install it uses patches and swappable prompts to separate host-layer policy blocking from model-layer answers for controlled LLM security testing.
+
+**Which DeepSeek Harness version does dsh-purge support?**
+Version 1.1.84-rc1 targets DSH 0.2.2-rc.1 (dshTarget 0.2.2-rc.1). It supports both the official Web (`dsh web`) and the desktop EXE, and requires Node.js >= 18.
+
+**Is dsh-purge free? What is its license?**
+The open-source build is free under the Apache License 2.0. Redistribution and derivatives must keep the LICENSE, NOTICE and upstream attribution to [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge). Reselling and paid group distribution are prohibited.
+
+**Does installing dsh-purge modify the DeepSeek Harness source code?**
+The plugin writes local target files only when you click Apply, and automatically creates a `.dshpurge.bak` backup for every file first. You can restore everything from the Clean page at any time; no official remote repository is touched.
+
+**Can dsh-purge attack public internet targets?**
+No. The open-source build allows only loopback and RFC1918 private lab ranges; any resolved public address is blocked. Game cheats are forbidden, and the repo ships no public scanner or internet-facing attack payload.
+
+**What does patch #82 fix?**
+#82 defaults the main process to `DSH_PROFILE=desktop`: launching the exe via Explorer often inherits an environment missing DSH_PROFILE, so the host cannot determine the boot profile and the plugin never activates. This build anchors the patch on the import line alone to fix drift caused by newly inserted regions.
 
 ---
 
