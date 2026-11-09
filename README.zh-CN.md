@@ -26,10 +26,10 @@
 </p>
 
 > **维护者（2026-11）**
-> 本仓库由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护与分发，问题、更新与安装源均以本仓库为准。
+> 本仓库是原始 dsh-purge 项目（作者 **YuJunZhiXue**，上游仓库已不再公开）的衍生作品，由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护与分发，问题、更新与安装源均以本仓库为准。
 > 本版本：适配 DeepSeek Harness 0.2.2-rc.1（dshTarget 0.2.2-rc.1，版本号 1.1.84-rc1），补丁 #82 锚点改为仅锚定 import 单行，修复新版宿主中因中间插入 region 导致的 drift。许可证与原始版权声明见 [LICENSE](./LICENSE) 与 [NOTICE](./NOTICE)，禁止倒卖。
 
-**二次开发（Fork 本仓库）请保留本维护者标识；再分发须注明源自 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，并保留 LICENSE/NOTICE 中的版权声明。**
+**二次开发（Fork 本仓库）请保留本维护者标识与上游署名；再分发须注明源自 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)（原始作者 YuJunZhiXue），并保留 LICENSE/NOTICE 中的版权声明。**
 
 **一句话定义：** dsh-purge 是一个运行在 DeepSeek Harness（DSH）本机环境内的开源红队评测插件，通过可分组管理的补丁与可替换提示词，把宿主层拦截与模型层回答分开观测，用于受控的 LLM 安全评测。
 
@@ -88,13 +88,13 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 **原版不允许倒卖。** 不得收费转卖、换皮上架、当货挂群。
 
-**二开必须署名**，并写明来源仓库：[qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。借用本项目的名称、思路、代码或提示词，同样必须署名。
+**二开必须署名**，并写明来源仓库：[qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，系原始项目（作者 YuJunZhiXue）的衍生作品。借用本项目的名称、思路、代码或提示词，同样必须署名。
 
 不署名、隐瞒来源、改头换面据为己有，或把原版拿去倒卖，作者将依法追究责任。
 
 ## 许可证
 
-本仓库使用 [Apache License 2.0](./LICENSE)。二开、再分发必须保留版权声明和 [NOTICE](./NOTICE)，写明来源 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)。原版不允许倒卖。
+本仓库使用 [Apache License 2.0](./LICENSE)。二开、再分发必须保留版权声明和 [NOTICE](./NOTICE)，写明来源 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)（原始作者 YuJunZhiXue）。原版不允许倒卖。
 
 ---
 
@@ -571,7 +571,7 @@ dsh-purge 是 DeepSeek Harness 的开源红队评测插件，在本机安装中�
 当前 1.1.84-rc1 适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1），同时支持官方 Web（`dsh web`）与桌面端 EXE，要求 Node.js >= 18。
 
 **dsh-purge 是免费的吗？许可证是什么？**
-开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与署名 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)，禁止倒卖和收费挂群。
+开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与署名 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)（原始作者 YuJunZhiXue），禁止倒卖和收费挂群。
 
 **安装 dsh-purge 会修改 DeepSeek Harness 的源码吗？**
 插件只在你点击「应用」时写入本机目标文件，且每个文件应用前自动生成 `.dshpurge.bak` 备份；可随时在清洗面板一键还原，不改动任何官方远程仓库。

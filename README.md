@@ -26,10 +26,10 @@
 </p>
 
 > **Maintainer (2026-11)**
-> This repository is maintained and distributed by [@qiuqianyi66](https://github.com/qiuqianyi66); issues, updates and install source all follow this repo.
+> This repository is a derivative of the original dsh-purge project by **YuJunZhiXue** (upstream repository is no longer publicly available); it is maintained and distributed by [@qiuqianyi66](https://github.com/qiuqianyi66), and issues, updates and install source all follow this repo.
 > This build: adapted for DeepSeek Harness 0.2.2-rc.1 (dshTarget 0.2.2-rc.1, version 1.1.84-rc1); patch #82 anchors on the import line alone to fix drift caused by newly inserted regions. License and original copyright notice are in [LICENSE](./LICENSE) and [NOTICE](./NOTICE). Reselling is prohibited.
 
-> **Forking this repo:** keep this maintainer mark; redistributions must state they derive from [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) and retain the copyright notice in LICENSE/NOTICE.
+> **Forking this repo:** keep this maintainer mark and the upstream attribution; redistributions must state they derive from [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) (originally by YuJunZhiXue) and retain the copyright notice in LICENSE/NOTICE.
 
 **In one sentence:** dsh-purge is an open-source red-team evaluation plugin that runs inside a local DeepSeek Harness (DSH) install and uses grouped patches plus swappable prompts to separate host-layer blocking from model-layer answers for controlled LLM security testing.
 
@@ -86,13 +86,13 @@ It only touches the official `@deepseek-ai` packages and local config on the use
 
 **The original build may not be resold.** No paid resale, no skinned store listing, no hawking it in groups.
 
-**Forks must attribute** and name the source repository: [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge). Same if you borrow the name, ideas, code, or prompts.
+**Forks must attribute** and name the source repository: [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge), a derivative of the original project by YuJunZhiXue. Same if you borrow the name, ideas, code, or prompts.
 
 Hiding the source, passing it off as your own, or reselling the original will be pursued.
 
 ## License
 
-This repo is [Apache License 2.0](./LICENSE). Forks and redistributions must keep the copyright notice and [NOTICE](./NOTICE), and name [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge). The project may not be resold.
+This repo is [Apache License 2.0](./LICENSE). Forks and redistributions must keep the copyright notice and [NOTICE](./NOTICE), and name [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) (originally by YuJunZhiXue). The project may not be resold.
 
 ---
 
@@ -561,7 +561,7 @@ dsh-purge is an open-source red-team evaluation plugin for DeepSeek Harness. On 
 Version 1.1.84-rc1 targets DSH 0.2.2-rc.1 (dshTarget 0.2.2-rc.1). It supports both the official Web (`dsh web`) and the desktop EXE, and requires Node.js >= 18.
 
 **Is dsh-purge free? What is its license?**
-The open-source build is free under the Apache License 2.0. Redistribution and derivatives must keep the LICENSE, NOTICE and attribution to [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge). Reselling and paid group distribution are prohibited.
+The open-source build is free under the Apache License 2.0. Redistribution and derivatives must keep the LICENSE, NOTICE and attribution to [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) (originally by YuJunZhiXue). Reselling and paid group distribution are prohibited.
 
 **Does installing dsh-purge modify the DeepSeek Harness source code?**
 The plugin writes local target files only when you click Apply, and automatically creates a `.dshpurge.bak` backup for every file first. You can restore everything from the Clean page at any time; no official remote repository is touched.
