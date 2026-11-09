@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/qiuqianyi66/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/qiuqianyi66/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
   <a href="https://github.com/qiuqianyi66/dsh-purge/releases/latest"><img src="https://img.shields.io/github/v/release/qiuqianyi66/dsh-purge?label=Release" alt="Latest release"></a>
-  <a href="https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/qiuqianyi66/dsh-purge/test.yml?branch=main&label=Tests" alt="Test workflow"></a>
+  <a href="https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml"><img src="https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml/badge.svg" alt="Test workflow"></a>
   <a href="https://github.com/qiuqianyi66/dsh-purge/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat" alt="Apache-2.0"></a>
   <a href="https://awesome-dsh-plugin.com"><img src="https://awesome-dsh-plugin.com/badge.svg" alt="awesome · DSH plugin"></a>
   <a href="https://deepseek.stream/plugins/dsh-purge"><img src="https://img.shields.io/badge/Hub-dsh--purge-1a73e8" alt="DeepSeek Harness Hub"></a>
