@@ -386,10 +386,6 @@ Plugin config lives in `cordis.patch.yml` (`postPrompt` is empty by default):
 
 The first time you open Drill you read the notice, wait out the countdown, scroll to the end, and check three boxes. Clean does not need that step. Drill is only for a host you manage, an offline target, or an exercise that already has written authorization.
 
-**Clean**
-
-![Clean](docs/preview/dock-clean.png)
-
 **Drill authorization**
 
 ![Drill authorization](docs/preview/dock-auth.png)
@@ -397,10 +393,6 @@ The first time you open Drill you read the notice, wait out the countdown, scrol
 **Drill**
 
 ![Drill](docs/preview/dock-drill.png)
-
-**Patches**
-
-![Patches](docs/preview/settings.png)
 
 **Local lab**
 

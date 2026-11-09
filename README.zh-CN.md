@@ -388,10 +388,6 @@ dsh-purge --uninstall
 
 第一次进演练台要先读声明、等倒计时、滚到文末并勾选三项。清洗不需要这一步。演练台只用于你有权管理的本机、离线靶标，或已经书面授权的演练环境。
 
-**清洗**
-
-![清洗](docs/preview/dock-clean.png)
-
 **演练台授权**
 
 ![演练台授权](docs/preview/dock-auth.png)
@@ -399,10 +395,6 @@ dsh-purge --uninstall
 **演练台**
 
 ![演练台](docs/preview/dock-drill.png)
-
-**补丁**
-
-![补丁](docs/preview/settings.png)
 
 **规则集**
 

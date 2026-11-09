@@ -98,6 +98,12 @@
 - 现状：无第三方运行时直接依赖。Given 仅 peerDependencies cordis，When 评审打包清单，Then 确认是否提交 lockfile；推荐不提交，保持零直接依赖外观。
 - 验收：`package.json` peerDependencies 与实际 import 一致；files 字段不含 test/草稿文档。
 
+#### F5b README 面板截图刷新（部分完成，待补拍）
+- 背景：旧 `dock-clean.png`（v1.1.31 / 44/44）与 `settings.png`（31/32、8/9）带过期版本号与补丁计数，与当前 1.1.84-rc1 / 0.2.2-rc.1 事实矛盾。
+- 本轮：从三语 README 与 `screenshots.json` 移除这两张并 `git rm`；保留无版本戳的 `dock-auth.png` / `dock-drill.png` / `rules.png`。
+- 阻塞：桌面接管不可用——PIP 虚拟桌面 RDP reason=516（提示需重启 Windows），main 独占授权超时；未能在 DSH 会话内打开清洗/补丁面板重新实拍。
+- 待办（GWT）：Given 桌面控制恢复，When 在本机 DSH 打开 dsh-purge 清洗页与补丁列表，Then 仅裁剪面板区域、不含会话/账号信息，替换回 `docs/preview/` 并在三语 README 与 screenshots.json 重新登记；截图内不写死会漂移的补丁计数，版本戳以当前发版为准。
+
 ### P2 功能补齐（中等成本，P1 之后）
 
 #### F7 安装/更新失败分阶段诊断

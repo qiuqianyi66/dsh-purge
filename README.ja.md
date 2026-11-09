@@ -30,6 +30,10 @@
 > **メンテナー（2026-11）**
 > このリポジトリは元の dsh-purge プロジェクト（作者 **YuJunZhiXue**、上流リポジトリは公開終了）の派生作品で、[@qiuqianyi66](https://github.com/qiuqianyi66) が維持・配布しており、Issue、更新、インストール元はすべて本リポジトリに従います。このビルドは DeepSeek Harness 0.2.2-rc.1 向けに適応（dshTarget 0.2.2-rc.1、バージョン 1.1.84-rc1）、パッチ #82 は import 行のみをアンカーにして挿入リージョンのドリフトを修正します。ライセンスと元の著作権表示は [LICENSE](./LICENSE) と [NOTICE](./NOTICE) を参照してください。転売は禁止です。
 
+**一言で:** dsh-purge は、ローカルの DeepSeek Harness（DSH）環境で動くオープンソースのレッドチーム評価プラグインです。グループ化されたパッチと差し替え可能なプロンプトを使い、ホスト層のブロックとモデル層の回答を分けて観測し、制御された LLM セキュリティ評価に用います。
+
+**主要情報:** ライセンス Apache-2.0; 現行バージョン 1.1.84-rc1; 対応 DSH 0.2.2-rc.1; Web とデスクトップ対応; Node.js >= 18; ローカル/イントラネットのラボ環境のみ。公開ネットワークへの攻撃と転売は禁止です。
+
 ## 作者より
 
 このオープンソースの成果物を、公然と売りさばく人たちがいました。
@@ -380,10 +384,6 @@ dsh-purge --uninstall
 
 Drill を初めて開くときは、通知を読み、カウントダウンを待ち、末尾までスクロールして 3 つのチェックボックスにチェックします。Clean にこのステップは不要です。Drill は、あなたが管理するホスト、オフラインターゲット、またはすでに書面による認可のある演習にのみ使えます。
 
-**Clean**
-
-![Clean](docs/preview/dock-clean.png)
-
 **Drill 認可**
 
 ![Drill authorization](docs/preview/dock-auth.png)
@@ -391,10 +391,6 @@ Drill を初めて開くときは、通知を読み、カウントダウンを�
 **Drill**
 
 ![Drill](docs/preview/dock-drill.png)
-
-**パッチ**
-
-![Patches](docs/preview/settings.png)
 
 **ローカルラボ**
 
