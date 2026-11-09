@@ -3,8 +3,17 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import zlib from "node:zlib";
 import { extractZipBuffer } from "../lib/zip-extract.js";
+
+// zlib.crc32 自 Node 20 起才提供；用纯 JS 实现以兼容 Node 18 测试矩阵。
+function crc32(buf) {
+  let crc = 0xffffffff;
+  for (const b of buf) {
+    crc ^= b;
+    for (let i = 0; i < 8; i++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
 
 function storedZip(entries) {
   const localParts = [];
@@ -13,7 +22,7 @@ function storedZip(entries) {
   for (const { name, data, dir } of entries) {
     const rawName = dir ? (name.endsWith("/") ? name : `${name}/`) : name;
     const body = dir ? Buffer.alloc(0) : Buffer.from(data);
-    const crc = zlib.crc32(body) >>> 0;
+    const crc = crc32(body);
     const nameBuf = Buffer.from(rawName, "utf8");
     const local = Buffer.alloc(30 + nameBuf.length);
     local.writeUInt32LE(0x04034b50, 0);
