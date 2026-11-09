@@ -2,7 +2,7 @@
 
 - 维护者：qiuqianyi66
 - 基线版本：1.1.84-rc1（适配 DSH 0.2.2-rc.1）
-- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）。下文第 1 节为门 1 基线快照。
+- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）。下文第 1 节为门 1 基线快照。
 - 证据口径：数据来自本机隔离工作副本实测 + GitHub API 实查（2026-11-09）；推断项已标注 `unknown`。
 
 ## 1. 基线实测（我方现状）
@@ -123,6 +123,9 @@
 - Given 用户使用 roleplay/minimal 等非 redteam 预设，When 配置排除名单，Then 这些预设不注入 Purge 提示词，仍保留面板、命令与工具；切换预设、并行会话、子 Agent 与宿主兜底都遵守排除。
 - 承重墙：C1 补丁链不动；排除只作用于提示词注入层。
 - 验收：加一条配置用例 + 一条回归用例；切换预设后注入状态符合配置。
+- 已实施（2026-11-09）：新增 `lib/exclude-presets.js`——`normalizePresetId`（去目录前缀/`preset-` 前缀、小写）、`presetMatchesRule`（尾部 `*` 通配）、`isPresetExcluded`；`loadExcludePresets` 文件优先 + 宿主 config 补充合并去重，`saveExcludePresets` 整体替换。`lib/core.js` 加缓存三件套 `refresh/get/setExcludePresetsSettings`、`setExcludePresetsConfigValue`、`isPresetExcludedByConfig`。`lib/index.js`：`rewriteLiveAssembly` 用 `injectEnabled = enabled && !excludedPreset` 闸住 full/localInject/policy/dropWorkspaceBaseline/redteam；`injectAllowedNow(config, context)` 加排除判定，三处 section 回调传入 context；status 暴露 `exclude_presets`；新增路由 `/dsh-purge/exclude-presets`（GET 读、POST 校验 string[] 后整体写回）；启动灌入 config 值并刷新缓存；DEFAULTS 加 `excludePresets: []`。
+- 测试：`test/exclude-presets.test.js` 7 例覆盖归一化、精确/通配命中、文件+config 合并去重、整体替换剔除非字符串、损坏 JSON 回退；全量 91/91 全绿（基线 84 + 新增 7）。
+- 未覆盖（待真机验收，标 unknown）：切换预设/并行会话/子 Agent 下的排除态实测；宿主 hung 兜底（`__dshPurgeHungPrompt` 注入钩子）在排除预设下仍会挂提示词，属 C1 补丁链层，本次未改，后续按需评估。
 
 #### F9 状态自检面板
 - Given 用户打开面板，When 读取状态，Then 一屏给出：补丁是否应用、注入是否就位、备份是否存在、当前版本/通道/钉选、兼容级别（已定位 / 仅内核校验 / 未定位 / 未知），每项附证据而非「应已生效」。
