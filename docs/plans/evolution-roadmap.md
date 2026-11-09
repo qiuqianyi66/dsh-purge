@@ -2,7 +2,7 @@
 
 - 维护者：qiuqianyi66
 - 基线版本：1.1.84-rc1（适配 DSH 0.2.2-rc.1）
-- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（测试 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）。下文第 1 节为门 1 基线快照。
+- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）。下文第 1 节为门 1 基线快照。
 - 证据口径：数据来自本机隔离工作副本实测 + GitHub API 实查（2026-11-09）；推断项已标注 `unknown`。
 
 ## 1. 基线实测（我方现状）
@@ -115,6 +115,9 @@
 - Given 更新或安装失败，When 面板报错，Then 错误信息区分：下载阶段（网络/代理/证书）、校验阶段（SHA256/解压）、注入阶段（补丁命中/drift）、重启阶段；附可复制的脱敏诊断片段。
 - 边界：不自动改代码、不自动重启宿主；失败不触碰现有安装。
 - 验收：构造离线/断网场景，错误落到对应阶段并给出明确下一步。
+- 已实施（2026-11-09）：新增 `lib/update-diagnose.js`——阶段归类 `classifyError`（network/verify/inject/restart/unknown）、`buildDiagnostic` 脱敏片段（剥盘符绝对路径与用户名）、`StageError`/`wrapStageError` 保留原始 cause。`lib/update.js` 在下载覆盖、reapply 失败、`handleUpdateOp` 出口包阶段；业务失败返回体带 `stage`/`diagnostic`。`lib/index.js` 的 update GET/POST 路由 500 回传 `stage`/`diagnostic`。`client.js`：`apiJson` 把 stage/diagnostic 挂到错误；update 错误文案按阶段给下一步提示（中英字典）；`noticeNode` 支持多行展示诊断片段。
+- 测试：`test/update-diagnose.test.js` 10 例覆盖五类归类、脱敏、cause 保留、阶段顺序；全量 84/84 全绿（基线 74 + 新增 10）。
+- 未覆盖（待真机验收，标 unknown）：离线/断网真机场景的阶段落点与面板多行展示；SHA256 校验当前代码链未落地，verify 阶段按归档/缺包/损坏归类。
 
 #### F8 预设排除（excludePresets）
 - Given 用户使用 roleplay/minimal 等非 redteam 预设，When 配置排除名单，Then 这些预设不注入 Purge 提示词，仍保留面板、命令与工具；切换预设、并行会话、子 Agent 与宿主兜底都遵守排除。

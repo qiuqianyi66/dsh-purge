@@ -67,7 +67,12 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 				try { data = text ? JSON.parse(text) : null; } catch {
 					throw new Error(r.status + " non-json: " + text.slice(0, 120));
 				}
-				if (!r.ok) throw new Error((data && (data.error || data.message)) || (r.status + " " + r.statusText));
+				if (!r.ok) {
+					const err = new Error((data && (data.error || data.message)) || (r.status + " " + r.statusText));
+					if (data && data.stage) err.stage = data.stage;
+					if (data && data.diagnostic) err.diagnostic = data.diagnostic;
+					throw err;
+				}
 				return data;
 			} catch (e) {
 				if (isAbortError(e)) throw new Error("timeout");
@@ -264,6 +269,12 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"update.reloading": "正在刷新设置页…",
 			"update.dirty": "有新版本，本地有改动未自动覆盖",
 			"update.fail": "更新失败: {error}",
+			"update.stage.network": "下载阶段：网络 / 代理 / 证书 / 超时。请检查网络与代理后重试。",
+			"update.stage.verify": "校验阶段：下载内容不是合法归档或缺文件。请重试；反复出现请更换通道或离线重装。",
+			"update.stage.inject": "注入阶段：补丁命中 / 还原重打失败。请完全退出客户端后再重试。",
+			"update.stage.restart": "重启阶段：补丁已写入，但调度重启失败。请手动重启客户端。",
+			"update.stage.unknown": "更新失败，未能定位阶段。",
+			"update.diagnose": "诊断片段（可复制反馈）：\n{diagnostic}",
 			"update.timeout": "检测超时，请再点一次检测更新",
 			"update.needRestart": "检测接口未加载，请先重启 dsh 再点检测更新",
 			"update.noBeta": "还没有测试版",
@@ -624,6 +635,12 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"update.reloading": "Refreshing settings…",
 			"update.dirty": "Update available; local edits were not overwritten.",
 			"update.fail": "Update failed: {error}",
+			"update.stage.network": "Download stage: network / proxy / certificate / timeout. Check network and proxy, then retry.",
+			"update.stage.verify": "Verify stage: the download is not a valid archive or is missing files. Retry; if it persists, switch channel or reinstall offline.",
+			"update.stage.inject": "Inject stage: patch apply / restore-reapply failed. Fully quit the client, then retry.",
+			"update.stage.restart": "Restart stage: patches are written, but scheduling restart failed. Restart the client manually.",
+			"update.stage.unknown": "Update failed; the stage could not be determined.",
+			"update.diagnose": "Diagnostic snippet (copy to report):\n{diagnostic}",
 			"update.timeout": "Check timed out. Click Check update again.",
 			"update.needRestart": "Update API is not loaded. Restart dsh, then check again.",
 			"update.noBeta": "No beta build yet",
@@ -1184,7 +1201,10 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 
 		function noticeNode(notice) {
 			if (!notice || notice.kind === "idle" || !notice.text) return null;
-			return h("span", { className: "dshp-notice " + (notice.kind === "error" ? "is-bad" : "is-ok") }, notice.text);
+			const cls = "dshp-notice " + (notice.kind === "error" ? "is-bad" : "is-ok");
+			const lines = String(notice.text).split(/\r?\n/);
+			if (lines.length === 1) return h("span", { className: cls }, lines[0]);
+			return h("span", { className: cls }, lines.map((line, i) => h("span", { key: i, style: { display: "block" } }, line)));
 		}
 
 		function Btn(props) {
@@ -1601,7 +1621,11 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 				const msg = String((e && e.message) || e || "");
 				if (msg === "timeout" || /aborted|abort|超时/i.test(msg)) return tr("update.timeout");
 				if (/\b404\b/.test(msg) || /non-json/.test(msg)) return tr("update.needRestart");
-				return tr("update.fail", { error: msg });
+				const stage = String((e && e.stage) || "");
+				const stageKey = { network: "update.stage.network", verify: "update.stage.verify", inject: "update.stage.inject", restart: "update.stage.restart" }[stage];
+				let text = stageKey ? `${tr("update.fail", { error: msg })}\n${tr(stageKey)}` : tr("update.fail", { error: msg });
+				if (e && e.diagnostic) text += `\n${tr("update.diagnose", { diagnostic: e.diagnostic })}`;
+				return text;
 			};
 
 			const applyUpdateInfo = useCallback((d, tr, kind) => {
@@ -1620,7 +1644,11 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 				if (d.pinned && d.hasUpdate) text = tr("update.pinned", { version, remote });
 				if (kind === "switched" || kind === "channel") text = tr("update.switched", { version: d.localVersion || d.remoteVersion || "—" });
 				if (kind === "done") text = tr("update.done", { version: d.localVersion || d.remoteVersion || "—" });
-				if (d.error) text = d.error;
+				if (d.error) {
+					const stageKey = { network: "update.stage.network", verify: "update.stage.verify", inject: "update.stage.inject", restart: "update.stage.restart" }[String(d.stage || "")];
+					text = d.error + (stageKey ? `\n${tr(stageKey)}` : "");
+					if (d.diagnostic) text += `\n${tr("update.diagnose", { diagnostic: d.diagnostic })}`;
+				}
 				setUpdateNotice({ kind: d.ok === false || d.error ? "error" : "ok", text });
 			}, []);
 
