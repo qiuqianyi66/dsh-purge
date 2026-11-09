@@ -32,5 +32,8 @@ jobs:
           node --check lib/core.js
           node --check lib/reapply.js
 
+      - name: Check compat matrix vs README
+        run: npm run compat:check
+
       - name: Run unit tests
         run: npm test

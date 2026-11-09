@@ -62,12 +62,14 @@ Harness 不只是转发问题：运行时会改提示词、审批门、沙箱策
 
 **1.1.84-rc1 已适配 DSH 0.2.2-rc.1**，不要拿本版本去打 0.1.x 或 0.2.1-rc.x。
 
+<!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 |
 | --- | --- |
-| **0.2.2-rc.1**（官方桌面 / 官方 `dsh web`） | **1.1.84-rc1**，含 #82 单行锚点修复与新布局的路径分区/aiBase 处理 |
-| **0.2.1-rc.x** | 不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
-| **0.2.0-rc.2**（旧线） | **1.1.40** 及以上，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
-| **0.1.7**（含 rc.1 / rc.2，旧线） | **1.1.39** 及更早，在 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应标签 |
+| **0.2.2-rc.1** | **1.1.84-rc1**，含 #82 单行锚点修复与新布局的路径分区/aiBase 处理 |
+| **0.2.1-rc.x** | unknown，不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
+| **0.2.0-rc.2** | **1.1.40+**，旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
+| **0.1.7** | **1.1.39-**，旧线（含 rc.1 / rc.2），在 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应标签 |
+<!-- compat:table:end -->
 
 宿主对不上时，补丁显示待应用或跳过，不会乱改文件。
 

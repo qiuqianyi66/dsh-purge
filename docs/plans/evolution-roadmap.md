@@ -2,7 +2,7 @@
 
 - 维护者：qiuqianyi66
 - 基线版本：1.1.84-rc1（适配 DSH 0.2.2-rc.1）
-- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）。下文第 1 节为门 1 基线快照。
+- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项已出实测结论（teams 工具注册、壳更新回调标 unknown，见 backup-purge-20261109/notes.md）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）；F10 兼容矩阵门禁已实施（101/101 全绿，compat:check 接入 test.yml）。下文第 1 节为门 1 基线快照。
 - 证据口径：数据来自本机隔离工作副本实测 + GitHub API 实查（2026-11-09）；推断项已标注 `unknown`。
 
 ## 1. 基线实测（我方现状）
@@ -137,6 +137,10 @@
 #### F10 兼容矩阵门禁
 - Given 兼容表列了 DSH 版本与对应插件版本，When 发版前跑核对，Then 表内版本与 `package.json` dshTarget、实测可运行版本一致；过时条目标 unknown 而非保留。
 - 验收：新增/升级 DSH 版本时有一处单一事实来源（compat 配置），README 表格由其生成或人工核对留痕。
+- 已实施（2026-11-09）：单一事实来源为 `lib/compat-matrix.js`，导出 `COMPAT_CURRENT`（当前 supported 行）与 `COMPAT_MATRIX`（历史/非目标行），每行含 `dsh / plugin / status / note`；`validateCompatMatrix()` 校验恰好一条 supported、字段合法。`scripts/gen-compat-readme.mjs` 从矩阵渲染 README 适配表（`--check` 仅比对不一致即退出 1）；`package.json` 新增 `compat:check` 脚本，`test.yml` 在单测前加一步门禁。
+- 门禁测试 `test/compat-matrix.test.js` 5 例：矩阵内部一致、`dshTarget` 与矩阵当前行 dsh 一致、`version` 与当前行 plugin 一致、README 表未漂移、非目标条目标 unknown 不保留旧承诺。
+- 测试：全量 101/101 全绿（基线 96 + 新增 5）；`compat:check` 退出码 0。
+- 未覆盖（标 unknown）：矩阵未接真机实测版本探测；`0.2.0-rc.2 / 0.1.7` 旧线插件版本号为历史登记，未在本机复跑验证。
 
 ### P3 生态扩展（高成本，暂缓）
 

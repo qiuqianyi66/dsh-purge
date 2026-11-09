@@ -36,6 +36,7 @@
   "scripts": {
     "embed-prompt": "node scripts/embed-default-prompt.mjs",
     "build:client": "node scripts/build-client.mjs",
+    "compat:check": "node scripts/gen-compat-readme.mjs --check",
     "postinstall": "node scripts/ensure-profile-bundle.mjs",
     "test": "node --test"
   },
