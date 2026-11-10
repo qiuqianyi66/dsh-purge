@@ -171,3 +171,11 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 - F17：`lib/selfcheck-log.js` 写 JSONL 到 `DSH_HOME/dsh-purge/logs/selfcheck.log`，按键名黑名单剔除 token/secret/cookie 等、字符串截 160、数组截 12；超 512 KB 轮转 `.1`/`.2`；任何异常返回 `ok:false` 不外抛。接线 `applyPatchesAllHosts`（apply）、`revertAllHosts`（revert，含被拦数）、`settleInstalledPatches` 外层（boot）。
 - 门 3 证据：`test/selfcheck-advice.test.js` 6 例 + `test/selfcheck-log.test.js` 6 例；全量 **153/153 pass，exit 0**；`node --check lib/index.js` exit 0；`compat:check` exit 0；真机 `--diagnose` 末尾实测出现建议段（`有 1 条需要处理…`）。
 - 未做：面板侧未把 `advice_items` 渲染成可点按钮；`--diagnose` 仍不写日志（漂移无痕，只能靠 apply/revert/boot 追）。
+## 14. 真身适配记录（R5：隔离副本 → tgz → 离线重装，2026-11-10）
+
+- 打包：从隔离副本按 `package.json` 的 `files` 口径暂存（`lib/bin/docs/presets/scripts/client.js/cordis.patch.yml/package.json/README/LICENSE/NOTICE/screenshots.json/CONTRIBUTING.md`），排除 `lib/default-prompt-inject.md`（构建期 embed，运行期不读）与 `docs/plans`；再把真身包里的 `docs/notice`、`docs/preview` 资产合并进包（隔离副本没有这两处图片）。产物 `package/` 前缀的 tgz，102 文件 / 2,015,917 字节。
+- 自检：tgz 解包后与暂存目录逐文件 SHA256 比对，91→102 文件全部一致、0 差异；包内无 `.git`、无 lockfile。
+- 安装：真身包先整体复制到 `desktop\runtime\dsh-purge-reinstall-backup\20261110-212654`（98 文件，与旧包逐项一致），把 `node_modules\dsh-purge` 改名为 `.old-20261110` 挪开，解包（`--strip-components=1`）后放回原位，重建空的 `node_modules\.bin`，核验备份 98 = 旧包 98 后删除 aside。
+- 验证（真身路径直接跑）：四新模块就位（`restore-guard.js`/`update-verify.js`/`selfcheck-advice.js`/`selfcheck-log.js`）；`--status` → 插件根指活宿主、宿主 0.2.2-rc.1、`补丁 63/68`；`--diagnose --json` → `clean=38 / drifted=0 / dead_target=5`，`advice_items=4`，`summary=有 1 条需要处理…`。
+- 未随装：`client.js` 未含 `stale_backup` / `hunksTotal` 文案——面板侧建议按钮与 diff 逐处展开仍是未做项，故包内前端行为不变。
+- 生效条件：插件在 DSH 启动时加载，需重启 DSH 才会用上新代码；本机当前无 DSH 进程在跑。
