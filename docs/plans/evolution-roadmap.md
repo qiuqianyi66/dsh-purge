@@ -177,7 +177,7 @@
 - Given 宿主同一文件里有两处相隔数百行的改动，When 输出漂移证据，Then 报成多个独立窗口，而不是「官方重写整段」。
 - 根因：`diffWindow` 用公共前后缀法，两处改动之间的所有行都被算进替换段（本机 bash 载体真实差异 2 行，被报成 removed 283 / added 283 / 截断）。
 - 已实施：改走 patience diff（唯一行锚点 + LIS + 分治），返回 `hunks` 数组；实测 bash 载体 2 处（第 244、526 行各 1 行），pwsh 3 处；`test/drift-window.test.js` 5 例（含「还原前后缀法必红」的反例组）。
-- 未做：面板侧仍只展示第一处与前 6 行，未做逐处展开。
+- 未做：~~面板侧仍只展示第一处与前 6 行，未做逐处展开。~~ 已补（2026-11-10）：新增 `lib/selfcheck-panel.js`（`extractDiffRows`/`buildPanelSelfcheck`），`/dsh-purge/selfcheck` 路由返回面板负载，client.js 新增 SelfcheckSection 支持逐处展开 hunks（红删/绿增、截断提示）。
 
 #### F19 CLI 宿主定位一致性（新，2026-11-10 已实施）
 - Given 归档目录（`_archived-*`）与活宿主并存，When 跑 `--status`，Then `ai_base` 与 `--diagnose` 指向同一活宿主，不再落到归档 pnpm 虚拟 store。
@@ -197,7 +197,7 @@
 - 验收：状态卡片带动作入口；建议文案中英双语；不自动执行不可逆动作。
 - 已实施（2026-11-10）：新增 `lib/selfcheck-advice.js`（`ADVICE_CATALOG` 七类 + `buildSelfcheckAdvice` 按「漂移→目标消失→载体缺失→备份过期→仅 markers→可选缺失」排序 + `renderAdviceLines` 双语带命令 + `advicePayload` 面板结构）；`renderDiagnose` 末尾追加建议段，`--diagnose --json` 每条报告带 `advice_items` / `advice_summary`；涉及不可逆的条目（`dead_target` / `stale_backup`）显式标 `irreversible: true`，全部只给建议不自动执行。
 - 证据：`test/selfcheck-advice.test.js` 6 例；真机 `--diagnose` 末尾实测输出「有 1 条需要处理（carrier_missing × 1 …），其余可忽略」，并列出 `applied_by_marker × 37` 与 `optional_missing × 9` 的处置说明。
-- 未做：面板侧尚未把 `advice_items` 渲染成可点动作按钮（当前只随 status 载荷下发结构）。
+- 未做：~~面板侧尚未把 `advice_items` 渲染成可点动作按钮。~~ 已补（2026-11-10）：SelfcheckSection 渲染建议项，非不可逆且含 apply 命令的条目给出「执行应用」按钮（复用 /dsh-purge/apply），不可逆项只显示文字与确认提示，不做按钮。
 
 #### F17 启动自检留痕
 - Given 每次 apply / revert / 漂移发生，When 写入本地日志，Then 可追溯时间、动作、命中/漂移结果，便于回滚定位与真机复盘。

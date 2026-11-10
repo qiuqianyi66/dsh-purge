@@ -200,6 +200,17 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"compat.kernel-only": "仅内核校验",
 			"compat.unsupported": "未适配",
 			"compat.unknown": "未知",
+			"selfcheck.title": "自检与建议",
+			"selfcheck.advice": "下一步建议",
+			"selfcheck.diff": "差异明细",
+			"selfcheck.irreversible": "不可逆，需你确认",
+			"selfcheck.expand": "展开/收起",
+			"selfcheck.btn.apply": "执行应用",
+			"selfcheck.empty": "没有需要处理的问题。",
+			"selfcheck.loadfail": "自检加载失败",
+			"selfcheck.line": "行",
+			"selfcheck.truncated": "差异过多，仅显示前几处",
+			"selfcheck.carrier": "载体",
 			"table.patch": "项目",
 			"table.status": "状态",
 			"status.applied": "已应用",
@@ -571,6 +582,17 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"compat.kernel-only": "Kernel-only",
 			"compat.unsupported": "Unsupported",
 			"compat.unknown": "Unknown",
+			"selfcheck.title": "Self-check & advice",
+			"selfcheck.advice": "Recommended next steps",
+			"selfcheck.diff": "Diff details",
+			"selfcheck.irreversible": "Irreversible, needs your confirmation",
+			"selfcheck.expand": "Expand/collapse",
+			"selfcheck.btn.apply": "Run apply",
+			"selfcheck.empty": "Nothing needs action.",
+			"selfcheck.loadfail": "Self-check failed to load",
+			"selfcheck.line": "line",
+			"selfcheck.truncated": "Too many changes, only the first few are shown",
+			"selfcheck.carrier": "Carrier",
 			"table.patch": "Item",
 			"table.status": "Status",
 			"status.applied": "Applied",
@@ -920,6 +942,16 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 .dshp-group-h strong{font-family:inherit;font-size:14px;line-height:20px;font-weight:600}
 .dshp-group-h em{font-style:normal;font-size:12px;color:var(--dshp-mute);flex:1}
 .dshp-count{font-family:var(--dshp-mono);font-size:12px;color:var(--dshp-mute)}
+.dshp-sc-group{padding:4px 12px 8px}
+.dshp-sc-base{font-family:var(--dshp-mono);font-size:11px;color:var(--dshp-mute);margin:2px 0 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dshp-sc-item{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;line-height:18px;margin:2px 0}
+.dshp-sc-irr{font-style:normal;color:var(--dshp-warn,#c47f17)}
+.dshp-sc-diff{margin:4px 0}
+.dshp-sc-hunks{border:1px solid var(--dshp-line);border-radius:6px;padding:6px;margin:4px 0 8px}
+.dshp-sc-hline{font-family:var(--dshp-mono);font-size:11px;color:var(--dshp-mute);margin:6px 0 2px}
+.dshp-sc-hunk pre{margin:0;font-family:var(--dshp-mono);font-size:12px;line-height:16px;white-space:pre-wrap;word-break:break-all}
+.dshp-sc-rm{color:var(--dshp-danger,#d03050)}
+.dshp-sc-add{color:var(--dshp-ok,#18794e)}
 .dshp-table{width:100%;border-collapse:collapse;font-size:12px;line-height:16px}
 .dshp-table th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--dshp-mute);padding:8px 12px;border-bottom:1px solid var(--dshp-line)}
 .dshp-table td{padding:8px 12px;border-bottom:1px solid var(--dshp-line);vertical-align:middle}
@@ -1392,6 +1424,64 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 					) : null,
 				);
 			});
+		}
+
+		function SelfcheckSection({ onApply }) {
+			const t = useT();
+			const [data, setData] = useState(null);
+			const [failed, setFailed] = useState(false);
+			const [openDiff, setOpenDiff] = useState({});
+			const load = useCallback(() => {
+				apiJson("/dsh-purge/selfcheck")
+					.then((d) => {
+						if (d && d.ok) { setData(d); setFailed(false); }
+						else setFailed(true);
+					})
+					.catch(() => setFailed(true));
+			}, []);
+			useEffect(() => { load(); }, [load]);
+			if (failed) return h("div", { className: "dshp-group" }, h("span", null, t("selfcheck.loadfail")));
+			if (!data) return h("div", { className: "dshp-skel", style: { height: 80 } });
+			const hasContent = data.groups.some((g) => g.advice_items.length || g.diff_rows.length);
+			if (!hasContent) return h("div", { className: "dshp-group" }, h("strong", null, t("selfcheck.title")), h("span", null, t("selfcheck.empty")));
+
+			const renderHunk = (hunk, hk) => h("div", { key: hk, className: "dshp-sc-hunk" },
+				h("div", { className: "dshp-sc-hline" }, t("selfcheck.line") + " " + hunk.startLine),
+				hunk.removed.map((ln, i) => h("pre", { key: "r" + i, className: "dshp-sc-rm" }, "- " + ln)),
+				hunk.added.map((ln, i) => h("pre", { key: "a" + i, className: "dshp-sc-add" }, "+ " + ln)),
+			);
+
+			return h("div", { className: "dshp-group" },
+				h("strong", null, t("selfcheck.title")),
+				data.groups.map((g, gi) => h("div", { key: "g" + gi, className: "dshp-sc-group" },
+					h("div", { className: "dshp-sc-base", title: g.aiBase }, t("selfcheck.carrier") + ": " + g.aiBase),
+					g.advice_items.map((it, ii) => h("div", { key: "i" + ii, className: "dshp-sc-item" },
+						h("span", { className: "dshp-count" }, it.code + " × " + it.count),
+						h("span", null, it.zh),
+						it.irreversible ? h("em", { className: "dshp-sc-irr" }, t("selfcheck.irreversible")) : null,
+						!it.irreversible && it.commands.some((c) => c.indexOf("--apply") !== -1)
+							? h(Btn, { tiny: true, onClick: () => { onApply(); setTimeout(load, 1500); } }, t("selfcheck.btn.apply"))
+							: null,
+					)),
+					g.diff_rows.map((row, ri) => {
+						const dk = row.id + "-" + row.key;
+						const expanded = !!openDiff[dk];
+						return h("div", { key: "d" + ri, className: "dshp-sc-diff" },
+							h("button", {
+								type: "button",
+								className: "dshp-group-h",
+								"aria-expanded": expanded ? "true" : "false",
+								onClick: () => setOpenDiff((prev) => Object.assign({}, prev, { [dk]: !prev[dk] })),
+							},
+								h("span", null, "#" + row.id + " " + row.name + " · " + row.key),
+								h("span", { className: "dshp-count" }, t("selfcheck.diff") + " (" + row.hunksTotal + ")"),
+							),
+							row.truncated ? h("em", null, t("selfcheck.truncated")) : null,
+							expanded ? h("div", { className: "dshp-sc-hunks" }, row.hunks.map(renderHunk)) : null,
+						);
+					}),
+				)),
+			);
 		}
 
 		function HooksDenySection({ onSaved }) {
@@ -2204,6 +2294,7 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 				h(ApplyFlow, { progress: s && s.apply_progress, busy: patchBusy || uninstallBusy, t: t }),
 				h("div", { className: "dshp-bar", "aria-hidden": "true" }, h("i", { style: { transform: "scaleX(" + (pct / 100) + ")" } })),
 				h(PatchGroups, { state: s }),
+				h(SelfcheckSection, { onApply: () => doAction("apply", "action.apply") }),
 				h(HooksDenySection, { onSaved: loadAll }),
 				h("div", { className: "dshp-row", style: { marginTop: 12 } },
 					h(Btn, { kind: "primary", disabled: patchBusy || uninstallBusy || !overrideLoaded, onClick: () => doAction("apply", "action.apply") }, patchBusy ? t("btn.apply.busy") : t("btn.apply")),
