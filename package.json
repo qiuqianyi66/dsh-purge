@@ -1,6 +1,6 @@
 {
   "name": "dsh-purge",
-  "version": "1.1.84-rc1",
+  "version": "1.1.84",
   "description": "Apache-2.0 red-team evaluation plugin for DeepSeek Harness (targets DSH 0.2.2-rc.1): grouped patches and swappable per-model prompts that separate host-layer blocking from model answers. 网络安全红队评测插件，可按模型替换提示词，补丁可一键还原。Forks require attribution.",
   "type": "module",
   "main": "lib/index.js",

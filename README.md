@@ -24,12 +24,12 @@
 
 > ⚠️ **仅用于本机/内网授权靶场。** 开源版攻击任务只放行回环与 RFC1918 私网；禁止公网攻击、游戏外挂、倒卖。详细边界见文末[合规声明](#严正法律免责与合规使用声明)。
 
-> **维护者（2026-11）**：本仓库是原始 dsh-purge（作者 **YuJunZhiXue**，上游已不再公开）的衍生作品，由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护分发，issue、更新与安装源均以本仓库为准。当前版本 1.1.84-rc1 适配 DSH 0.2.2-rc.1；补丁 #82 锚点仅锚定 import 单行，修复新版宿主插入 region 导致的 drift。许可证与原始版权见 [LICENSE](./LICENSE)、[NOTICE](./NOTICE)。
+> **维护者（2026-11）**：本仓库是原始 dsh-purge（作者 **YuJunZhiXue**，上游已不再公开）的衍生作品，由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护分发，issue、更新与安装源均以本仓库为准。当前版本 1.1.84 适配 DSH 0.2.2-rc.1；补丁 #82 锚点仅锚定 import 单行，修复新版宿主插入 region 导致的 drift。许可证与原始版权见 [LICENSE](./LICENSE)、[NOTICE](./NOTICE)。
 
 | 项 | 事实 |
 | --- | --- |
 | 定位 | 本机 DSH 红队评测插件，把宿主层拦截与模型层回答分开观测 |
-| 版本 | 1.1.84-rc1，适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1） |
+| 版本 | 1.1.84，适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1） |
 | 支持宿主 | 官方 `dsh web`、官方桌面 EXE；Node.js >= 18 |
 | 许可证 | Apache-2.0；署名 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)（原始作者 YuJunZhiXue） |
 | 边界 | 仅本机/内网靶场；禁止公网攻击、游戏外挂、倒卖 |
@@ -60,12 +60,12 @@ Harness 不只是转发问题：运行时会改提示词、审批门、沙箱策
 
 ## 适配范围
 
-**1.1.84-rc1 已适配 DSH 0.2.2-rc.1**，不要拿本版本去打 0.1.x 或 0.2.1-rc.x。
+**1.1.84 已适配 DSH 0.2.2-rc.1**，不要拿本版本去打 0.1.x 或 0.2.1-rc.x。
 
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 |
 | --- | --- |
-| **0.2.2-rc.1** | **1.1.84-rc1**，含 #82 单行锚点修复与新布局的路径分区/aiBase 处理 |
+| **0.2.2-rc.1** | **1.1.84**，含 #82 单行锚点修复与新布局的路径分区/aiBase 处理 |
 | **0.2.1-rc.x** | unknown，不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
 | **0.2.0-rc.2** | **1.1.40+**，旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
 | **0.1.7** | **1.1.39-**，旧线（含 rc.1 / rc.2），在 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应标签 |
@@ -141,7 +141,7 @@ node node_modules/dsh-purge/scripts/ensure-profile-bundle.mjs
 - 桌面客户端也可以点按钮（`dsh://` 唤起，下的仍是同一份压缩包）。
 
 <p align="center">
-  <a href="dsh://plugin/install?id=dsh-purge&name=dsh-purge&version=1.1.84-rc1&repo=qiuqianyi66%2Fdsh-purge&permissions=%E7%B3%BB%E7%BB%9F%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%B3%A8%E5%85%A5%2C%E6%9C%AC%E6%9C%BA%E8%A1%A5%E4%B8%81%2C%E8%AE%BE%E7%BD%AE%E9%A1%B5&downloadUrl=https%3A%2F%2Fcodeload.github.com%2Fqiuqianyi66%2Fdsh-purge%2Ftar.gz%2Frefs%2Fheads%2Fmain"><strong>唤起客户端一键安装</strong></a>
+  <a href="dsh://plugin/install?id=dsh-purge&name=dsh-purge&version=1.1.84&repo=qiuqianyi66%2Fdsh-purge&permissions=%E7%B3%BB%E7%BB%9F%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%B3%A8%E5%85%A5%2C%E6%9C%AC%E6%9C%BA%E8%A1%A5%E4%B8%81%2C%E8%AE%BE%E7%BD%AE%E9%A1%B5&downloadUrl=https%3A%2F%2Fcodeload.github.com%2Fqiuqianyi66%2Fdsh-purge%2Ftar.gz%2Frefs%2Fheads%2Fmain"><strong>唤起客户端一键安装</strong></a>
 </p>
 
 **第 3 步 —— 重启宿主。** 只把插件写进 profile **还不会**改 `@deepseek-ai`。完全退出再打开刚装的那个宿主（Web：停掉 `dsh web` 再开；桌面：托盘也要退出，再开 exe）。
@@ -456,7 +456,7 @@ flowchart TD
 DeepSeek Harness 的开源红队评测插件，在本机安装中通过补丁与可替换提示词，把宿主层策略拦截和模型层回答分开观测，用于受控 LLM 安全评测。
 
 **支持哪个版本的 DeepSeek Harness？**
-1.1.84-rc1 适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1），同时支持官方 Web（`dsh web`）与桌面 EXE，要求 Node.js >= 18。
+1.1.84 适配 DSH 0.2.2-rc.1（dshTarget 0.2.2-rc.1），同时支持官方 Web（`dsh web`）与桌面 EXE，要求 Node.js >= 18。
 
 **是免费的吗？许可证是什么？**
 开源版本免费，采用 Apache License 2.0。再分发和二次开发必须保留 LICENSE、NOTICE 与署名 [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge)（原始作者 YuJunZhiXue），禁止倒卖和收费挂群。

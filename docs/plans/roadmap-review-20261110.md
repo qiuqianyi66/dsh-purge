@@ -179,3 +179,20 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 - 验证（真身路径直接跑）：四新模块就位（`restore-guard.js`/`update-verify.js`/`selfcheck-advice.js`/`selfcheck-log.js`）；`--status` → 插件根指活宿主、宿主 0.2.2-rc.1、`补丁 63/68`；`--diagnose --json` → `clean=38 / drifted=0 / dead_target=5`，`advice_items=4`，`summary=有 1 条需要处理…`。
 - 未随装：`client.js` 未含 `stale_backup` / `hunksTotal` 文案——面板侧建议按钮与 diff 逐处展开仍是未做项，故包内前端行为不变。
 - 生效条件：插件在 DSH 启动时加载，需重启 DSH 才会用上新代码；本机当前无 DSH 进程在跑。
+## 15. 门 4 专家评审与 1.1.84 正式版发布（2026-11-10）
+
+评审范围：`513ad5d..HEAD`（25 文件、+1830/-47），六维结论：
+
+| 维度 | 结论 | 依据 |
+| --- | --- | --- |
+| 正确性 | 通过 | 158/158 全绿；drift 收紧、patience diff、逐宿主守卫均有正反双向用例；真机 63/68、clean=38/drifted=0 |
+| 性能 | 通过 | patience diff 带深度 >12 兜底；日志/事件均有截断与 512 KB 轮转；无新增热路径 IO |
+| 安全 | 通过 | 更新只认 https 白名单 + 摘要校验（unverified 不冒充通过）；日志按键名黑名单脱敏；攻击面仍限回环/私网；无新增依赖 |
+| 一致性 | 通过 | package.json version = COMPAT_CURRENT.plugin（测试锁死）；README 适配表由矩阵生成、compat:check exit 0；双口径文案显式注明不可对减 |
+| 可维护 | 通过 | 无 debugger/TODO 真残留（扫描命中均为中文注释误报）；新模块单一职责、纯函数可测；历史遗留项已登记不扩范围 |
+| 架构 | 通过 | 承重墙（C1–C5）未改契约；探测只给证据不自动改写静态矩阵；R5 隔离/重装流程留痕 |
+
+- 🔴 零残留、🟡 清零：本次变更未引入新的 🟡；历史 🟡 按既有登记保留，不属本次范围。
+- 版本：1.1.84-rc1 转正为 **1.1.84**（不跳号，去掉 rc 后缀），release-notes.md 首行已更新为 `# 1.1.84`。
+- 发布：推送 main 后由 release.yml 自动建 tag `v1.1.84` 与 GitHub Release（非 rc 不带 prerelease 标记），并上传 zip 归档。
+- 门 5 待办：DSH 重启后冒烟（面板加载、status/diagnose、无回归）；真身包需再按 R5 重装 1.1.84 构建。

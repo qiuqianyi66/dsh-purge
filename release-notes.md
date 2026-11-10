@@ -1,3 +1,27 @@
+# 1.1.84
+
+## 中文
+
+- 1.1.84-rc1 转正的正式版，适配 **DeepSeek Harness 0.2.2-rc.1**（dshTarget 0.2.2-rc.1），无第三方运行时依赖、不提交 lockfile。
+- 正确性加固：drift 判定收紧为「必须有 bak 差异或 [dsh-purge] 自体标记」，宿主原生 markers 不再误认；归档宿主纠偏；diff 窗口改用 patience diff，多处分隔改动不再被并成整段误报。
+- 还原安全：新增备份新鲜度守卫（`bak-host.json`），宿主版本不一致时拦下还原，`--force` 才可硬放行；批量还原逐宿主判定，防止临时环境波及真机。
+- 更新通道：新增来源白名单、TLS 证书链与 SHA256 摘要校验（未给期望摘要时标 unverified，不冒充通过），下载后、写盘前完成前置校验。
+- 自检建议化：`--diagnose` 末尾按处置优先级给出中英双语下一步建议（只建议、不自动执行）；启动/apply/revert 事件写 JSONL 本地日志，敏感字段脱敏、超 512 KB 轮转。
+- 兼容矩阵接真机探测：状态负载带 `matrix_probe`，实测结论与静态登记行对照，减少人工 unknown。
+- 单元测试 158 项全部通过；真机实测 `补丁 63/68`、`clean=38 / drifted=0 / dead_target=5`。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- General-availability release of 1.1.84-rc1, adapted for **DeepSeek Harness 0.2.2-rc.1** (dshTarget 0.2.2-rc.1); no third-party runtime dependencies, no lockfile committed.
+- Correctness: drift detection now requires a real bak diff or a [dsh-purge] self-marker, so native host markers are no longer misread; archived hosts are corrected; the diff window uses patience diff so separated changes are not merged into false mass replacements.
+- Restore safety: a backup freshness guard (`bak-host.json`) blocks restore when the host version changed, with `--force` as the explicit override; bulk restore is evaluated per host so a sandboxed environment cannot affect the real machine.
+- Update channel: source allowlist, TLS chain inspection and SHA256 digest verification (missing expected digest is reported as unverified, never as pass); preflight runs before any write or extraction.
+- Self-check advice: `--diagnose` ends with prioritized bilingual next steps (advice only, nothing runs automatically); boot/apply/revert events append to a sanitized JSONL log that rotates past 512 KB.
+- The compatibility matrix now consumes real-machine probes: the status payload carries `matrix_probe`, comparing the observed verdict with the static entry.
+- 158 unit tests, all passing; on the real machine: 63/68 patches cleaned, clean=38 / drifted=0 / dead_target=5.
+- Maintainer qiuqianyi66; derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notices retained in LICENSE/NOTICE.
+
 # 1.1.84-rc1
 
 ## 中文
