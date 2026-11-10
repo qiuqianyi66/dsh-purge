@@ -4,6 +4,7 @@ import * as core from "../lib/core.js";
 import * as rules from "../lib/rules.js";
 import * as drift from "../lib/drift.js";
 import * as preupdate from "../lib/preupdate.js";
+import * as restoreGuard from "../lib/restore-guard.js";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -437,11 +438,19 @@ async function main() {
     console.log("");
     console.log("全部完成 / All done。重启 dsh 生效 / Restart dsh to take effect.");
   } else if (mode === "--revert") {
+    const force = args.includes("--force");
     if (state.ai_base || core.enumeratePatchAiBases().length) {
-      const { reverted, errors } = await core.revertAllHosts();
+      // 守卫放在 revertAllHosts 里逐宿主判：这里枚举的每个宿主都要过一遍版本比对，
+      // 只看 state.ai_base 会漏掉其它宿主（临时环境里就踩过，把真机补丁还原掉了）。
+      const { reverted, errors, blocked } = await core.revertAllHosts({ force });
+      for (const b of blocked) {
+        console.log(b.message);
+        console.log(`  - ${b.aiBase} 未还原 / not reverted`);
+      }
       for (const p of reverted) console.log(`  ✓ 已还原 / Reverted ${p}`);
       for (const [p, e] of errors) console.log(`  ⚠ 还原失败 ${p}: ${e}`);
-      if (reverted.length === 0) console.log("  - 没有补丁备份可还原 / no patch backup");
+      if (reverted.length === 0 && blocked.length === 0) console.log("  - 没有补丁备份可还原 / no patch backup");
+      if (blocked.length) process.exitCode = 1;
     }
     if (state.shim_dir) {
       const r = await core.revertShim(state.shim_dir);

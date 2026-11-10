@@ -126,4 +126,33 @@ F7 断网阶段落点、F8 排除态、F9 一屏展示三项仍 unknown；建议
 - 门 3 证据：`node --test` **125/125 全绿**，退出码 0；`compat:check` 退出码 0；`--status` 实测输出如上。
 - 未做：面板侧逐处展开与三类归并视图；F14 来源/证书/SHA256 校验、N5 备份新鲜度、F16/F17/F18 未开始。
 
+## 10. 第三批执行记录（N5 备份新鲜度守卫，2026-11-10）
+
+改动：
+- 新增 `lib/restore-guard.js`：`writeBakStamp`/`readBakStamp`（state 目录 `bak-host.json` 记打补丁时的宿主版本）、`hostStampIsStale`、`staleRestoreMessage`、`revertGuard`（没戳的老安装放行并标 `unknown`，不谎报安全）。
+- `lib/reapply.js`：`markPatchesApplied` 成功后顺带写宿主版本戳。
+- `lib/core.js`：`revertAllHosts` 改为**逐宿主**判版本（可注入 `options.bases` 便于测试），返回 `blocked` 列表；`bin --revert` 加 `--force`，被拦时退出码 1 且不动任何文件。
+- `lib/index.js`：`/purge revert`、`revert` 命令、HTTP revert 路由三处统一过守卫，面板返回 409 + `code=stale_backup` + 两个版本号。
+- `lib/uninstall.js`：还原链被拦时**跳过还原**、保留 bak、在报告里给 `stale_backup` 与原因（卸载本身不阻断，但绝不用旧片段盖新宿主）。
+- 测试：`test/restore-guard.test.js` 6 例（含"没有戳不谎报安全""版本读不到不假拦截"）、`test/restore-guard-hosts.test.js` 2 例（多宿主逐判 + force 放行）。合计 **133/133 全绿**，`compat:check` 退出码 0。
+
+E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-rc.1 → 0.2.3 时 `--revert` 输出「宿主版本已变…未做任何还原」，退出码 1，载体与 bak 字节未动；加 `--force` 才还原（内容变 OLD、bak 删除）。
+
+## 11. 事故与恢复记录（必须留痕）
+
+**发生了什么**：第三批做 E2E 验证时，我第一次用了无效的 `DSH_BASE`，`gatherState` 落回**真机活宿主**；此后 `--revert --force` 通过 `revertAllHosts` 枚举到真机宿主并执行了还原——真机 `dsh-tool-bash` / `dsh-tool-pwsh` 的替换文案被写回原文，两份 `.dshpurge.bak` 被删除。守卫当时只看 `state.ai_base`（值为临时宿主），所以没拦住这次越界。
+
+**怎么发现的**：核对载体 mtime 与文案计数，发现 `替换文案 1 → 0`、`bak 存在 → 不存在`，与打补丁后的基线不符。
+
+**怎么恢复**（已全部完成并验证）：
+1. `applyPatches(真机 aiBase)` 重打补丁：`applied 55 / already 7 / missing_file 10 / skipped 5 / na 5`，`--status` 回到 `63/68`。
+2. bak 重建：按"replace → pattern"反向还原，要求**往返验证**（正向再替换必须字节还原当前文件）、`replace` 在原文件唯一出现、且重建后无 `replace` 残留；重建 40 个。
+3. 用 `app.asar` 内的**未污染原始件**做最终校对：解析 asar 头和索引，逐文件比对——37 个与原始件**字节相同**，12 个用原始件覆盖，6 个（user-approval / user-approval-code / fs-sandbox / sandbox-local / base / system-prompt）原始件正向替换后无法还原当前文件，保留往返验证过的重建版本。临时解包目录已删除。
+4. 恢复后实测：bak 52 个（`dsh-tool-bash`/`dsh-tool-pwsh` 的 bak 与 asar 原始件字节相同，diff 分别是 2 处 / 3 处各 1 行）、`--status 63/68`、`--diagnose` clean 38（marker-only 37）/ drifted 0 / dead_target 5（#50/#54/#56/#77/#62），与事故前基线一致。
+
+**已修的根因**：守卫从「只看 `state.ai_base`」改成 `revertAllHosts` 里**逐宿主**判版本（新增 `restore-guard-hosts` 测试锁住该行为）。
+
+**残留风险（未做）**：那 6 个文件的 bak 是重建而非原始件，理论上仍可能有"把本来就存在的替换文案误还原"的偏差；宿主重装或下次 `--apply` 会用当前文件重新建 bak，届时该偏差会固化成错误基线——需在真身重装验证时用 asar 再核一遍。
+
+
 
