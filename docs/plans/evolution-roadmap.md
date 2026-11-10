@@ -2,7 +2,7 @@
 
 - 维护者：qiuqianyi66
 - 基线版本：1.1.84-rc1（适配 DSH 0.2.2-rc.1）
-- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项代码侧复核完成（teams 启动期注册已核实；壳自身更新回调属宿主黑盒维持 unknown，见 F2 段）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）；F10 兼容矩阵门禁已实施（101/101 全绿，compat:check 接入 test.yml）。后续路线：P2.5 质量加固（F13 漂移闭环 / F14 完整性校验 / F15 台账降噪）→ P2.6 可观测自愈（F16 建议化 / F17 留痕 / F18 矩阵接真机）→ P3 生态暂缓；版本节奏 1.1.x 收尾修漂移补校验，1.2 做自检建议化与留痕。下文第 1 节为门 1 基线快照。
+- 状态：**已批准执行**。P1 批次 F3/F4/F5/F6 已完成并推送（基线 74/74 全绿，test.yml 门禁绿，贡献模板、README 首屏对齐、依赖口径确认）；P0 F1 真身包已同步 fork/main 并重启验收通过，F2 遗留项代码侧复核完成（teams 启动期注册已核实；壳自身更新回调属宿主黑盒维持 unknown，见 F2 段）；P2 F7 分阶段失败诊断已在隔离副本实施（84/84 全绿，待真机断网场景验收）；F8 预设排除已实施（91/91 全绿，待真机切换预设验收）；F9 状态自检面板兼容级别四态已实施（96/96 全绿，待真机一屏验收）；F10 兼容矩阵门禁已实施（101/101 全绿，compat:check 接入 test.yml）。后续路线：P2.5 余项（F14 完整性校验 / F15 台账降噪与口径统一 / diff 多窗口）→ P2.6 可观测自愈（F16 建议化 / F17 留痕 / F18 矩阵接真机 / 备份新鲜度）→ P3 生态暂缓；版本节奏 1.1.x 收尾修漂移补校验，1.2 做自检建议化与留痕。**2026-11-10 规划复审后已执行 P0 正确性批次：F13 前提修正（漂移误报）落地、新增 F19 CLI 宿主定位一致性、F20 还原链回归测试，合计 116/116 全绿，真机 drifted 2→0 且 `--status` 与诊断同 base（证据见 `docs/plans/roadmap-review-20261110.md`）。** 下文第 1 节为门 1 基线快照（2026-11-09 值）。
 - 证据口径：数据来自本机隔离工作副本实测 + GitHub API 实查（2026-11-09）；推断项已标注 `unknown`。
 
 ## 1. 基线实测（我方现状）
@@ -151,9 +151,12 @@
 
 > 原则：以真实缺陷驱动测试与补丁增长，不追竞品 564 用例 / 86 补丁 / 25 层自检的数量指标。
 
-#### F13 漂移修复闭环
-- Given 宿主升级导致锚点文案变更、补丁判定 drifted（当前 #33 shell 拒绝提示、#48 删除/移动中性化），When 在面板/CLI 重扫，Then 给出可一键"重应用补命中"的动作路径，而非仅回显 drifted；重应用走既有 `.dshpurge.bak` 回滚链。
-- 验收：漂移项可从面板或 CLI 触发补命中；补命中后诊断复扫该载体转 clean；幂等二次 apply 不重复写。
+#### F13 漂移修复闭环（**2026-11-10 前提修正并已实施**）
+- 前提修正：#33/#48 实测**不是**宿主改文案造成的漂移，而是补丁已生效后 pattern 必然 0 命中、旧判据又不认 `patch.markers` 造成的**误报**（宿主 bash/pwsh 文件里替换后文案均命中、原文短语 0 次）。原「一键重应用补命中」按其验收永远达不到，重应用是空动作。
+- Given 载体已含替换文案且 markers 命中、bak 与本体有差异，When 跑 `--diagnose`，Then 判 `applied_by_marker`（计入 clean、单列「仅 markers 确认」），不计入 drifted；二次 `--apply` 不重复写入。
+- 验收：真机 drifted 2 → 0（实测已达成）；`node --test` 116/116；反例（去掉 markers 判定、去掉改动证据位）必红。
+- 已实施（2026-11-10）：`lib/drift.js` 增 `markersPresent`、`probeCarrier` 增 `markers_ok` 与证据位（bak 差异或 `[dsh-purge]` 自体标记，防宿主原生文本误判）；`diagnose` 增 `applied_by_marker`；`renderDiagnose` 增计数展示。测试 `test/drift-marker.test.js` 5 例。
+- 未覆盖（unknown）：真机面板漂移列表文案未复看（需重装新包并重启宿主）。
 
 #### F14 来源与完整性校验（verify 阶段落地）
 - Given 升级包/解压/注入任一环节失败，When 归类失败阶段，Then 补上来源 URL、证书链与 SHA256 完整性校验；当前 verify 阶段仅按归档/缺包/损坏归类，缺真校验。
@@ -162,6 +165,18 @@
 #### F15 状态台账归并与降噪
 - Given 诊断长期累积可选缺失、死目标、载体缺失条目，When 跑状态汇总，Then 区分"宿主已删载体 / 本机未装预设 / 可选不适用"三类，死目标与缺载体不混入待清洗分母，避免噪声累积。
 - 验收：状态面板/CLI 输出按三类分组；当前 5 死目标（#50/#54/#56/#77/#62，均 optional）、1 载体缺失（#71 liangshen 预设）、9 可选缺失有明确归类口径。
+- 补充（2026-11-10 实测发现）：`--status` 的「63/82 已清洗」按 patch_status 标记口径，`--diagnose` 的 clean=38 按载体探测口径，两套数字语义不同、不可直接对减；本项需给出统一口径或明确标注差异，避免用户拿两个数字互相质疑。
+
+#### F19 CLI 宿主定位一致性（新，2026-11-10 已实施）
+- Given 归档目录（`_archived-*`）与活宿主并存，When 跑 `--status`，Then `ai_base` 与 `--diagnose` 指向同一活宿主，不再落到归档 pnpm 虚拟 store。
+- 根因：CLI 在 node 下 `detectSurface()` 判 web → `findAiBaseWeb()` 顺 profile 的 pnpm 软链走进 DSH_HOME 下归档 store，而诊断走 `rankBases` 才排对；同一台机两套结论（实测 3/82 与 82 载体）。
+- 已实施：`lib/core.js` 增 `looksLikeArchivedBase()`，`gatherState` 定位到归档路径时按 `rankBases` 纠偏，state 暴露 `ai_base_detected` / `ai_base_reassigned`。测试 `test/host-base-select.test.js` 3 例。实测 `--status` 已与诊断同 base。
+- 边界：不改 web/desktop 面判定（`detectSurface` 与 adapter 分流保持原样），只纠「归档不优先」。
+
+#### F20 还原链回归测试（新，2026-11-10 已实施）
+- Given C4 还原链此前零测试（`test/` 内 uninstall|restore|revert 命中 0），When 改 `core.js`/`drift.js`，Then 还原语义有可执行回归。
+- 已实施：`test/restore-chain.test.js` 7 例（bak 拷回、0 字节自愈、完好不动、无 bak 不新建、revertAll 还原并删 bak、二次幂等、无 bak 不删目标）；全部在临时 DSH_HOME 上跑，不触碰真机安装。
+- 未覆盖：uninstallPurge 整链（含 profile 摘除、rules 重置）仍无集成测试，宿主升级后 bak 过期场景见 N5。
 
 ### P2.6 可观测与自愈（1.2 方向）
 
