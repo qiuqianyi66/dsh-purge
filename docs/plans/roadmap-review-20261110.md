@@ -164,3 +164,10 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 
 
 
+
+## 13. 第五批执行记录（F16 建议化 / F17 留痕，2026-11-10）
+
+- F16：`lib/selfcheck-advice.js` 把诊断结果翻成建议清单（七类目录、按处置优先级排序、双语、带命令）；`renderDiagnose` 末尾追加「下一步 / Next steps」段，`--diagnose --json` 每条报告附 `advice_items` / `advice_summary`。`dead_target` 与 `stale_backup` 标 `irreversible: true`，全程只建议不自动跑。
+- F17：`lib/selfcheck-log.js` 写 JSONL 到 `DSH_HOME/dsh-purge/logs/selfcheck.log`，按键名黑名单剔除 token/secret/cookie 等、字符串截 160、数组截 12；超 512 KB 轮转 `.1`/`.2`；任何异常返回 `ok:false` 不外抛。接线 `applyPatchesAllHosts`（apply）、`revertAllHosts`（revert，含被拦数）、`settleInstalledPatches` 外层（boot）。
+- 门 3 证据：`test/selfcheck-advice.test.js` 6 例 + `test/selfcheck-log.test.js` 6 例；全量 **153/153 pass，exit 0**；`node --check lib/index.js` exit 0；`compat:check` exit 0；真机 `--diagnose` 末尾实测出现建议段（`有 1 条需要处理…`）。
+- 未做：面板侧未把 `advice_items` 渲染成可点按钮；`--diagnose` 仍不写日志（漂移无痕，只能靠 apply/revert/boot 追）。

@@ -176,7 +176,9 @@ async function main() {
       console.log("");
     }
     if (jsonOut) {
-      console.log(JSON.stringify({ bases: ranked, reports }, null, 2));
+      // F16：建议以结构化字段随诊断一起给，面板/脚本不必自己拼处置结论。
+      const reportsWithAdvice = reports.map((r) => ({ ...r, ...drift.adviceForReport(r) }));
+      console.log(JSON.stringify({ bases: ranked, reports: reportsWithAdvice }, null, 2));
       return;
     }
     if (ranked.length > 1) {

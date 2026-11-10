@@ -194,10 +194,16 @@
 #### F16 自检建议化
 - Given 面板读出漂移/缺失/未适配状态，When 用户查看，Then 每条问题附可执行下一步（重应用 / 换预设 / 忽略），而不仅是状态回显。
 - 验收：状态卡片带动作入口；建议文案中英双语；不自动执行不可逆动作。
+- 已实施（2026-11-10）：新增 `lib/selfcheck-advice.js`（`ADVICE_CATALOG` 七类 + `buildSelfcheckAdvice` 按「漂移→目标消失→载体缺失→备份过期→仅 markers→可选缺失」排序 + `renderAdviceLines` 双语带命令 + `advicePayload` 面板结构）；`renderDiagnose` 末尾追加建议段，`--diagnose --json` 每条报告带 `advice_items` / `advice_summary`；涉及不可逆的条目（`dead_target` / `stale_backup`）显式标 `irreversible: true`，全部只给建议不自动执行。
+- 证据：`test/selfcheck-advice.test.js` 6 例；真机 `--diagnose` 末尾实测输出「有 1 条需要处理（carrier_missing × 1 …），其余可忽略」，并列出 `applied_by_marker × 37` 与 `optional_missing × 9` 的处置说明。
+- 未做：面板侧尚未把 `advice_items` 渲染成可点动作按钮（当前只随 status 载荷下发结构）。
 
 #### F17 启动自检留痕
 - Given 每次 apply / revert / 漂移发生，When 写入本地日志，Then 可追溯时间、动作、命中/漂移结果，便于回滚定位与真机复盘。
 - 验收：本地状态目录有结构化日志；日志不写敏感凭据；轮转避免无限增长。
+- 已实施（2026-11-10）：新增 `lib/selfcheck-log.js`（JSONL 落 `DSH_HOME/dsh-purge/logs/selfcheck.log`；`sanitizeSelfcheckEvent` 按键名黑名单剔除 token/secret/cookie 等并对字符串截断 160、数组截 12；`appendSelfcheckEvent` 超 512 KB 轮转成 `.1`、`.2`；写失败只返回 `ok:false` 不抛）。接线三处：`core.applyPatchesAllHosts`（apply 事件带每宿主 summary）、`core.revertAllHosts`（revert 事件带被拦数量）、`lib/index.js` 启动 settle 外层（boot 事件带 outcome/scope）。
+- 证据：`test/selfcheck-log.test.js` 6 例（含坏行跳过、轮转、写不进去不抛）；临时 home 冒烟写入读回 1 条 `outcome=already-clean`；全量 153/153 全绿。
+- 未做：`--diagnose` 本身仍只读不写日志（漂移发生时不落痕，靠 apply/revert/boot 三条路径），是否让诊断也留痕待定。
 
 #### F18 兼容矩阵接真机探测
 - Given 兼容矩阵当前为静态登记，When 本机可读到实际宿主版本，Then 回填实测结论（located / kernel-only / unsupported / unknown），减少人工 unknown。
