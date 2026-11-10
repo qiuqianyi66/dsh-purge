@@ -202,3 +202,4 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 - 修复：`scripts/repair-baks.mjs` 先校验载体本体与原始件确有差异（防止误动未打补丁文件），再用 asar 原始件覆盖 4 个偏差 bak、补建 2 个缺失 bak，写后逐项哈希校验。修复后全量审计：**57/57 与原始件一致、0 不一致**；`scripts/verify-bak-asar.mjs` 六项目标全部通过。
 - 重启冒烟：启动 DSH 后 `selfcheck.log` 记录 `boot:host-untouched`（surface=desktop、sealed=true），证明新代码已加载；经本机回环端口实测 `/dsh-purge/status`（1.1.84、matrix_probe=located/supported）与 `/dsh-purge/selfcheck`（4 类建议、irreversible 标记正确、138 条 diff 行默认折叠）均正常返回。
 - 未覆盖：GUI 视觉渲染（PIP RDP 516 不可用、主桌面独占授权两次超时），面板实际外观需用户肉眼确认；除此之外门 5 机械验证全绿。
+- 用户已在运行态肉眼确认面板正常可用（建议按钮、diff 展开无回归），**五道门全部闭环，1.1.84 发布收尾**。
