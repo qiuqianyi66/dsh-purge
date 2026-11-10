@@ -5,6 +5,7 @@ import * as rules from "../lib/rules.js";
 import * as drift from "../lib/drift.js";
 import * as preupdate from "../lib/preupdate.js";
 import * as restoreGuard from "../lib/restore-guard.js";
+import * as compatMatrix from "../lib/compat-matrix.js";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -119,6 +120,12 @@ function printStatus(state) {
   if (state.host_version) {
     const compat = state.host_supported === false ? `  ← 未适配：插件声明 ${state.host_target || "?"}` : "";
     out.push(`  宿主版本 / host  ${state.host_version}${compat}`);
+  }
+  // F18：真机探测行与静态矩阵对照，只给证据，不自动改写矩阵。
+  const probe = compatMatrix.probeCompatMatrixRow(state, core.compatLevelFromState(state));
+  out.push(`  矩阵探测 / matrix  ${probe.level}（${probe.status}）— ${probe.evidence}`);
+  if (probe.matrix_match && !probe.matrix_match.same) {
+    out.push(`    ⚠ 静态矩阵登记为 ${probe.matrix_match.staticStatus}，与实测不一致，需人工复核`);
   }
   for (const p of core.ALL_PATCHES) {
     const s = state.patch_status[p.id];

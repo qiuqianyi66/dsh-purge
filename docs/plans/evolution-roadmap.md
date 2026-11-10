@@ -208,6 +208,8 @@
 #### F18 兼容矩阵接真机探测
 - Given 兼容矩阵当前为静态登记，When 本机可读到实际宿主版本，Then 回填实测结论（located / kernel-only / unsupported / unknown），减少人工 unknown。
 - 验收：状态负载能带实测宿主版本与比对结论；矩阵静态行与真机探测结果口径一致。
+- 已实施（2026-11-10）：`lib/compat-matrix.js` 新增 `probeCompatMatrixRow(state, compatLevel)`（按 `compatLevelFromState` 判级映射 supported/unsupported/unknown，附 evidence 与 `matrix_match` 静态行对照；只产出探测行，不自动改写静态矩阵，避免单机环境被当通用结论）；`--status` 文本输出「矩阵探测」行，面板状态负载带 `matrix_probe`。
+- 证据：`test/compat-matrix-probe.test.js` 5 例（四态 + 宿主不在矩阵）；真机只读实测 `located（supported）`、`matrix_match.same=true`；全量 158/158 全绿、compat:check exit 0。
 
 ### P3 生态扩展（高成本，暂缓）
 
