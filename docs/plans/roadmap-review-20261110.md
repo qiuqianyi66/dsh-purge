@@ -118,3 +118,12 @@ F7 断网阶段落点、F8 排除态、F9 一屏展示三项仍 unknown；建议
 
 未做（保持 unknown）：真身包未重装（需退出 DSH 走隔离副本 → tgz → 离线重装）；面板内 F7/F8/F9 三项真机验收仍待宿主重启；N5 备份新鲜度、F14 校验未开始。
 
+## 9. 第二批执行记录（N3 多窗口 / F15 口径，2026-11-10）
+
+- **N3 → F21 diff 多窗口**：`lib/drift.js` 的 `diffWindow` 由公共前后缀法改为 patience diff（唯一行锚点 + LIS + 分治），返回 `hunks` 数组，`truncated` 只在本处数超过上限时置位。真机实测 bash 载体 **2 处**（第 244、526 行各 1 行，旧法报 283/283 截断），pwsh 载体 3 处（256/258/499）。
+- **F15 口径**：CLI 分母由 `ALL_PATCHES.length` 改为 `patches_total`，输出 `补丁 63/68 已清洗` 并注明「本机不适用 14 条、跳过/缺文件 5 条，不计入分母」，另加一行口径注脚说明与 `--diagnose` 的 clean 按载体探测、两者不可对减；抽 `core.describePatchCounts()` 复用。
+- 新增测试：`test/drift-window.test.js` 5 例、`test/status-counts.test.js` 4 例。
+- 门 3 证据：`node --test` **125/125 全绿**，退出码 0；`compat:check` 退出码 0；`--status` 实测输出如上。
+- 未做：面板侧逐处展开与三类归并视图；F14 来源/证书/SHA256 校验、N5 备份新鲜度、F16/F17/F18 未开始。
+
+
