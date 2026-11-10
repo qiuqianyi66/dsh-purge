@@ -196,3 +196,9 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 - 版本：1.1.84-rc1 转正为 **1.1.84**（不跳号，去掉 rc 后缀），release-notes.md 首行已更新为 `# 1.1.84`。
 - 发布：推送 main 后由 release.yml 自动建 tag `v1.1.84` 与 GitHub Release（非 rc 不带 prerelease 标记），并上传 zip 归档。
 - 门 5 待办：DSH 重启后冒烟（面板加载、status/diagnose、无回归）；真身包需再按 R5 重装 1.1.84 构建。
+## 16. 门 5 部署验证（2026-11-10）
+
+- asar 复核：新增 `scripts/audit-all-baks.mjs`（解析 asar 头、逐文件 SHA256 比对）。首轮审计脚本的 sha 助手漏写 `.update()` 造成假绿（空缓冲哈希恒等），修正后实测：55 个 bak 中 51 一致、4 不一致（dsh-base/cordis.patch.yml、dsh-system-prompt、dsh-user-approval 的 lib/index.js 与 lib/types/index.js），另有 2 个缺失（dsh-fs-sandbox、dsh-sandbox-local）。
+- 修复：`scripts/repair-baks.mjs` 先校验载体本体与原始件确有差异（防止误动未打补丁文件），再用 asar 原始件覆盖 4 个偏差 bak、补建 2 个缺失 bak，写后逐项哈希校验。修复后全量审计：**57/57 与原始件一致、0 不一致**；`scripts/verify-bak-asar.mjs` 六项目标全部通过。
+- 重启冒烟：启动 DSH 后 `selfcheck.log` 记录 `boot:host-untouched`（surface=desktop、sealed=true），证明新代码已加载；经本机回环端口实测 `/dsh-purge/status`（1.1.84、matrix_probe=located/supported）与 `/dsh-purge/selfcheck`（4 类建议、irreversible 标记正确、138 条 diff 行默认折叠）均正常返回。
+- 未覆盖：GUI 视觉渲染（PIP RDP 516 不可用、主桌面独占授权两次超时），面板实际外观需用户肉眼确认；除此之外门 5 机械验证全绿。
