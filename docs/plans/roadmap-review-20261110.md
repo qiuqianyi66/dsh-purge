@@ -154,5 +154,13 @@ E2E 实测（临时 DSH_HOME + 临时 DSH_BASE，不碰真机）：宿主 0.2.2-
 
 **残留风险（未做）**：那 6 个文件的 bak 是重建而非原始件，理论上仍可能有"把本来就存在的替换文案误还原"的偏差；宿主重装或下次 `--apply` 会用当前文件重新建 bak，届时该偏差会固化成错误基线——需在真身重装验证时用 asar 再核一遍。
 
+## 12. 第四批执行记录（F14 来源与完整性校验，2026-11-10）
+
+- 新增 `lib/update-verify.js`：`describeSource`（只认 https + 主机白名单 codeload/github/objects，31 位以下 SHA 提取为 pinnedSha）、`sha256Hex`/`checkDigest`（无期望摘要时标 `unverified` 而不是通过）、`tlsChainSummary`（subject/issuer/fingerprint256/有效期，自引用节点止步）、`inspectArchive`（缺 package.json / 多顶层目录 / `..` 穿越）、`preflightArchive`、`formatPreflightDiagnostic`、`archiveVerifyError`、`preflightExpectedSha`（参数优先，其次 `DSH_PURGE_UPDATE_SHA256`）。
+- 接线 `lib/update.js`：`requestBuffer` 在**响应头到手时**摘 `getPeerCertificate(true)`（等 `end` 事件取会拿到 `null` socket，实测踩过）；`overlayFromZip` 在写盘/解压/覆盖**之前**跑 `preflightArchive`，失败抛 `StageError(stage=verify)`；解压后再核 `package.json.name === "dsh-purge"`。
+- 门 3 证据：`test/update-verify.test.js` 8 例（http/陌生主机拦截、unverified 不冒充通过、摘要不匹配报期望与实际、结构三类问题、解析抛错归类、汇总诊断 stage、证书链摘要、摘要来源优先级）；全量 **141/141 pass，exit 0**；`gen-compat-readme --check` exit 0；`--preupdate --json` 正常输出。
+- 真机只读实测（不触碰安装）：codeload `main` 归档 956,873 字节，`ok=true`，TLS 4 级链，顶层目录 `dsh-purge-main`；同一字节末尾追加 3 字节 + 给期望摘要 → `ok=false`，`problems` = SHA256 不一致，诊断首行 `stage: verify`。
+- 未做：GitHub 不发布归档摘要，默认 `expectedSha256` 为空 → 报告如实写 `sha256-check: unverified`，这是已知缺口而不是校验通过。
+
 
 

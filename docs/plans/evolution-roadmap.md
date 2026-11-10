@@ -161,6 +161,9 @@
 #### F14 来源与完整性校验（verify 阶段落地）
 - Given 升级包/解压/注入任一环节失败，When 归类失败阶段，Then 补上来源 URL、证书链与 SHA256 完整性校验；当前 verify 阶段仅按归档/缺包/损坏归类，缺真校验。
 - 验收：损坏/被篡改包在 verify 阶段被拦下并给明确诊断；合法包不受影响；校验失败不触碰现有安装。
+- 已实施（2026-11-10）：新增 `lib/update-verify.js`（ `describeSource` 只认 https + 主机白名单、`sha256Hex`/`checkDigest`、`tlsChainSummary`、`inspectArchive` 查缺 package.json / 多顶层目录 / 路径穿越、`preflightArchive` 汇总、`formatPreflightDiagnostic` 出 `stage: verify` 诊断、`preflightExpectedSha` 读 `DSH_PURGE_UPDATE_SHA256`）。`lib/update.js` 在下载后、解压与覆盖之前插入前置校验，失败抛 `StageError(stage=verify)`；`requestBuffer` 在建连时摘证书链（等 `end` 事件再取只会拿到 null socket，实测踩过）；解压后再按 `package.json.name !== "dsh-purge"` 复核包身份。
+- 证据：`test/update-verify.test.js` 8 例，全量 141/141 全绿；真机只读实测 codeload `main` 归档 ok=true（956 KB、TLS 4 级链、顶层 `dsh-purge-main`），末尾追加 3 字节并给期望摘要 → ok=false，诊断 `sha256-check: mismatch` 带期望/实际对照。
+- 未做：`expectedSha256` 没有可信默认来源（GitHub 不发布归档摘要），未给期望值时报告如实标 `sha256-check: unverified`；发布侧 SHA256SUMS 的分发机制尚未设计。
 
 #### F15 状态台账归并与降噪
 - Given 诊断长期累积可选缺失、死目标、载体缺失条目，When 跑状态汇总，Then 区分"宿主已删载体 / 本机未装预设 / 可选不适用"三类，死目标与缺载体不混入待清洗分母，避免噪声累积。
