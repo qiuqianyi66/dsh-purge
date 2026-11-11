@@ -7,6 +7,7 @@ import {
   isPatchResultSoftOk,
   isSelfMarkedPatch,
   parseHostVersion,
+  patchAppliesHere,
   patchStatusReady,
   rollupDisplayStatus,
   rollupPatchStatus,
@@ -240,4 +241,23 @@ test("parseHostVersion: 拆出主次修订与预发布段", () => {
   });
   assert.equal(parseHostVersion("not-a-version"), null);
   assert.deepEqual(parseHostVersion("v1.2.3"), { major: 1, minor: 2, patch: 3, pre: [] });
+});
+
+/* ---------------------------------------------------------------------------
+ * 退役补丁
+ * ------------------------------------------------------------------------- */
+
+test("retired 补丁不参与应用与分母：applies 判 false 直接落 na", () => {
+  assert.equal(patchAppliesHere({ retired: true }, "web"), false);
+  assert.equal(patchAppliesHere({ retired: true, surfaces: ["web"] }, "web"), false);
+  assert.equal(patchAppliesHere({}, "web"), true);
+});
+
+test("补丁表里的退役项必须写理由，且理由非空", () => {
+  const retired = ALL_PATCHES.filter((p) => p.retired);
+  assert.ok(retired.length > 0, "至少要有一条退役项，否则这条守卫形同虚设");
+  for (const p of retired) {
+    assert.equal(typeof p.retired_reason, "string", `#${p.id} 退役必须带 retired_reason`);
+    assert.ok(p.retired_reason.trim().length > 0, `#${p.id} 退役理由不能为空`);
+  }
 });

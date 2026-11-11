@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { markersPresent, probeCarrier, diagnose } from "../lib/drift.js";
+import { markersPresent, probeCarrier, probeCarrierSet, diagnose } from "../lib/drift.js";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "dsh-purge-drift-"));
 let seq = 0;
@@ -73,4 +73,46 @@ test("diagnose 把 markers 确认的补丁算进 clean 并单列，drifted 保�
   assert.equal(report.clean.length, 1);
   assert.equal(report.applied_by_marker.length, 1);
   assert.equal(report.applied_by_marker[0].carriers[0].markers_ok, true);
+});
+
+test("多候选载体：marker 只落在第二个文件里也要看见（#62 的 pipeline.js 就是这种）", () => {
+  const fp1 = fixture("no marker in index.js\n");
+  const fp2 = fixture("if (approval === void 0) return { decision: { kind: \"allow\" } }; // [dsh-purge] no approval service → allow\n");
+  const patch = {
+    replacements: [{ pattern: "if (approval === void 0) return {\n\t\t\tdecision: {" }],
+    markersAny: true,
+    markers: ["[dsh-purge] no approval service → allow"],
+  };
+  // 只看第一个候选 → 会误判成 drifted/dead_target
+  assert.equal(probeCarrier(fp1, patch).verdict, "drifted");
+  const set = probeCarrierSet([fp1, fp2], patch);
+  assert.equal(set.verdict, "applied_by_marker");
+  assert.equal(set.fp, fp2, "fp 要指向真正给证据的那个文件");
+  assert.equal(set.scanned.length, 2);
+});
+
+test("retired 补丁单独归档：不进 dead_target，也不占 clean", () => {
+  const fp = fixture("nothing matches here\n");
+  const report = diagnose({
+    aiBase: dir,
+    dshHome: dir,
+    patches: [
+      {
+        id: 901,
+        name: "RETIRED_ONE",
+        retired: true,
+        retired_reason: "上游把施工面删了",
+        file: ["tool-bash"],
+        replacements: [{ pattern: "no-such-pattern" }],
+      },
+      { id: 902, name: "LIVE_ONE", file: ["tool-bash"], replacements: [{ pattern: "no-such-pattern" }] },
+    ],
+    resolveFiles: () => ({ "tool-bash": fp }),
+    appliesHere: () => true,
+  });
+  assert.equal(report.retired.length, 1);
+  assert.equal(report.retired[0].id, 901);
+  assert.equal(report.retired[0].reason, "上游把施工面删了");
+  assert.equal(report.clean.length, 0);
+  assert.deepEqual(report.dead_target.map((e) => e.id), [902]);
 });

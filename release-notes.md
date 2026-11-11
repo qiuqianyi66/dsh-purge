@@ -1,3 +1,25 @@
+# 1.1.85
+
+## 中文
+
+- 自检汇总修口径：`dead_target` 与 `stale_backup` 以前不进「需要处理」计数（只数 `drifted`/`carrier_missing`），于是 5 条真待修的死目标被汇总报成「1 条需要处理」。建议目录改为显式 `needsAction` 字段驱动，CLI 与面板共用同一判据，汇总同时给出分类明细。
+- 诊断修载体口径：一条载体键映射多个文件时（如 `dsh-tools` 同时有 `lib/index.js` 与 `lib/pipeline.js`），探测只取第一个存在的候选，第二个文件里的 `[dsh-purge]` 标记永远看不见——`#62` 已生效却被判「目标已消失」。现在逐候选探测后合并，`#62` 归位 clean。
+- 新增退役语义 `retired`：上游把施工面整体换掉、又没有等价新文案可对齐的补丁，可标退役并附理由；退役项进独立桶，不计分母、不参与 apply、不再出现在诊断建议里。本版退役 `#50`/`#54`/`#56`/`#77`（4 条 rewind／交付物／会话引用旧结构）。
+- 修 #71 分类：`LIANGSHEN_IDENTITY_LINE` 的载体是可选预设 `preset-liangshen*`，本机没装却标成必需，导致常驻「载体缺失」并给错建议；已补 `optional: true`。
+- 修红队工具解析：候选链末尾写死了 `D:\DeepSeek Harness\npm-global`，换机器永远扫不中；改为按 npm 前缀环境变量与 `DSH_HOME` 同级的 `npm-global` 现算。
+- 单元测试 168 项全部通过；真机实测 `补丁 62/63`、`clean=39 / drifted=0 / dead_target=0 / retired=4 / carrier_missing=0`，自检汇总为「没有需要处理的问题」。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- Fixed the self-check tally: `dead_target` and `stale_backup` were excluded from the "needs action" count (only `drifted`/`carrier_missing` counted), so five genuinely dead targets were summarized as "1 item needs action". The advice catalog now carries an explicit `needsAction` flag shared by CLI and panel, and the summary lists the breakdown.
+- Fixed carrier probing: when one carrier key maps to several files (`dsh-tools` has both `lib/index.js` and `lib/pipeline.js`), probing used only the first existing candidate, so a `[dsh-purge]` marker in the second file was invisible and `#62` was reported as "target gone" although it was already applied. All candidates are now probed and merged; `#62` is clean again.
+- New `retired` semantics: patches whose work surface was replaced upstream, with no equivalent new text to target, can be retired with a reason. Retired patches live in their own bucket: out of the denominator, skipped by apply, and absent from advice. `#50`, `#54`, `#56`, `#77` are retired in this release.
+- Fixed `#71` classification: its carrier is the optional `preset-liangshen*` preset, but it was marked required, producing a permanent "carrier missing" plus wrong advice; now `optional: true`.
+- Fixed red-team tool resolution: the candidate list ended with a hard-coded `D:\DeepSeek Harness\npm-global`, which never resolves on another machine; it is now derived from npm prefix environment variables and the `npm-global` next to `DSH_HOME`.
+- 168 unit tests, all passing; on the real machine: 62/63 patches cleaned, clean=39 / drifted=0 / dead_target=0 / retired=4 / carrier_missing=0, and the self-check summary reads "Nothing needs action".
+- Maintainer qiuqianyi66; derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notices retained in LICENSE/NOTICE.
+
 # 1.1.84
 
 ## 中文
