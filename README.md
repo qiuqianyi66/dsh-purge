@@ -65,7 +65,7 @@ Harness 不只是转发问题：运行时会改提示词、审批门、沙箱策
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 |
 | --- | --- |
-| **0.2.2-rc.1** | **1.1.85**，多候选载体探测、退役语义与自检汇总口径修正 |
+| **0.2.2-rc.1** | **1.1.86**，状态行双口径合并（载体可核验 + 无载体字段 = 分母） |
 | **0.2.1-rc.x** | unknown，不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
 | **0.2.0-rc.2** | **1.1.40+**，旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
 | **0.1.7** | **1.1.39-**，旧线（含 rc.1 / rc.2），在 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应标签 |

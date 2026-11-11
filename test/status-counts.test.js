@@ -27,3 +27,14 @@ test("state 无 patches_total 时回落到全部补丁数，不出现 NaN", () =
   assert.equal(line, "补丁 0/82 已清洗, 1 待清洗");
   assert.doesNotMatch(line, /NaN|undefined/);
 });
+
+test("双口径合并：分母拆成「载体可核验 + 无载体字段」，两段相加等于分母", () => {
+  const line = describePatchCounts({ patches_total: 63, patches_applied: 62, patches_pending: 0, patches_na: 19, patches_skipped: 1 }, 82, { probed: 39, noCarrier: 24 });
+  assert.match(line, /载体可核验 39 条、无载体字段 24 条/);
+  assert.doesNotMatch(line, /⚠/);
+});
+
+test("两段加起来对不上分母时显式报出来，不静默吞掉", () => {
+  const line = describePatchCounts({ patches_total: 63, patches_applied: 62, patches_pending: 0, patches_na: 19, patches_skipped: 1 }, 82, { probed: 39, noCarrier: 20 });
+  assert.match(line, /⚠ 两段合计 59 ≠ 分母 63/);
+});

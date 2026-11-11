@@ -1,3 +1,21 @@
+# 1.1.86
+
+## 中文
+
+- 状态行双口径合并：`--status` 的「已清洗」按补丁状态标记计数，`--diagnose` 的 clean 按载体原文探测，两个数以前各报一处、谁也不解释谁。现在状态行直接给出对账：`补丁 62/63 … ｜ 载体可核验 39 条、无载体字段 24 条`，两段相加等于分母；对不上时行内显式报「⚠ 两段合计 X ≠ 分母 Y」，不静默吞。
+- 载体探测复用同一次诊断（`--status` 内部跑一遍 `diagnose`），不再让调用方自己拼两套数字。
+- 单元测试 170 项全部通过（新增「两段相加等于分母」与「对不上要报出来」两条反例）。
+- 真机实测：`补丁 62/63 已清洗, 0 待清洗（本机不适用 19 条、跳过/缺文件 1 条）｜ 载体可核验 39 条、无载体字段 24 条`；`--diagnose` 仍是 `clean=39 / dead_target=0 / retired=4 / carrier_missing=0`。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- Merged the two counting scopes into one line: `--status` counts patches by status markers while `--diagnose` reports `clean` from carrier text probing, and the two numbers used to be printed apart with no reconciliation. The status line now states the split — `62/63 cleaned … | 39 carrier-verifiable, 24 with no carrier field` — and the two parts sum to the denominator. When they do not, the line says so explicitly instead of hiding it.
+- Carrier probing reuses the same diagnostic pass inside `--status`, so callers no longer stitch two sets of numbers together.
+- 170 unit tests, all passing (two new cases: the split sums to the denominator, and a mismatch is reported).
+- On the real machine: 62/63 patches cleaned, 0 pending (19 not applicable here, 1 skipped), 39 carrier-verifiable / 24 without carrier fields; `--diagnose` still reads clean=39 / dead_target=0 / retired=4 / carrier_missing=0.
+- Maintainer qiuqianyi66; derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notices retained in LICENSE/NOTICE.
+
 # 1.1.85
 
 ## 中文

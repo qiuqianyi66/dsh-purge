@@ -115,8 +115,25 @@ function printStatus(state) {
   out.push(`  注入文件       ${state.override_path}`);
   out.push(`  注入状态       ${state.override_status}`);
   out.push("");
-  out.push(`  ${core.describePatchCounts(state)}`);
-  out.push("  口径 / scope  这里按补丁状态标记统计；--diagnose 的 clean 按载体原文探测，两者语义不同，不可对减");
+  // 双口径合并：状态行后面的「载体可分」数字来自同一次原文探测，
+  // 把「状态标记口径」和「载体证据口径」摆在一行里对账，而不是各报一个数让人自己猜。
+  let carrier = null;
+  if (state.ai_base) {
+    try {
+      const rep = drift.diagnose({
+        aiBase: state.ai_base,
+        dshHome: state.dsh_home,
+        patches: core.ALL_PATCHES,
+        resolveFiles: core.targetFiles,
+        appliesHere: (p) => core.patchAppliesHere(p),
+      });
+      carrier = { probed: rep.clean.length, noCarrier: rep.no_carrier.length };
+    } catch {
+      carrier = null;
+    }
+  }
+  out.push(`  ${core.describePatchCounts(state, core.ALL_PATCHES.length, carrier)}`);
+  out.push("  口径 / scope  「已清洗」按补丁状态标记；「载体可核验」按 --diagnose 同一次原文探测，两者相加等于分母");
   if (state.host_version) {
     const compat = state.host_supported === false ? `  ← 未适配：插件声明 ${state.host_target || "?"}` : "";
     out.push(`  宿主版本 / host  ${state.host_version}${compat}`);
