@@ -60,8 +60,8 @@ test("buildPanelSelfcheck 汇总建议、diff 与待处理计数", () => {
   assert.equal(out.total_reports, 1);
   assert.equal(out.groups[0].diff_rows.length, 1);
   assert.equal(out.diff_rows.length, 1);
-  // drifted 1 条 → action_needed 计入；dead_target 不计
-  assert.equal(out.action_needed, 1);
+  // drifted 1 条 + dead_target 1 条都要求用户动手（重应用 / 重写或退役）→ 都计入
+  assert.equal(out.action_needed, 2);
   const codes = out.groups[0].advice_items.map((i) => i.code);
   assert.ok(codes.includes("drifted"));
   assert.ok(codes.includes("dead_target"));

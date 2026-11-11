@@ -24,6 +24,24 @@ test("漂移优先于可选缺失，且漂移的建议带 --apply 命令", () =>
   assert.equal(advice.items[1].irreversible, true);
 });
 
+test("汇总数字只数真要动手的：dead_target 与 stale_backup 计入，可选缺失与 marker 不计", () => {
+  const advice = buildSelfcheckAdvice({
+    dead_target: [entry(50), entry(54), entry(56), entry(77), entry(62)],
+    carrier_missing: [entry(71)],
+    stale_backup: [entry(1)],
+    optional_missing: [entry(76), entry(28)],
+    applied_by_marker: [entry(4), entry(43), entry(70)],
+  });
+  // 5 条死目标 + 1 条缺载体 + 1 条旧备份 = 7；marker-only 与可选缺失不进分母
+  assert.equal(advice.summary.zh.includes("7 条需要处理"), true, advice.summary.zh);
+  assert.match(advice.summary.zh, /dead_target × 5/);
+  assert.match(advice.summary.en, /7 item\(s\) need action/);
+  const byCode = Object.fromEntries(advice.items.map((i) => [i.code, i.needsAction]));
+  assert.equal(byCode.optional_missing, false);
+  assert.equal(byCode.applied_by_marker, false);
+  assert.equal(byCode.dead_target, true);
+});
+
 test("没有问题时给的是「无需动作」，不是空数组糊过去", () => {
   const advice = buildSelfcheckAdvice({ drifted: [], dead_target: [], optional_missing: [] });
   assert.equal(advice.items.length, 0);
