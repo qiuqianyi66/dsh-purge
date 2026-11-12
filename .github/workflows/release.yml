@@ -58,5 +58,8 @@ jobs:
             gh "${args[@]}"
           fi
           test -s "$zip"
-          gh release upload "$tag" "$zip" --clobber
+          # F14：发布侧给出可人工核验的摘要清单，下载 zip 的人不必信口说「未被篡改」。
+          sha256sum "$zip" > SHA256SUMS
+          cat SHA256SUMS
+          gh release upload "$tag" "$zip" SHA256SUMS --clobber
           echo "published https://github.com/qiuqianyi66/dsh-purge/releases/tag/${tag}"

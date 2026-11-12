@@ -211,6 +211,7 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"selfcheck.line": "行",
 			"selfcheck.truncated": "差异过多，仅显示前几处",
 			"selfcheck.carrier": "载体",
+			"selfcheck.groups": "需处理 {need} ｜ 已退役 {retired} ｜ 可选不适用 {optional} ｜ 无载体字段 {noCarrier} ｜ 已清洗 {clean}",
 			"table.patch": "项目",
 			"table.status": "状态",
 			"status.applied": "已应用",
@@ -593,6 +594,7 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"selfcheck.line": "line",
 			"selfcheck.truncated": "Too many changes, only the first few are shown",
 			"selfcheck.carrier": "Carrier",
+			"selfcheck.groups": "Needs action {need} | retired {retired} | optional/not here {optional} | no carrier field {noCarrier} | cleaned {clean}",
 			"table.patch": "Item",
 			"table.status": "Status",
 			"status.applied": "Applied",
@@ -1442,7 +1444,7 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 			useEffect(() => { load(); }, [load]);
 			if (failed) return h("div", { className: "dshp-group" }, h("span", null, t("selfcheck.loadfail")));
 			if (!data) return h("div", { className: "dshp-skel", style: { height: 80 } });
-			const hasContent = data.groups.some((g) => g.advice_items.length || g.diff_rows.length);
+			const hasContent = data.groups.some((g) => g.advice_items.length || g.diff_rows.length || (g.patch_groups && g.patch_groups.denominator > 0));
 			if (!hasContent) return h("div", { className: "dshp-group" }, h("strong", null, t("selfcheck.title")), h("span", null, t("selfcheck.empty")));
 
 			const renderHunk = (hunk, hk) => h("div", { key: hk, className: "dshp-sc-hunk" },
@@ -1455,6 +1457,14 @@ body[data-ds-dark-theme] .dshp-launch{background:color-mix(in srgb,var(--dsw-ali
 				h("strong", null, t("selfcheck.title")),
 				data.groups.map((g, gi) => h("div", { key: "g" + gi, className: "dshp-sc-group" },
 					h("div", { className: "dshp-sc-base", title: g.aiBase }, t("selfcheck.carrier") + ": " + g.aiBase),
+					g.patch_groups ? h("div", { className: "dshp-sc-base" },
+						t("selfcheck.groups", {
+							need: g.patch_groups.needs_action.count,
+							retired: g.patch_groups.retired.count,
+							optional: g.patch_groups.optional.count,
+							noCarrier: g.patch_groups.no_carrier.count,
+							clean: g.patch_groups.clean.count,
+						})) : null,
 					g.advice_items.map((it, ii) => h("div", { key: "i" + ii, className: "dshp-sc-item" },
 						h("span", { className: "dshp-count" }, it.code + " × " + it.count),
 						h("span", null, it.zh),

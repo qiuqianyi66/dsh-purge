@@ -6,6 +6,7 @@ import * as drift from "../lib/drift.js";
 import * as preupdate from "../lib/preupdate.js";
 import * as restoreGuard from "../lib/restore-guard.js";
 import * as compatMatrix from "../lib/compat-matrix.js";
+import * as selfcheckLog from "../lib/selfcheck-log.js";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -198,6 +199,26 @@ async function main() {
       console.log("⚠ 没找到可打的宿主（大概率还封在 app.asar 里没解包）。");
       console.log("  这份结果只能当参考；要在真正宿主上诊断，先让插件解包（--apply），再跑 --diagnose。");
       console.log("");
+    }
+    // F17：诊断以前只读不留痕，漂移发生时无从回溯。只在「有需要处理的条目」时落一条，
+    // 干净运行不写日志，避免把日志变成每次刷新的噪声。
+    const dshHome = core.findDshHome();
+    const summaries = reports.map((r) => selfcheckLog.summarizeDiagnose(r));
+    if (summaries.some((s) => s.needs_action > 0)) {
+      selfcheckLog.appendSelfcheckEvent({
+        dshHome,
+        action: "diagnose",
+        data: {
+          hosts: summaries.length,
+          needs_action: summaries.reduce((n, s) => n + s.needs_action, 0),
+          drifted: summaries.reduce((n, s) => n + s.drifted, 0),
+          dead_target: summaries.reduce((n, s) => n + s.dead_target, 0),
+          carrier_missing: summaries.reduce((n, s) => n + s.carrier_missing, 0),
+          clean: summaries.reduce((n, s) => n + s.clean, 0),
+          retired: summaries.reduce((n, s) => n + s.retired, 0),
+          via: "cli",
+        },
+      });
     }
     if (jsonOut) {
       // F16：建议以结构化字段随诊断一起给，面板/脚本不必自己拼处置结论。

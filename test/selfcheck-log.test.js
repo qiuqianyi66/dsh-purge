@@ -10,6 +10,7 @@ import {
   sanitizeSelfcheckEvent,
   appendSelfcheckEvent,
   readSelfcheckLog,
+  summarizeDiagnose,
   SELFCHECK_LOG_MAX_BYTES,
 } from "../lib/selfcheck-log.js";
 
@@ -82,4 +83,36 @@ test("写不进去也不抛——返回 ok=false 让调用方继续跑主流程"
 test("默认上限是个正数常量（避免有人把轮转阈值设成 0 变相关掉）", () => {
   assert.equal(typeof SELFCHECK_LOG_MAX_BYTES, "number");
   assert.ok(SELFCHECK_LOG_MAX_BYTES >= 64 * 1024);
+});
+
+// F17 续：--diagnose 只在「有需要处理的条目」时留痕，摘要只留数字不留路径。
+test("summarizeDiagnose 只输出计数，needs_action 只算漂移/死目标/缺载体", () => {
+  const s = summarizeDiagnose({
+    aiBase: "D:\\host\\@deepseek-ai",
+    clean: [{ id: 1 }, { id: 2 }],
+    drifted: [{ id: 33 }],
+    dead_target: [{ id: 50 }, { id: 54 }],
+    carrier_missing: [],
+    retired: [{ id: 56 }],
+    optional_missing: [{ id: 3 }],
+    skipped_surface: [],
+    no_carrier: [{ id: 7 }],
+  });
+  assert.deepEqual(s, {
+    clean: 2,
+    drifted: 1,
+    dead_target: 2,
+    carrier_missing: 0,
+    retired: 1,
+    optional_missing: 1,
+    skipped_surface: 0,
+    no_carrier: 1,
+    needs_action: 3,
+  });
+  assert.equal(JSON.stringify(s).includes("host"), false, "摘要里不允许出现宿主路径");
+});
+
+test("干净报告 needs_action 为 0（调用方据此决定不写日志）", () => {
+  assert.equal(summarizeDiagnose({ clean: [{ id: 1 }], no_carrier: [{ id: 2 }] }).needs_action, 0);
+  assert.equal(summarizeDiagnose(undefined).needs_action, 0);
 });

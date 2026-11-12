@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildPanelSelfcheck, extractDiffRows } from "../lib/selfcheck-panel.js";
+import { buildPanelSelfcheck, extractDiffRows, buildPatchGroups } from "../lib/selfcheck-panel.js";
 
 const entryWithDiff = (id, name) => ({
   id,
@@ -83,4 +83,44 @@ test("多报告 diff 行合并并按 id 排序", () => {
   assert.equal(out.diff_rows.length, 2);
   assert.equal(out.diff_rows[0].id, 10);
   assert.equal(out.diff_rows[1].id, 40);
+});
+
+// F15：五桶归并，且分母必须和 CLI 的 clean + no_carrier 同源。
+const bucketReport = () => ({
+  aiBase: "D:\\host",
+  drifted: [{ id: 33 }],
+  dead_target: [{ id: 50 }, { id: 54 }],
+  carrier_missing: [],
+  retired: [{ id: 56 }, { id: 77 }],
+  optional_missing: [{ id: 3 }],
+  skipped_surface: [{ id: 9 }],
+  clean: [{ id: 1 }, { id: 2 }, { id: 4 }],
+  no_carrier: [{ id: 7 }, { id: 8 }, { id: 11 }, { id: 12 }],
+});
+
+test("buildPatchGroups 五桶分开：需处理只算漂移/死目标/缺载体", () => {
+  const g = buildPatchGroups(bucketReport());
+  assert.equal(g.needs_action.count, 3);
+  assert.deepEqual(g.needs_action.by, { drifted: 1, dead_target: 2, carrier_missing: 0 });
+  assert.equal(g.retired.count, 2);
+  assert.deepEqual(g.retired.ids, [56, 77]);
+  assert.equal(g.optional.count, 2, "可选缺失 + 本表面跳过都算可选不适用");
+  assert.equal(g.no_carrier.count, 4);
+  assert.equal(g.clean.count, 3);
+  assert.equal(g.denominator, 7, "分母 = clean + no_carrier，与 --status 同源");
+});
+
+test("buildPatchGroups 空报告不产生假数字", () => {
+  const g = buildPatchGroups({});
+  assert.equal(g.needs_action.count, 0);
+  assert.equal(g.denominator, 0);
+  assert.deepEqual(g.retired.ids, []);
+});
+
+test("面板负载带上 patch_groups，且与 advice 计数互不干扰", () => {
+  const out = buildPanelSelfcheck([bucketReport()]);
+  const groups = out.groups[0].patch_groups;
+  assert.equal(out.action_needed, 3);
+  assert.equal(groups.needs_action.count, 3);
+  assert.equal(groups.retired.count, 2);
 });

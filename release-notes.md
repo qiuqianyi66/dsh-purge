@@ -1,3 +1,25 @@
+# 1.1.88
+
+## 中文
+
+- F14 发布侧摘要：`release.yml` 现在随 zip 一起生成并上传 `SHA256SUMS`，下载发布包的人可以自己核 `sha256sum -c`，不必只信 Release 页面。
+- F14 更新侧固定（TOFU）：新增 `lib/update-digest.js`。按 40 位 commit sha 取归档时，第一次通过校验的 SHA256 会记进 `dsh-purge/archive-digests.json`，之后再下同一个 sha 自动要求摘要一致；对不上就在 verify 阶段拦下，还没动过任何已装文件。分支名（main/beta）会正常前移，不参与固定，避免误伤常规升级。期望值优先级：显式参数/env > 台账记录 > 空（verify 如实标「未校验摘要」）。台账只记摘要与 sha，条数上限 200。
+- F15 面板三类归并：`selfcheck-panel` 新增 `buildPatchGroups`，把诊断归成「需处理（漂移/目标消失/载体缺失）｜已退役｜可选不适用（本机未装 + 本表面跳过）｜无载体字段｜已清洗」五桶；分母固定为 `clean + no_carrier`，与 `--status` 同源，避免面板与 CLI 各报一套数。面板在载体行下多一行计数。
+- F17 诊断留痕：`--diagnose` 以前只打印不记录，漂移发生时无从回溯。现在只要任一份报告有需要处理的条目，就向自检日志追加一条 `action:"diagnose"`（宿主数、需处理、漂移、死目标、缺载体、已清洗、已退役），纯计数、不含宿主路径；干净运行不写，避免日志变成噪声。
+- F20 卸载整链集成测试：`uninstallPurge` 支持注入 `state`（`options.state`），测试在临时 `DSH_HOME` 上跑完整链——摘 profile 依赖/bundles/plugins、删覆盖件与规则目录、登记待删插件树与数据目录、二次调用幂等；注入 `ai_base` 为空的状态，全程不碰本机真实宿主。
+- 单元测试 190 项全部通过（新增 16 条：卸载整链 6、摘要台账 5、五桶归并 3、诊断摘要 2）。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- F14 release-side digest: `release.yml` now writes and uploads `SHA256SUMS` next to the zip, so anyone downloading a release can run `sha256sum -c` instead of trusting the release page alone.
+- F14 update-side pinning (TOFU): new `lib/update-digest.js`. When an archive is fetched by a 40-character commit sha, the SHA256 that passed verification is recorded in `dsh-purge/archive-digests.json`, and a later download of the same sha must match it; a mismatch stops at the verify stage before any installed file is touched. Branch refs (main/beta) move by design and are not pinned. Priority: explicit argument/env > ledger > empty (verify honestly reports "digest not checked"). The ledger stores only digests and shas, capped at 200 entries.
+- F15 panel grouping: `selfcheck-panel` gained `buildPatchGroups`, splitting a diagnosis into needs-action (drift / dead target / missing carrier), retired, optional-not-here (missing preset or surface skipped), no-carrier-field, and clean; the denominator is `clean + no_carrier`, the same basis as `--status`, so the panel and CLI cannot report two different totals. The panel shows one extra count line under the carrier row.
+- F17 diagnose trail: `--diagnose` used to print without recording, leaving no trace when drift happened. Now, whenever any report has items needing action, a `action:"diagnose"` entry is appended to the self-check log (hosts, needs-action, drifted, dead target, missing carrier, clean, retired) with counts only and no host paths; clean runs write nothing, so the log does not become noise.
+- F20 uninstall chain integration test: `uninstallPurge` accepts an injected `state` (`options.state`), and the test runs the whole chain against a temporary `DSH_HOME` — stripping profile dependencies/bundles/plugins, deleting the override file and rules directory, registering plugin trees and the data directory for cleanup, and proving a second call is idempotent. State is injected with an empty `ai_base`, so the real local host is never touched.
+- 190 unit tests, all passing (16 new: uninstall chain 6, digest ledger 5, grouping 3, diagnose summary 2).
+- Maintainer qiuqianyi66; derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notices retained in LICENSE/NOTICE.
+
 # 1.1.87
 
 ## 中文
