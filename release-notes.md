@@ -1,3 +1,23 @@
+# 1.1.87
+
+## 中文
+
+- 修断网误报「已是最新」：`checkUpdate` 判「该通道有没有远端数据」时把本地条目和历史缓存也算进远端证据，于是完全断网时列表里仍有「1.1.86（本地）」这一行，`hasRemote` 为真，函数安静返回 `hasUpdate:false / remoteVersion:1.1.86`——用户看到的是「已是最新」，而不是网络失败。现在 `hasRemote` 只认远端来源（`head` / `tag` 条目或远端 head sha），本地与历史条目不再充当远端。
+- 补网络错误原文：远端探测函数各自吞异常返回空串，断网时抛出的只有「无法读取 GitHub main」这种无关键词的消息，诊断被归到 `unknown`。现在记录最近一次请求的真实失败原因（如 `getaddrinfo ENOTFOUND api.github.com`）并带进诊断，落 `stage=network`。
+- 分类器补规则：`getaddrinfo`（含 `ENOENT`/`EAI_AGAIN` 等 DNS 变体）、中文「网络 / 连不上 / 连接失败」都归 `network`；同时确认文件名缺失类 `ENOENT: no such file` 不被误判成网络。
+- 验证方式（不真断网）：进程内把 https/http/fetch 打桩成 ENOTFOUND，跑真实 `checkUpdate()` —— 修复前返回 `ok:true / hasUpdate:false / remoteVersion:1.1.86`（假绿），修复后抛 `stage=network / reason=network-or-tls`，诊断片段含真实错误且无本机路径；联网路径回归仍为 `hasRemote=true`、能列出 `head:1.1.86 / tag:1.1.86 / 1.1.85 / 1.1.84`。
+- 单元测试 174 项全部通过（新增 4 条：本地/历史条目不背包、DNS 与连接错误归 network、缺失文件 ENOENT 不误判、诊断脱敏）。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- Fixed the offline false "up to date": `checkUpdate` treated local and cached history rows as remote evidence when deciding whether a lane had remote data, so with no network at all the list still contained the local `1.1.86` row, `hasRemote` was true, and the call quietly returned `hasUpdate:false / remoteVersion:1.1.86`. Users saw "up to date" instead of a network failure. `hasRemote` now only counts remote sources (`head` / `tag` rows or a remote head sha); local and history rows no longer stand in for them.
+- Added the real network error: the remote probes each swallow their exceptions and return an empty string, so an offline run only produced "cannot read GitHub main", which matched no rule and classified as `unknown`. The last real request failure (e.g. `getaddrinfo ENOTFOUND api.github.com`) is now recorded and carried into the diagnostic, landing on `stage=network`.
+- Classifier rules extended: `getaddrinfo` (covering `ENOENT` / `EAI_AGAIN` DNS variants) and the Chinese "网络 / 连不上 / 连接失败" all map to `network`, while a file-missing `ENOENT: no such file` is verified not to be misclassified as network.
+- How it was verified without cutting the network: https/http/fetch were stubbed to fail with ENOTFOUND inside the process and the real `checkUpdate()` was called — before the fix it returned `ok:true / hasUpdate:false / remoteVersion:1.1.86` (a false green); after the fix it throws `stage=network / reason=network-or-tls`, the diagnostic carries the real error and no local paths, and the online path still reports `hasRemote=true` with `head:1.1.86 / tag:1.1.86 / 1.1.85 / 1.1.84`.
+- 174 unit tests, all passing (four new cases: local/history rows do not count as remote, DNS and connection errors classify as network, a missing-file ENOENT is not misread, and the diagnostic is scrubbed).
+- Maintainer qiuqianyi66; derivative of the original project by YuJunZhiXue, Apache-2.0, copyright notices retained in LICENSE/NOTICE.
+
 # 1.1.86
 
 ## 中文
