@@ -39,6 +39,10 @@ const val = (f, d = "") => {
 };
 const has = (f) => argv.includes(f);
 
+// 退出码门禁口径（学 dsh-plugin-health 的 --fail-on）：
+//   drift（默认）= 有需重对齐就失败；any = 有未审计也失败；none = 总成功。
+const FAIL_ON = (val("--fail-on", "drift") || "drift").toLowerCase();
+
 const VERSION = val("--version", "0.2.2-rc.3");
 const STAGE = path.resolve(val("--stage", path.join(ROOT, "..", ".tmp", `host-${VERSION}`)));
 // aiBase 是 resources/app：真机布局 `<app>/dsh/node_modules/@deepseek-ai/...`，
@@ -241,9 +245,13 @@ function main() {
     );
     console.log(`\n报告：${path.resolve(JSON_OUT)}`);
   }
-  return bad.length ? 1 : 0;
+  if (!["drift", "any", "none"].includes(FAIL_ON)) {
+    console.log(`  ！--fail-on=${FAIL_ON} 不认识，按 drift 处理`);
+  }
+  const exitCode =
+    FAIL_ON === "none" ? 0 : FAIL_ON === "any" ? (bad.length || skipped.length ? 1 : 0) : bad.length ? 1 : 0;
+  return exitCode;
 }
-
 try {
   process.exit(main());
 } catch (e) {
