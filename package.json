@@ -1,7 +1,7 @@
 {
   "name": "dsh-purge",
-  "version": "1.1.88",
-  "description": "Apache-2.0 red-team evaluation plugin for DeepSeek Harness (targets DSH 0.2.2-rc.1): grouped patches and swappable per-model prompts that separate host-layer blocking from model answers. 网络安全红队评测插件，可按模型替换提示词，补丁可一键还原。Forks require attribution.",
+  "version": "1.1.89",
+  "description": "Apache-2.0 red-team evaluation plugin for DeepSeek Harness (targets DSH 0.2.2-rc.3): grouped patches and swappable per-model prompts that separate host-layer blocking from model answers. 网络安全红队评测插件，可按模型替换提示词，补丁可一键还原。Forks require attribution.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -38,6 +38,7 @@
     "build:client": "node scripts/build-client.mjs",
     "compat:check": "node scripts/gen-compat-readme.mjs --check",
     "upstream:sync": "node scripts/upstream-sync.mjs",
+    "audit:next": "node scripts/audit-next.mjs",
     "postinstall": "node scripts/ensure-profile-bundle.mjs",
     "test": "node --test"
   },
@@ -113,5 +114,5 @@
   "engines": {
     "node": ">=18"
   },
-  "dshTarget": "0.2.2-rc.1"
+  "dshTarget": "0.2.2-rc.3"
 }

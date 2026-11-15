@@ -3,20 +3,20 @@ import assert from "node:assert/strict";
 import { probeCompatMatrixRow } from "../lib/compat-matrix.js";
 
 const baseState = {
-  host_version: "0.2.2-rc.1",
-  plugin_version: "1.1.84-rc1",
-  host_target: "0.2.2-rc.1",
+  host_version: "0.2.2-rc.3",
+  plugin_version: "1.1.89",
+  host_target: "0.2.2-rc.3",
   ai_base: "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai",
 };
 
 test("located：实测 supported 且与静态矩阵一致", () => {
   const row = probeCompatMatrixRow(baseState, {
     level: "located",
-    evidence: "宿主 0.2.2-rc.1 与适配目标一致",
+    evidence: "宿主 0.2.2-rc.3 与适配目标一致",
   });
   assert.equal(row.status, "supported");
   assert.equal(row.level, "located");
-  assert.equal(row.dsh, "0.2.2-rc.1");
+  assert.equal(row.dsh, "0.2.2-rc.3");
   assert.equal(row.matrix_match.same, true);
   assert.equal(row.matrix_match.staticStatus, "supported");
 });
@@ -35,7 +35,7 @@ test("unsupported：非目标宿主直接判 unsupported", () => {
   const state = { ...baseState, host_version: "0.2.1-rc.x" };
   const row = probeCompatMatrixRow(state, {
     level: "unsupported",
-    evidence: "宿主 0.2.1-rc.x 不在适配目标 0.2.2-rc.1",
+    evidence: "宿主 0.2.1-rc.x 不在适配目标 0.2.2-rc.3",
   });
   assert.equal(row.status, "unsupported");
   assert.equal(row.matrix_match.same, true); // 静态行同样登记 unsupported

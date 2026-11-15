@@ -29,7 +29,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { COMPAT_CURRENT } from "../lib/compat-matrix.js";
+import { COMPAT_CURRENT, compareDshVersion as compareVersion } from "../lib/compat-matrix.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BIN = path.join(ROOT, "bin", "dsh-purge.js");
@@ -180,11 +180,23 @@ function buildTasks(state) {
   state.green = green;
 
   if (matrix.current !== host.version) {
-    tasks.push({
-      code: "MATRIX_LAG",
-      level: green ? "medium" : "high",
-      text: `宿主 ${host.version}，矩阵仍声明 ${matrix.current}${green ? "（漂移为零，可 --bump 推进）" : "（漂移未清，先重对齐再推进）"}`,
-    });
+    // 矩阵声明的是「已适配目标」，本机可以是它之前的版本。往回流只有一个方向：
+    // 本机落后时先升宿主；否则 --bump 会把 target 从 rc.3 推回 rc.1（降级事故）。
+    const behind = host.version && compareVersion(host.version, matrix.current) < 0;
+    if (behind) {
+      state.green = false;
+      tasks.push({
+        code: "HOST_BEHIND_MATRIX",
+        level: "high",
+        text: `本机 ${host.version} 落后于矩阵目标 ${matrix.current}；先升级宿主，--bump 不会往回推`,
+      });
+    } else {
+      tasks.push({
+        code: "MATRIX_LAG",
+        level: green ? "medium" : "high",
+        text: `宿主 ${host.version}，矩阵仍声明 ${matrix.current}${green ? "（漂移为零，可 --bump 推进）" : "（漂移未清，先重对齐再推进）"}`,
+      });
+    }
   }
   if (upstream.version && upstream.version !== host.version) {
     tasks.push({
@@ -333,6 +345,8 @@ async function main() {
       console.log("\n未写入：--bump 需要同时带 --yes。");
     } else if (state.matrix.current === state.host.version) {
       console.log(`\n未写入：矩阵已是 ${state.host.version}。`);
+    } else if (compareVersion(state.host.version, state.matrix.current) < 0) {
+      console.log(`\n拒绝写入：本机 ${state.host.version} 落后于矩阵目标 ${state.matrix.current}，先把宿主升上去。`);
     } else {
       const r = bumpTargets(state.matrix.current, state.host.version);
       if (r.ok) {
