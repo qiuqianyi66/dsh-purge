@@ -65,8 +65,8 @@ Harness 不只是转发问题：运行时会改提示词、审批门、沙箱策
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 |
 | --- | --- |
-| **0.2.2-rc.3** | **1.1.89**，rc.3 重对齐：升级阶梯/审批放行改判 SandboxEscalationError 与 approvalDenial 的新原文 |
-| **0.2.2-rc.1 ~ rc.2** | **1.1.88**，rc.3 之前的 0.2.2 线仍可用旧 pattern 打补丁；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 取 1.1.88 |
+| **0.2.2-rc.3** | **1.1.89**，rc.2 引入 SandboxEscalationError / approvalDenial 新原文（rc.2 与 rc.3 四个载体文件逐字节一致），本版补的是这组 pattern |
+| **0.2.2-rc.1** | **1.1.88**，只有 rc.1 能用旧 pattern；rc.2 起（含 rc.3）需要 1.1.89 的新 pattern，装 1.1.88 会静默失配 |
 | **0.2.1-rc.x** | unknown，不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
 | **0.2.0-rc.2** | **1.1.40+**，旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
 | **0.1.7** | **1.1.39-**，旧线（含 rc.1 / rc.2），在 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应标签 |
