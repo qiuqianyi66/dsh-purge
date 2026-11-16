@@ -520,6 +520,16 @@ async function main() {
       preserveClientBundles: false,
       forApply: true,
     });
+    // 备份已被写成「已打态」的文件：补丁照打，但先说清还原回不到官方原文。
+    try {
+      const lost = await core.detectBaselineLost(state.ai_base);
+      if (lost.length) {
+        console.log(`  ⚠ ${lost.length} 个文件的备份是「已打态」，还原无法恢复原文 / baseline lost files: ${lost.length}`);
+        for (const e of lost.slice(0, 5)) console.log(`     · ${e.path}  (补丁 #${e.patch_ids.join(",")})`);
+        if (lost.length > 5) console.log(`     · …其余 ${lost.length - 5} 个见 --revert 明细`);
+        console.log("     处置：需从官方安装包/app.asar 取回原文件重建基线，不能靠 bak 反向恢复。");
+      }
+    } catch { /* 只读探测，失败不影响应用 */ }
     for (const h of hosts) console.log(`  宿主 / host → ${h.aiBase}`);
     for (const r of report) {
       const m = r.status === "applied" ? "✓ 已清洗" : r.status === "already" ? "- 已是最新" : r.status === "missing_file" ? "⚠ 文件缺失" : `✗ ${r.status}`;
@@ -561,14 +571,23 @@ async function main() {
     if (state.ai_base || core.enumeratePatchAiBases().length) {
       // 守卫放在 revertAllHosts 里逐宿主判：这里枚举的每个宿主都要过一遍版本比对，
       // 只看 state.ai_base 会漏掉其它宿主（临时环境里就踩过，把真机补丁还原掉了）。
-      const { reverted, errors, blocked } = await core.revertAllHosts({ force });
+      const { reverted, errors, blocked, baselineLost } = await core.revertAllHosts({ force });
       for (const b of blocked) {
         console.log(b.message);
         console.log(`  - ${b.aiBase} 未还原 / not reverted`);
       }
       for (const p of reverted) console.log(`  ✓ 已还原 / Reverted ${p}`);
+      for (const p of baselineLost || []) {
+        console.log(`  ⚠ 基线已丢失，未还原（文件仍是打过补丁的状态）/ baseline lost: ${p}`);
+      }
       for (const [p, e] of errors) console.log(`  ⚠ 还原失败 ${p}: ${e}`);
-      if (reverted.length === 0 && blocked.length === 0) console.log("  - 没有补丁备份可还原 / no patch backup");
+      if ((baselineLost || []).length) {
+        console.log("    处置 / next step：备份与本体逐字节相同，反向恢复拿不到原文；");
+        console.log("    需要用官方安装包或 app.asar 里的原始文件重建基线，再执行还原。");
+      }
+      if (reverted.length === 0 && blocked.length === 0 && !(baselineLost || []).length) {
+        console.log("  - 没有补丁备份可还原 / no patch backup");
+      }
       if (blocked.length) process.exitCode = 1;
     }
     if (state.shim_dir) {

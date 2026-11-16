@@ -1,3 +1,23 @@
+# 1.2.6
+
+## 中文
+
+- **修掉「假还原」**：`.dshpurge.bak` 只在缺失时才创建，遇到「先打补丁、后才有备份」的历史状态会把**已打态**存成基线。此时 `revertAll` 把打过补丁的文件覆盖回自己：不报错、0 差异、界面显示成功，用户以为退回了官方原版，其实补丁全在。真机实测 54 个备份里 **10 个**是这种，其中 `dsh-agent-instructions/lib/index.js`、`dsh-tool-fs/lib/index.js` 能直接验到补丁痕迹（强句 / `READ_MAX_LINE_LENGTH = 1e4`）。
+- **新判定 `baseline_lost`**：备份与本体逐字节相同、且本体确实带补丁痕迹（marker 命中 + 原 pattern 已不在）时，不再计入 reverted，单独列出并保留 bak 留证；`--revert`、面板「还原」都会提示「需从官方安装包/asar 重建基线」。只同字节、但没补丁痕迹的文件仍按 `skipped` 处理，不误报。
+- **`--apply` 预先告警**：应用前先跑一次只读检测，若存在基线丢失文件就先说明「还原回不到官方原文」，避免用户事后才发现。
+- 新增 `test/baseline-lost.test.js` 5 条（判丢失、真原文不丢、未打不丢、revert 不谎报、same-bytes 无痕迹仍 skipped），全套 `node --test` **230 通过 / 0 失败**。
+- 真机已按官方 rc.3 原包重建 8 个文件的基线（旧备份留档 `*.dshpurge.bak.lost-20261116`），剩余 2 个属于已退役的 #50 残留，官方原件里没有对应锚点，按「无法重建」如实列出。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Fake reverts are gone**: `.dshpurge.bak` was only created when missing, so a history of "patch first, backup later" stored the **already-patched** bytes as the baseline. `revertAll` then copied a patched file over itself — no error, zero diff, a success message, and every patch still in place. On the live host **10 of 54** backups were in this state; two of them prove it outright (`dsh-agent-instructions/lib/index.js` carries the strong sentence, `dsh-tool-fs/lib/index.js` carries `READ_MAX_LINE_LENGTH = 1e4`).
+- **New `baseline_lost` verdict**: when the backup is byte-identical to the body *and* the body really is patched (marker present, original pattern gone), the file is no longer counted as reverted; it is listed separately, the backup is kept as evidence, and both `--revert` and the panel revert say "rebuild the baseline from the official package/asar". A same-bytes backup without patch traces is still just `skipped`, so untouched files are not misreported.
+- **`--apply` warns first**: a read-only pre-check reports baseline-lost files before patching, instead of letting users discover it later.
+- 5 new cases in `test/baseline-lost.test.js`; `node --test` **230 passing / 0 failing**.
+- On the live host 8 baselines were rebuilt from the official rc.3 package (old copies kept as `*.dshpurge.bak.lost-20261116`); the remaining 2 are leftovers of the retired #50 whose anchors do not exist in the official files, so they are listed as unrecoverable rather than quietly cleared.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.5
 
 ## 中文
