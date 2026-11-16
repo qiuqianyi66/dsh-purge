@@ -1,3 +1,21 @@
+# 1.1.91
+
+## 中文
+
+- **修掉「status 说待清洗、diagnose 说没问题」的口径打架**：同一个载体键落到多份副本时（宿主自带 `pi-ai` 与 profile 里装的 `pi-ai` 各一份 `anthropic-messages.js` / `openai-completions.js`），`--status` 按文件计数报 pending，`--diagnose` 按「任一文件已生效」把整条判成 clean。现在诊断新增「部分副本未清洗」桶与每文件证据（`partial` / `pending_files`），两边口径归一；建议文案直接说“跑一次 apply 补齐，pattern 不用改”。
+- **真机复现与修复**：#47 `ANTHROPIC_OAUTH_NO_CLAUDE_IDENTITY`、#49 `ANTHROPIC_OAUTH_CLI_NEUTRAL`、#57 `DEEPSEEK_SYSTEM_ROLE` 三条因 profile 侧 `pi-ai` 升级到 1.5.2、原文又匹配旧 pattern 而挂 pending；`--apply` 补齐后 `--status` = 70/71 已清洗、0 待清洗，`--diagnose` = 42 命中、partial 0、漂移 0。两份 pi-ai 文件 `node --check` 通过，原文件留 `.dshpurge.bak`。
+- **回归测试**：新增 `test/diagnose-partial.test.js` 三条用例（一打一原文 → partial；两份都打 → clean；单文件 → 旧行为不变），全套 `node --test` 197 通过 / 0 失败。
+- **文档**：中英 README 与 `llms.txt` 的证据数字同步为 42 命中 + 197 测试 + partial 0，FAQ 补上「部分副本未清洗」的判读方式。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- **Fixes the status-vs-diagnose contradiction**: when one carrier key maps to several copies (the host-bundled `pi-ai` and the `pi-ai` plugin installed under a profile each ship `anthropic-messages.js` / `openai-completions.js`), `--status` counted per file and reported pending while `--diagnose` took the strongest evidence and called the whole patch clean. Diagnosis now carries a dedicated *partially-patched copies* bucket with per-file evidence (`partial` / `pending_files`) so both commands agree, and the advice says exactly what to do: run apply once, no pattern change needed.
+- **Reproduced and fixed on a real host**: #47, #49 and #57 sat in pending because the profile-side `pi-ai` had been upgraded to 1.5.2 and matched the old patterns again; one `--apply` caught it up — `--status` now reports 70/71 applied with 0 pending, `--diagnose` reports 42 matched, 0 partially-patched, 0 drift. Both patched `pi-ai` files pass `node --check` and keep their `.dshpurge.bak` originals.
+- **Regression tests**: `test/diagnose-partial.test.js` covers half-patched → partial, fully patched → clean, and single-file → unchanged behaviour; `node --test` is 197 passing / 0 failing.
+- **Docs**: the Chinese and English README plus `llms.txt` now carry the same numbers (42 matched, 197 tests, 0 partially-patched), and the FAQ explains the new state.
+- Apache-2.0 derivative of the original project by YuJunZhiXue; LICENSE/NOTICE attribution preserved.
+
 # 1.1.90
 
 ## 中文

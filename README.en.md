@@ -37,7 +37,7 @@
 | Quick fact | Value |
 | --- | --- |
 | Project / repository | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
-| Version / host target | `1.1.90` / DSH `0.2.2-rc.3` (same as `dshTarget`) |
+| Version / host target | `1.1.91` / DSH `0.2.2-rc.3` (same as `dshTarget`) |
 | License / upstream copyright | Apache-2.0 · Copyright 2026 YuJunZhiXue (see [`NOTICE`](./NOTICE)) |
 | Requirements | Node.js ≥ 18; DSH desktop app or official `dsh web`; pnpm |
 | One-line install | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
@@ -104,7 +104,7 @@ This is an evaluation tool, not an attack platform. The following limits are enf
 # step 1 — install (use "desktop" for the desktop app, "web" for dsh web)
 dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main
 
-# step 2 — confirm version (expect 1.1.90), run inside $DSH_HOME
+# step 2 — confirm version (expect 1.1.91), run inside $DSH_HOME
 node -p "require('./profiles/desktop/node_modules/dsh-purge/package.json').version"
 
 # step 3 — confirm the host will load it (must print true)
@@ -153,11 +153,11 @@ Sample of what a patch touches: #82 restores `DSH_PROFILE` when the desktop exe 
 
 ## 7. Compatibility and measured data (2026-11-16)
 
-Current release `1.1.90` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+Current release `1.1.91` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
 
 | dsh version | This repo | Evidence | Notes |
 | --- | --- | --- | --- |
-| **0.2.2-rc.3** | **1.1.90** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. rc.2 introduced the new `SandboxEscalationError` / `approvalDenial` text; rc.2 and rc.3 carrier files are byte-identical |
+| **0.2.2-rc.3** | **1.1.91** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. rc.2 introduced the new `SandboxEscalationError` / `approvalDenial` text; rc.2 and rc.3 carrier files are byte-identical |
 | **0.2.2-rc.1** | **1.1.88** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | Only rc.1 matches the old patterns; rc.2 and later need 1.1.89 patterns |
 | **0.2.1-rc.x** | unknown | — | Not a target of this version |
 | **0.2.0-rc.2** | **1.1.40+** | — | Older line, see Releases |
@@ -201,7 +201,7 @@ Few DSH plugins patch host sources; the known lines, checked 2026-11-15 against 
 | --- | --- |
 | Original `YuJunZhiXue/dsh-purge` | removed / private; last artifact verified only against `0.2.2-rc.1` |
 | Mirror `mmparko/dsh-purge` | frozen at `1.1.71` / `dshTarget 0.2.0-rc.2` |
-| This repo `qiuqianyi66/dsh-purge` | `1.1.90` / `0.2.2-rc.3`, with isolated audit, four evidence levels and `compat.json` |
+| This repo `qiuqianyi66/dsh-purge` | `1.1.91` / `0.2.2-rc.3`, with isolated audit, four evidence levels and `compat.json` |
 
 **How to verify a fork really adapted:** do not trust `dshTarget` or the version string — grep its `lib/core.js` for text the new host introduced, such as `SandboxEscalationError`, `approvalDenial`, `this exact`. Missing means the patterns were never added and the install will silently mismatch.
 
