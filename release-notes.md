@@ -1,3 +1,21 @@
+# 1.2.1
+
+## 中文
+
+- **修掉一处静默漏打**：#57 `DEEPSEEK_SYSTEM_ROLE` 在 rc.3 的 `openai-responses-shared.js` 里，变量名是 `instructionRole` 且带可选链（`compat?.supportsDeveloperRole !== false`），旧 pattern 只认 `role`，导致这个文件一直没打上、诊断却因另一份文件已打而整条报 clean。现已补上该候选锚点，真机两份副本（宿主 + profile）都已改写并带 allowlist marker，`node --check` 通过。
+- **诊断补上老式补丁的命中数**：`probeCarrier` 此前只读 `replacements`，7 条用 `patterns + replace` 老式声明的补丁在诊断里永远 0 命中、只能靠 `dsh-purge` 字样蒙混。现在与新式补丁同口径展开，上游再改这几条能直接报「可命中/漂移」。
+- **事务临时文件清理**：写盘失败时不再把 `.dshpurge.tx-*` 临时文件留在宿主目录。
+- **验证**：新增 3 条回归（instructionRole 锚点命中、重复执行不再改写、老式 patterns 计数）；全套 `node --test` 212 通过 / 0 失败，`compat:check` 一致；真机连打两次 apply，62 个载体文件哈希零变化（第二次 applied 0），确认幂等。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **One silent miss fixed**: patch #57 `DEEPSEEK_SYSTEM_ROLE` uses `instructionRole` with optional chaining in rc.3's `openai-responses-shared.js`; the old pattern only matched `role`, so that file was never patched while diagnosis called the patch clean because its sibling file was. A candidate anchor is now included; both the host and profile copies carry the allowlist marker and pass `node --check`.
+- **Legacy patches now report hit counts**: `probeCarrier` only read `replacements`, so the 7 patches declared with `patterns + replace` always showed zero hits. It now expands them the same way as modern patches.
+- **Transaction temp cleanup**: failed writes no longer leave `.dshpurge.tx-*` files in the host tree.
+- **Verification**: 3 new regression tests; `node --test` 212 passing / 0 failing; two consecutive live applies changed zero bytes across 62 carrier files (second apply: applied 0).
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.0
 
 ## 中文
