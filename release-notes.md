@@ -1,3 +1,19 @@
+# 1.2.2
+
+## 中文
+
+- **修掉跨树副作用**：`targetFiles` 里的 `desktop-shell` 以前无条件取「当前官方桌面安装」的 `resources/app/lib/main.js`，于对隔离树 / 归档 base 跑 `revert` 时，会把真实宿主的桌面壳补丁一起摘掉。现在只跟随 `aiBase` 自己所属的 `resources/app`，不命中就留空。
+- **离体全周期验证**（这次补上的证据）：在干净 rc.3 npm 隔离树里 `backupAll → apply → status → diagnose → revert`；apply 58 条、0 失败、49 个文件改写、diagnose 42 命中且漂移 0、语法 0 错；revert 49 个文件后与原始树逐字节比对 **0 差异**，真实宿主桌面壳 marker 前后均为 9（未被触碰）。
+- **回归**：新增 `test/target-scope.test.js` 2 条（桌面壳只跟随自己的 resources/app；隔离包布局不挂真实桌面壳）；全套 `node --test` 214 通过 / 0 失败。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Cross-tree side effect fixed**: `desktop-shell` in `targetFiles` used to resolve the currently installed official desktop `resources/app/lib/main.js` regardless of `aiBase`, so a `revert` on an isolation tree or archived base could strip the live host's shell patches. It now follows only the `resources/app` that owns the given `aiBase`.
+- **Full isolated cycle**: on a clean rc.3 npm tree, `backupAll → apply → status → diagnose → revert`: 58 applied / 0 failed / 49 files changed, diagnosis 42 hits with 0 drift, 0 syntax errors; after revert, byte-for-byte comparison against the pristine tree showed **0 differences**, and the live desktop shell markers stayed at 9.
+- **Tests**: 2 new scope cases; `node --test` 214 passing / 0 failing.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.1
 
 ## 中文
