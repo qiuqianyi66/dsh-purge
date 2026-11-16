@@ -35,6 +35,7 @@
       "surface": "desktop",
       "patches": 82,
       "fileVerified": 42,
+      "partialCopies": 0,
       "noFileField": 29,
       "optionalMissing": 7,
       "retired": 4,
@@ -43,7 +44,7 @@
       "carrierMissing": 0
     },
     "unitTests": {
-      "passed": 194,
+      "passed": 197,
       "failed": 0
     }
   },

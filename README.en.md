@@ -32,7 +32,7 @@
 
 1. **Scale** — 82 patches across 65 carrier keys (concrete host files), covering both the web and desktop surfaces.
 2. **Requirements** — target host DSH `0.2.2-rc.3`, Node.js ≥ 18, installed into a profile's `node_modules`; nothing global, nothing written to remote repositories.
-3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source and 0 missing carriers**; `node --test` 194 passing.
+3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 missing carriers and 0 partially-patched copies**; `node --test` 197 passing.
 
 | Quick fact | Value |
 | --- | --- |
@@ -163,7 +163,7 @@ Current release `1.1.90` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `
 | **0.2.0-rc.2** | **1.1.40+** | — | Older line, see Releases |
 | **0.1.7** | **1.1.39-** | — | Older line, see Releases |
 
-**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier**; `node --test` 194 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
+**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier, 0 partially-patched copies**; `node --test` 197 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
 
 **rc.3 desktop packaging, the one thing to know:** the runtime ships inside `resources/app.asar` (209,021,953 B), `resources/runtime` is empty and there is no plain `resources/app/dsh` tree. Electron reads the asar before a same-named directory, so patches must land in plain files and the asar must move out of the way — Apply does both and restarts the host; CLI `--apply` prints the manual rename step instead of killing your process. Since `1.1.90` the CLI also detects a desktop host from the `aiBase` path, so desktop-shell patches are no longer skipped in a plain Node process.
 
@@ -180,7 +180,7 @@ npm run audit:next -- --version 0.2.2-rc.3 --fail-on drift  # exit 1 on drift, u
 
 Four verdicts: recognized / verify-only / realign-needed / unaudited. **Upgrade only when realign-needed is 0.** Day-to-day three-way check: `node scripts/upstream-sync.mjs --offline` (also `--plan`, `--json`); it reports `HOST_BEHIND_MATRIX` when your host is behind the matrix.
 
-Diagnosis states: *pending* means matched but not yet written; *drift* means upstream text changed; *carrier missing* means this host lacks that package and skipping is normal.
+Diagnosis states: *pending* means matched but not yet written; *drift* means upstream text changed; *carrier missing* means this host lacks that package and skipping is normal; *partially-patched copies* means the host tree is patched but a second copy (the plugin installed under a profile) is still raw — one --apply catches it up.
 
 ---
 

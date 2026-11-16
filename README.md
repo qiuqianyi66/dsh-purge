@@ -39,7 +39,7 @@
 
 1. **规模**：82 条补丁，分布在 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface。
 2. **依赖**：目标宿主 DSH `0.2.2-rc.3`，Node.js ≥ 18，装进 profile 的 `node_modules`，不装全局、不碰远程仓库。
-3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0**；`node --test` 194 通过。
+3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 197 通过。
 
 | 快速事实 | 值 |
 | --- | --- |
@@ -256,9 +256,9 @@ purge_status   purge_apply   purge_revert
 | --- | --- | --- |
 | 离体审计 | 载体 45 键 · 补丁 78 条 · 认得 56 · 校验型 6 · **需重对齐 0** · 未审计 11 | `scripts/audit-next.mjs` → `upstream-reports/` |
 | 离体实打 | 58 applied / 6 already / 7 missing_file / 2 skipped / 9 na；改动 31 个 `.js`，语法失败 0 | 同上 |
-| 真宿主诊断 | 82 条 = **42 条文件核验命中** + 29 条无文件字段（运行时注入，不落盘）+ 7 条本机无对应载体（可选：#28/#30/#31/#64/#65/#71/#76）+ 4 条已退役；**改过原文 0 · 目标已消失 0 · 载体缺失 0** | `node node_modules/dsh-purge/bin/dsh-purge.js --diagnose` |
+| 真宿主诊断 | 82 条 = **42 条文件核验命中** + 29 条无文件字段（运行时注入，不落盘）+ 7 条本机无对应载体（可选：#28/#30/#31/#64/#65/#71/#76）+ 4 条已退役；**改过原文 0 · 目标已消失 0 · 载体缺失 0 · 部分副本未清洗 0** | `node node_modules/dsh-purge/bin/dsh-purge.js --diagnose` |
 | 宿主自检日志 | `surface:desktop` / `sealed:false` / `boot:host-untouched` | `$DSH_HOME/dsh-purge/logs/selfcheck.log` |
-| 单元测试 | 194 通过 / 0 失败 | `node --test` |
+| 单元测试 | 197 通过 / 0 失败 | `node --test` |
 | 版本关系 | rc.2 与 rc.3 的四个载体文件逐字节一致，失配源自 rc.2 而非 rc.3 | 解包 diff |
 
 机器可读版本在 [`compat.json`](./compat.json)，由 `lib/compat-matrix.js` 生成，`npm run compat:check` 在 CI 里校验，README 表格与它不会走散。
@@ -266,7 +266,7 @@ purge_status   purge_apply   purge_revert
 **下面这段是本机诊断的实际输出，供对照（不同机器数字会不同）：**
 
 ```text
-载体 56 个 ｜ 补丁 82 条 → 可命中 42（其中仅 markers 确认 37）｜ 改过原文 0 ｜ 目标已消失 0 ｜ 载体缺失 0 ｜ 可选缺失 7 ｜ 本表面不适用 0 ｜ 无文件字段 29 ｜ 已退役 4
+载体 56 个 ｜ 补丁 82 条 → 可命中 42（其中仅 markers 确认 40）｜ 部分副本未清洗 0 ｜ 改过原文 0 ｜ 目标已消失 0 ｜ 载体缺失 0 ｜ 可选缺失 7 ｜ 本表面不适用 0 ｜ 无文件字段 29 ｜ 已退役 4
 ```
 
 ---
@@ -325,7 +325,7 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 两处配置缺一：profile 的 `dsh.profile.bundles` 里没有 `"dsh-purge"`，或 `cordis.patch.yml` 里没有 `id: dsh-purge` 的 insert。跑 `node node_modules/dsh-purge/scripts/ensure-profile-bundle.mjs` 补上，然后完全重启宿主。
 
 ### 点了「应用」，模型行为却没有变化？
-先 `--diagnose`。「漂移」＝官方原文变了；「待应用」＝还没写盘；「载体缺失」＝这台宿主没有那个包，正常跳过。三种都不是「插件坏了」。
+先 `--diagnose`。「漂移」＝官方原文变了；「待应用」＝还没写盘；「载体缺失」＝这台宿主没有那个包，正常跳过；「部分副本未清洗」＝同一个载体在宿主本体已生效、但 profile 里装的插件那份还是原文（常见于刚升级过 `pi-ai`）。四种都不是「插件坏了」，最后一种跑一次 `--apply` 补齐即可。
 
 ### 面板显示的数字为什么和别人不一样？
 面板按 surface 统计，Web 与桌面是两套基线。比较之前先确认同一个宿主版本、同一个 surface。
@@ -386,7 +386,7 @@ dsh-purge/
 
 ```sh
 node -e "import('./lib/core.js').then(m=>console.log('patches='+m.ALL_PATCHES.length))"   # 期望 82
-node --test                                                                              # 期望 pass 194 / fail 0
+node --test                                                                              # 期望 pass 197 / fail 0
 npm run compat:check                                                                     # 期望「compat matrix / README / compat.json 三者一致」
 ```
 
