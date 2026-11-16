@@ -1,3 +1,25 @@
+# 1.2.9
+
+## 中文
+
+- **修「红队模式加载失败」**：1.2.8 把预设写成 rc.3 声明行后，模式卡显示了但带红标「加载失败」。逐行核对插件名后定位到两处 rc.3 改名/删包：
+  - `@deepseek-ai/dsh-tool-subagent-control/list-agents` 子路径在 rc.3 已删除，`list_agents` 现在由主入口注册；继续写这一行 → 整份预设激活失败。
+  - `@deepseek-ai/dsh-workflow-worker-thread` 包在 rc.3 不存在，即便 `disabled: true` 也会拖垮激活。
+- 预设模板 `presets/redteam/agent.cordis.yml` 删掉这两行，其余 16 行逐一在宿主里校验存在且导出匹配。
+- 真机 profile 的 `preset-redteam` 声明行已用 `force` 重写并复验（宿主自带 YAML 解析器：`id: redteam`、`name: 红队模式`、无失效插件名）。
+- 全套 `node --test` **233 通过 / 0 失败**；`compat:check` 一致。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Fixes "red-team mode failed to load"**: 1.2.8 moved the preset to an rc.3 declaration row, and the card appeared with a red "failed to activate" badge. Auditing every plugin name found two rc.3 changes:
+  - `@deepseek-ai/dsh-tool-subagent-control/list-agents` no longer exists as a subpath; `list_agents` is registered by the main entry, and keeping the old row fails the whole preset.
+  - `@deepseek-ai/dsh-workflow-worker-thread` has no package in rc.3, and even `disabled: true` still breaks activation.
+- Both rows are removed from `presets/redteam/agent.cordis.yml`; the remaining 16 rows are checked against the host for presence and matching exports.
+- The live profile's `preset-redteam` row was rewritten with `force` and re-validated with the host's YAML parser (`id: redteam`, `name: 红队模式`, no dead plugin names).
+- `node --test` **233 passing / 0 failing**; `compat:check` clean.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.8
 
 ## 中文
