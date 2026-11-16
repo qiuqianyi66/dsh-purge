@@ -104,7 +104,8 @@ const diag = drift.diagnose({
   appliesHere: (p) => core.patchAppliesHere(p),
 });
 gate("G4", diag.drifted.length === 0 && diag.partial.length === 0 && diag.carrier_missing.length === 0,
-  `命中 ${diag.clean.length} / drifted ${diag.drifted.length} / partial ${diag.partial.length} / carrier_missing ${diag.carrier_missing.length}`);
+  `命中 ${diag.clean.length} / drifted ${diag.drifted.length} / partial ${diag.partial.length} / carrier_missing ${diag.carrier_missing.length}` +
+    (diag.carrier_missing.length ? `（${diag.carrier_missing.map((e) => `#${e.id}`).join(",")}）` : ""));
 
 const jsBad = [];
 for (const fp of changed.filter((p) => p.endsWith(".js"))) {

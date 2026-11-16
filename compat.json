@@ -1,6 +1,6 @@
 {
   "name": "dsh-purge",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "dshTarget": "0.2.2-rc.3",
   "generatedBy": "scripts/gen-compat-readme.mjs",
   "source": "lib/compat-matrix.js",
@@ -24,19 +24,20 @@
     "applySimulation": {
       "applied": 58,
       "already": 6,
-      "missingFile": 7,
-      "skipped": 2,
-      "na": 9,
-      "jsFilesChecked": 31,
-      "syntaxFailures": 0
+      "filesChanged": 49,
+      "jsFilesChecked": 39,
+      "syntaxFailures": 0,
+      "na": 15,
+      "skipped": 1,
+      "missingFile": 1
     },
     "hostDiagnose": {
       "host": "0.2.2-rc.3",
       "surface": "desktop",
       "patches": 82,
-      "fileVerified": 42,
+      "fileVerified": 71,
       "partialCopies": 0,
-      "noFileField": 29,
+      "noFileField": 0,
       "optionalMissing": 7,
       "retired": 4,
       "driftChangedSource": 0,
@@ -44,14 +45,14 @@
       "carrierMissing": 0
     },
     "unitTests": {
-      "passed": 217,
+      "passed": 225,
       "failed": 0
     }
   },
   "matrix": [
     {
       "dsh": "0.2.2-rc.3",
-      "plugin": "1.2.4",
+      "plugin": "1.2.5",
       "status": "supported",
       "evidence": {
         "contract": "verified",

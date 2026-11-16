@@ -1,3 +1,27 @@
+# 1.2.5
+
+## 中文
+
+- **修掉一个比 1.2.1 更大的诊断盲区**：`diagnose` 只认数组形态的 `file`，而 **29 条补丁（#1/#2/#3/#21/#22/#45/#46/#82-#85…，占 35%）用字符串声明载体**，整批被塞进「无文件字段 29 条」——等于这三分之一补丁从未参与漂移诊断。现在 `file` 字符串与数组同口径展开；真机 `--diagnose` 从「42 命中 + 29 无文件字段」变为 **71 条可命中 / 无文件字段 0**，与 `--status` 的 70/71 完全对齐。
+- **补齐四类特殊补丁的判定语义**（否则它们一旦可见就会被误判成「目标已消失」）：① 校验型（官方原文 marker，如 #2/#3）→ `verified`；② 带编号自标记（#88 校验 #87 的 `[dsh-purge-87]`）→ 未出现时 `verify_pending`（待配套），不是漂移；③ 占位/撤销型（#14/#80 的 `[dsh-purge]` 自标记永不写入）→ `noop`；④ 迁移/恢复默认型（`softSettle`，如 #21）→ `satisfied`。新增独立桶并在诊断行里分开计数。
+- **两条被基线丢失误伤的补丁**：#1 `WORKSPACE_CONTEXT_INTRO`、#22 `READ_CAPS_RAISED` 的 marker 是补丁自己写进去的人造文本（强句 / 1e4、1MB、2e4），但基线备份曾被覆盖成「已打态」，diff 为空导致诊断判成「目标已消失」。声明 `markersStrict` 后按「marker 在 + 原 pattern 不在」判定为已生效。
+- **多候选载体不再被一个不存在的键整条判死**：#24 的 `preset-unrestricted`/`preset-liangshen`、#46 的 `system-prompt-nested` 在 rc.3 里根本没有，旧口径只要有一个键解析不到就整条进「载体缺失」。现在只要有一个候选能探到就按实际结论归类，缺的键记进 `unresolvedKeys`；`#83 DESKTOP_HOST_CLOSE_NO_FATAL` 的载体是桌面壳 `main.js`（纯 npm 树不存在），改标 `optional`，隔离门禁不再因此判红。
+- **#24 `PRESET_FETCH_ENABLED` 判为默认态满足**：rc.3 的 preset 原生就是 `fetch: true`，`fetch: false` 块已不存在；声明 `softSettle` 且要求 marker（`fetch: true`）同时命中，避免上游换写法时被误报成已满足。
+- **status 口径**：#88 在净树上由 `drifted` 改为 `pending`（待配套），revert 后不再出现「已还原却仍报漂移」的假告警。
+- 新增 `test/diagnose-caliber.test.js` 8 条（字符串 file、校验型两向、待配套、占位、softSettle、softSettle+markers、多候选载体、#88 净树/已打）；全套 `node --test` 225 通过 / 0 失败；`npm run cycle:isolated` 六判据 OK 6/6；真机 `--status` 70/71、0 待清洗，`--diagnose` 71 命中、漂移 0、目标已消失 0、待配套 0、载体缺失 0、无文件字段 0。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **A diagnostic blind spot larger than the 1.2.1 one**: `diagnose` only accepted array-form `file`, while **29 of 82 patches (35%) declared their carrier as a string** (#1/#2/#3/#21/#22/#45/#46/#82–#85, …). All of them fell into a bucket mislabelled "no file field", so a third of the patch set had never been drift-diagnosed. String and array forms are now expanded identically; live `--diagnose` moves from "42 matched + 29 no-file-field" to **71 matched / 0 no-file-field**, exactly aligning with `--status` 70/71.
+- **Four special patch classes now have explicit semantics** (otherwise they would be misread as "target gone" the moment they became visible): verify-only official markers → `verified`; numbered self-markers (#88 checks #87's `[dsh-purge-87]`) → `verify_pending` when absent, not drift; placeholder/undo patches (#14/#80 `[dsh-purge]` never written) → `noop`; migration/restore-default (`softSettle`, #21) → `satisfied`. Each has its own bucket and count in the diagnostic line.
+- **Two patches wrongly hit by a lost baseline**: #1 `WORKSPACE_CONTEXT_INTRO` and #22 `READ_CAPS_RAISED` carry markers the patch itself writes (strong sentences / 1e4, 1MB, 2e4), but the backup had been overwritten with the applied state, leaving an empty diff and a "target gone" verdict. Declaring `markersStrict` makes "marker present + original pattern absent" count as applied.
+- **One unresolvable candidate key no longer fails a whole patch**: #24's `preset-unrestricted`/`preset-liangshen` and #46's `system-prompt-nested` simply do not exist in rc.3, yet the old rule sent the entire patch to "carrier missing" as soon as any key failed to resolve. Now one evaluable candidate is enough, unresolvable keys are recorded in `unresolvedKeys`, and `#83 DESKTOP_HOST_CLOSE_NO_FATAL` (carrier = desktop-shell `main.js`, absent from a pure npm tree) is marked `optional` so the isolated gate stops failing on it.
+- **#24 `PRESET_FETCH_ENABLED` classified as default-state satisfied**: rc.3 presets already ship `fetch: true` and the `fetch: false` block is gone; `softSettle` now requires its marker (`fetch: true`) to hit as well, so a rewritten upstream config cannot be misread as satisfied.
+- **Status caliber**: #88 flips from `drifted` to `pending` on a pristine tree (companion patch not yet run), so a completed revert no longer reports a phantom drift.
+- 8 cases in `test/diagnose-caliber.test.js`; `node --test` 225 passing / 0 failing; `npm run cycle:isolated` OK 6/6; live host `--status` 70/71 with 0 pending, `--diagnose` 71 matched, 0 drift, 0 dead target, 0 verify-pending, 0 missing carrier, 0 no-file-field.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.4
 
 ## 中文
