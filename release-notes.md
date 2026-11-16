@@ -1,3 +1,17 @@
+# 1.2.3
+
+## 中文
+
+- 1.2.2 的桌面壳作用域修复补上 macOS 布局：`shellMainForAiBase` 改为按「`@deepseek-ai` 上四级目录名 = resources（大小写不敏感）」定位，Windows `resources` 与 macOS `Contents/Resources` 都只跟随本树，仍不会跨树。
+- 新增第 3 条范围回归（macOS `Contents/Resources` 布局）；全套 `node --test` 215 通过 / 0 失败。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- Extends the 1.2.2 desktop-shell scope fix to the macOS layout: `shellMainForAiBase` now derives the resources directory four levels above `@deepseek-ai` and accepts either `resources` or `Contents/Resources` (case-insensitive), still never crossing trees.
+- Adds a third scope regression (macOS `Contents/Resources`); `node --test` 215 passing / 0 failing.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.2
 
 ## 中文

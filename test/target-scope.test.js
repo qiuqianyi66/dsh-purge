@@ -31,3 +31,15 @@ test("非 resources/app 布局（隔离包/源码树）不挂真实桌面壳", (
   const files = targetFiles(aiBase, root);
   assert.ok(!files["desktop-shell"], "非桌面 resources/app 布局不得挂桌面壳");
 });
+
+test("macOS 的 Contents/Resources 布局同样只认自己那套壳", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "dsh-purge-scope-"));
+  const resources = path.join(root, "Contents", "Resources");
+  const app = path.join(resources, "app");
+  const aiBase = path.join(app, "dsh", "node_modules", "@deepseek-ai");
+  fs.mkdirSync(aiBase, { recursive: true });
+  fs.mkdirSync(path.join(app, "lib"), { recursive: true });
+  fs.writeFileSync(path.join(app, "lib", "main.js"), "// shell\n", "utf8");
+  const files = targetFiles(aiBase, root);
+  assert.equal(path.normalize(files["desktop-shell"]), path.normalize(path.join(app, "lib", "main.js")));
+});
