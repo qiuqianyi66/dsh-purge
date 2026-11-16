@@ -16,6 +16,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff)](package.json)
 [![Patches](https://img.shields.io/badge/patches-82-informational)](lib/core.js)
 [![Audit](https://img.shields.io/badge/rc.3%20audit-0%20drift-brightgreen)](compat.json)
+[![M8ven Score](https://m8ven.ai/badge/mcp/qiuqianyi66-dsh-purge-zqj82m7v=cf89723ca8602daa38992979418ddb3c)](https://m8ven.ai/mcp/qiuqianyi66-dsh-purge-zqj82m7v=readme)
 
 ```sh
 dsh plugin --profile web add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main
@@ -29,7 +30,7 @@ dsh plugin --profile web add https://codeload.github.com/qiuqianyi66/dsh-purge/t
 
 > ⚠️ **仅用于本机 / 内网授权靶场。** 开源版攻击任务只放行回环与 RFC1918 私网；禁止公网攻击、游戏外挂、倒卖。细则见[合规边界](#strict-legal--compliance-disclaimer)。
 
-> **维护者（2026-11）**：本仓库是原始 dsh-purge（作者 **YuJunZhiXue**，上游已不再公开）的衍生作品，由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护分发，issue、更新与安装源以本仓库为准。当前 **1.1.89**，适配 DSH **0.2.2-rc.3**。许可证与原始版权见 [LICENSE](./LICENSE)、[NOTICE](./NOTICE)。
+> **维护者（2026-11）**：本仓库是原始 dsh-purge（作者 **YuJunZhiXue**，上游已不再公开）的衍生作品，由 [@qiuqianyi66](https://github.com/qiuqianyi66) 维护分发，issue、更新与安装源以本仓库为准。当前 **1.1.90**，适配 DSH **0.2.2-rc.3**。许可证与原始版权见 [LICENSE](./LICENSE)、[NOTICE](./NOTICE)。
 
 ---
 
