@@ -33,3 +33,6 @@ default-prompt-inject.md
 *.asar
 *.asar.bak
 *.bak
+
+# 本机隔离验证工作区（host 树 + 临时脚本）
+.tmp/

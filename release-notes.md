@@ -1,3 +1,19 @@
+# 1.2.4
+
+## 中文
+
+- **隔离全链路固化成门禁脚本**：新增 `npm run cycle:isolated`（`scripts/isolated-cycle.mjs`）——在干净官方包树上跑 `backupAll → apply → diagnose → revert`，六条判据任一失败即退出码 1：G1 干净树（有 `.dshpurge.bak`/`tx` 残留直接拒跑）、**G2 所有解析出的载体路径必须都在隔离树内（跨树副作用门禁，1.2.2 那类事故从此机器可拦）**、G3 apply 0 失败且确实改写了文件、G4 drifted/partial/carrier_missing 全 0、G5 改写 `.js` 语法全过、G6 revert 后与原始树逐字节 0 差异。rc.3 实测 OK 6/6。
+- CLI 行为回归：树缺失 / 树有残留两种情形退出码 2 且给出铺树命令（`test/isolated-cycle-cli.test.js` 2 条）。
+- `.tmp/` 工作区加入 `.gitignore`；README / README.en / llms.txt 增加门禁命令并把「离体实打」数字更新为本轮实测（58 applied / 49 改写 / 39 `.js` 语法全过）。
+- 全套 `node --test` 217 通过 / 0 失败。维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Isolated full-cycle promoted to a gate script**: `npm run cycle:isolated` (`scripts/isolated-cycle.mjs`) runs `backupAll → apply → diagnose → revert` on a clean official package tree and exits 1 when any of six criteria fails: G1 clean tree (refuses to run on leftover `.dshpurge.bak`/`tx` files), **G2 every resolved carrier path must stay inside the isolation tree (the cross-tree-side-effect gate — the 1.2.2 class of bug is now machine-catchable)**, G3 apply with 0 failures and real changes, G4 drifted/partial/carrier_missing all 0, G5 syntax-clean on every modified `.js`, G6 byte-for-byte 0 diff after revert. Measured OK 6/6 on rc.3.
+- CLI behaviour regression: missing tree / dirty tree exit 2 with the staging command (`test/isolated-cycle-cli.test.js`, 2 cases).
+- `.tmp/` workspace gitignored; README / README.en / llms.txt document the gate command and refresh the isolated-apply numbers to this round's measurements.
+- `node --test` 217 passing / 0 failing. Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.3
 
 ## 中文
