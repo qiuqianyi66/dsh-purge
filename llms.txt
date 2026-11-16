@@ -25,6 +25,7 @@
 - 安装：`dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main`
 - 状态：`node node_modules/dsh-purge/bin/dsh-purge.js --status`
 - 诊断（只读）：`--diagnose [--json]`
+- 本地重锚（只读查看）：`--anchors`；覆盖文件 `$DSH_HOME/dsh-purge/anchor-overrides.json`，apply/status/diagnose 自动读取，删文件即恢复
 - 升级前审计：`npm run audit:next -- --version 0.2.2-rc.3 --fail-on drift`（需重对齐必须为 0）
 - 单元测试：`node --test`
 - 矩阵一致性：`npm run compat:check`

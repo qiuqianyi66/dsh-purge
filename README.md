@@ -39,7 +39,7 @@
 
 1. **规模**：82 条补丁，分布在 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface。
 2. **依赖**：目标宿主 DSH `0.2.2-rc.3`，Node.js ≥ 18，装进 profile 的 `node_modules`，不装全局、不碰远程仓库。
-3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 197 通过。
+3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 203 通过。
 
 | 快速事实 | 值 |
 | --- | --- |
@@ -258,7 +258,7 @@ purge_status   purge_apply   purge_revert
 | 离体实打 | 58 applied / 6 already / 7 missing_file / 2 skipped / 9 na；改动 31 个 `.js`，语法失败 0 | 同上 |
 | 真宿主诊断 | 82 条 = **42 条文件核验命中** + 29 条无文件字段（运行时注入，不落盘）+ 7 条本机无对应载体（可选：#28/#30/#31/#64/#65/#71/#76）+ 4 条已退役；**改过原文 0 · 目标已消失 0 · 载体缺失 0 · 部分副本未清洗 0** | `node node_modules/dsh-purge/bin/dsh-purge.js --diagnose` |
 | 宿主自检日志 | `surface:desktop` / `sealed:false` / `boot:host-untouched` | `$DSH_HOME/dsh-purge/logs/selfcheck.log` |
-| 单元测试 | 197 通过 / 0 失败 | `node --test` |
+| 单元测试 | 203 通过 / 0 失败 | `node --test` |
 | 版本关系 | rc.2 与 rc.3 的四个载体文件逐字节一致，失配源自 rc.2 而非 rc.3 | 解包 diff |
 
 机器可读版本在 [`compat.json`](./compat.json)，由 `lib/compat-matrix.js` 生成，`npm run compat:check` 在 CI 里校验，README 表格与它不会走散。
@@ -293,6 +293,16 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 本机版本落后于矩阵目标时它会报 `HOST_BEHIND_MATRIX`，且不会把矩阵目标往回推。
 
 诊断三态怎么读：**待应用** = 原文命中还没写，去点「应用」；**漂移** = 官方原文变了，pattern 打不上，需要重对齐；**载体缺失** = 这台宿主没装那个包，属正常跳过。
+
+### 宿主改了原文，不想等新版？本地重锚
+
+在 `$DSH_HOME/dsh-purge/anchor-overrides.json` 里给某条补丁钉一个新锚点即可，`apply` / `status` / `diagnose` 三处共用同一份覆盖，删掉文件就恢复原状，不改插件源码：
+
+```json
+{ "patches": { "57": { "pattern": "新版宿主里的原文", "replacement": "替换后的文本", "note": "rc.3 改句" } } }
+```
+
+覆盖项是**追加候选**：老宿主继续命中老锚点，新宿主命中新候选；旧锚点 0 命中不再按命中数契约拒写，但新锚点自身声明 `expect` 时仍严格校验。`dsh-purge --anchors` 只读列出覆盖条目与解析结果，`--diagnose` 会打一行 `⚓ 本地重锚 N 条生效` 标明来源；坏 JSON 只报错、不生效。
 
 ---
 
@@ -386,7 +396,7 @@ dsh-purge/
 
 ```sh
 node -e "import('./lib/core.js').then(m=>console.log('patches='+m.ALL_PATCHES.length))"   # 期望 82
-node --test                                                                              # 期望 pass 197 / fail 0
+node --test                                                                              # 期望 pass 203 / fail 0
 npm run compat:check                                                                     # 期望「compat matrix / README / compat.json 三者一致」
 ```
 

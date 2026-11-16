@@ -32,7 +32,7 @@
 
 1. **Scale** — 82 patches across 65 carrier keys (concrete host files), covering both the web and desktop surfaces.
 2. **Requirements** — target host DSH `0.2.2-rc.3`, Node.js ≥ 18, installed into a profile's `node_modules`; nothing global, nothing written to remote repositories.
-3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 missing carriers and 0 partially-patched copies**; `node --test` 197 passing.
+3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 missing carriers and 0 partially-patched copies**; `node --test` 203 passing.
 
 | Quick fact | Value |
 | --- | --- |
@@ -163,7 +163,7 @@ Current release `1.1.91` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `
 | **0.2.0-rc.2** | **1.1.40+** | — | Older line, see Releases |
 | **0.1.7** | **1.1.39-** | — | Older line, see Releases |
 
-**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier, 0 partially-patched copies**; `node --test` 197 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
+**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier, 0 partially-patched copies**; `node --test` 203 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
 
 **rc.3 desktop packaging, the one thing to know:** the runtime ships inside `resources/app.asar` (209,021,953 B), `resources/runtime` is empty and there is no plain `resources/app/dsh` tree. Electron reads the asar before a same-named directory, so patches must land in plain files and the asar must move out of the way — Apply does both and restarts the host; CLI `--apply` prints the manual rename step instead of killing your process. Since `1.1.90` the CLI also detects a desktop host from the `aiBase` path, so desktop-shell patches are no longer skipped in a plain Node process.
 
@@ -216,6 +216,16 @@ Either `dsh.profile.bundles` lacks `"dsh-purge"` or `cordis.patch.yml` lacks the
 ### Applied but behaviour unchanged?
 
 Run `--diagnose`: drift means upstream text changed, pending means not yet written, carrier missing means this host lacks that package.
+
+### Upstream rewrote the text and you do not want to wait for a release? Local re-anchor
+
+Drop a new anchor for one patch into `$DSH_HOME/dsh-purge/anchor-overrides.json`; `apply`, `status` and `diagnose` all read the same file, deleting it restores the original behaviour, and no plugin source changes:
+
+```json
+{ "patches": { "57": { "pattern": "text in the new host build", "replacement": "patched text", "note": "rc.3 rewording" } } }
+```
+
+Overrides are **extra candidates**: older hosts keep matching the original anchor, newer hosts match the override; a zero-hit original no longer trips the hit-count contract, while an override that declares `expect` is still checked strictly. `dsh-purge --anchors` lists the entries and their parse result, `--diagnose` prints `⚓ 本地重锚 N 条生效` so the evidence always names its source, and a broken JSON only reports an error instead of taking effect.
 
 ### Why do console numbers differ between machines?
 

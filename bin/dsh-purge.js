@@ -7,6 +7,7 @@ import * as preupdate from "../lib/preupdate.js";
 import * as restoreGuard from "../lib/restore-guard.js";
 import * as compatMatrix from "../lib/compat-matrix.js";
 import * as selfcheckLog from "../lib/selfcheck-log.js";
+import { readAnchorOverrides } from "../lib/anchor-overrides.js";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -150,6 +151,13 @@ function printStatus(state) {
     const mark = s === "applied" ? "✓" : s === "pending" ? "✗" : s === "drifted" ? "!" : "·";
     out.push(`    ${mark} [#${String(p.id).padEnd(2)}] ${p.name.padEnd(30)} ${p.layer}/${p.layer_en} — ${s}`);
   }
+  const anchorOverrides = readAnchorOverrides(core.findDshHome());
+  if (anchorOverrides.exists && anchorOverrides.ids.length) {
+    out.push(
+      `  ⚓ 本地重锚 / anchor overrides  ${anchorOverrides.ids.length} 条：` +
+        `${anchorOverrides.ids.map((id) => `#${id}`).join("/")}${anchorOverrides.ok ? "" : "（解析有错，未生效）"}`
+    );
+  }
   out.push("");
   out.push(`  shim: dsh.cmd=${state.shim_cmd}  dsh.ps1=${state.shim_ps1}  dsh=${state.shim_bin}`);
   return out.join("\n");
@@ -180,13 +188,14 @@ function sealedAsarHint(aiBase) {
 }
 
 async function main() {
-  const mode = args.find((a) => ["--apply", "--revert", "--uninstall", "--status", "--edit", "--diagnose", "--preupdate", "--help"].includes(a));
+  const mode = args.find((a) => ["--apply", "--revert", "--uninstall", "--status", "--edit", "--diagnose", "--preupdate", "--anchors", "--help"].includes(a));
 
   if (mode === "--help" || args.includes("-h")) {
     console.log(`dsh-purge 用法:
   dsh-purge --status     显示状态
   dsh-purge --diagnose   补丁漂移诊断（只读）：载体是否还在、pattern 还命中几次、官方改了什么
                          加 --json 输出机器可读结果；加 --all-hosts 连残留 base 一起查
+  dsh-purge --anchors    本地重锚覆盖（只读）：列出 $DSH_HOME/dsh-purge/anchor-overrides.json 的条目与解析结果
   dsh-purge --preupdate  升级前预检（只读）：这次更新会不会把 DSH 弄崩、更新前该做什么
                          加 --json 输出机器可读结果
   dsh-purge --apply      应用全部清洗（提示词+代码+shim+override）
@@ -194,6 +203,25 @@ async function main() {
   dsh-purge --uninstall  卸载插件（已应用则先还原）
   dsh-purge --edit       编辑注入文件 prompt-inject.md
   dsh-purge --help       帮助`);
+    return;
+  }
+
+  // 本地重锚：只读列出覆盖条目，让用户能确认「这条为什么能打上」。
+  if (mode === "--anchors") {
+    const rep = readAnchorOverrides(core.findDshHome());
+    console.log("本地重锚覆盖 / anchor overrides");
+    console.log(`  文件 / file  ${rep.path || "（DSH_HOME 未定位）"}${rep.exists ? "" : "（不存在，未启用）"}`);
+    for (const id of rep.ids) {
+      const patch = core.ALL_PATCHES.find((p) => p.id === id);
+      const n = (rep.entries.get(id) || []).length;
+      console.log(`  #${id} ${patch ? patch.name : "（补丁表里没有这个 id）"} — ${n} 条候选锚点`);
+    }
+    for (const err of rep.errors) console.log(`  ⚠ ${err}`);
+    console.log(rep.ok ? "  解析：通过" : "  解析：有错误，覆盖不会生效");
+    if (!rep.exists) {
+      console.log('  用法 / usage：新建该文件，内容形如 { "patches": { "57": { "pattern": "…", "replacement": "…", "note": "rc.3 改句" } } }');
+      console.log("  apply / status / diagnose 会自动读取；删掉文件即恢复原状。");
+    }
     return;
   }
 
