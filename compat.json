@@ -1,6 +1,6 @@
 {
   "name": "dsh-purge",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "dshTarget": "0.2.2-rc.3",
   "generatedBy": "scripts/gen-compat-readme.mjs",
   "source": "lib/compat-matrix.js",
@@ -52,7 +52,7 @@
   "matrix": [
     {
       "dsh": "0.2.2-rc.3",
-      "plugin": "1.2.7",
+      "plugin": "1.2.8",
       "status": "supported",
       "evidence": {
         "contract": "verified",

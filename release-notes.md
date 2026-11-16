@@ -1,3 +1,23 @@
+# 1.2.8
+
+## 中文
+
+- **红队模式在 rc.3 上装不出来的根因**：0.2.2 起宿主不再读取 `$DSH_HOME/.agent-presets/<id>/`（官方文档原话 "Nothing reads that directory any more"），预设改为 bundle 补丁里的 `@deepseek-ai/dsh-agent-preset` **声明行**。本插件一直只写旧目录，于是模式下拉里没有红队模式，面板仍在、`/redteam/api` 也通——只剩入口消失。
+- **`installPreset` 增加新版分支**：宿主能解析到 `@deepseek-ai/dsh-agent-preset` 时，改为在挂着本插件的 profile `cordis.patch.yml` 追加 `preset-redteam` 声明行（`id/name/description/order/plugins`），插件列表从包内 `presets/redteam/agent.cordis.yml` 生成、跳过锚点门行（它是性能项，不是功能项）；幂等，已存在就保留，`force` 才重写。旧目录安装保留给 rc.2 及更早。
+- 声明行里显示的预设名是「红队模式」；插件逐项校验：本轮只缺 `dsh-workflow-worker-thread`（模板里本就 `disabled: true`，不影响激活）。
+- 真机已按此格式写入 `~/.dsh/profiles/desktop/cordis.patch.yml`（YAML 用宿主自带解析器验证：`preset-redteam` / `plugins` 18 行 / 首行 persona），重启后模式下拉应出现红队模式。
+- 全套 `node --test` **233 通过 / 0 失败**；`compat:check` 一致。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Why the red-team mode never showed up on rc.3**: 0.2.2 no longer reads `$DSH_HOME/.agent-presets/<id>/` ("Nothing reads that directory any more" in the official docs); presets are now `@deepseek-ai/dsh-agent-preset` **declaration rows** inside bundle patches. This plugin kept writing only the legacy directory, so the console and `/redteam/api` stayed up while the mode vanished from the picker.
+- **`installPreset` gained a modern branch**: when the host resolves `@deepseek-ai/dsh-agent-preset`, it appends a `preset-redteam` declaration row (`id/name/description/order/plugins`) to the profile `cordis.patch.yml` that carries this plugin, generating the plugin list from the bundled `presets/redteam/agent.cordis.yml` and skipping the anchor-gate row (a performance knob, not a feature). Idempotent: kept when present, rewritten only with `force`. Legacy install remains for rc.2 and older.
+- The row shows the preset as 红队模式. Every plugin name was checked; only `dsh-workflow-worker-thread` is absent, and the template already ships it `disabled: true`, so activation is unaffected.
+- The live profile has the row now (validated with the host's own YAML parser: `preset-redteam`, 18 plugins, first row persona); restart makes it appear in the picker.
+- `node --test` **233 passing / 0 failing**; `compat:check` clean.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.7
 
 ## 中文
