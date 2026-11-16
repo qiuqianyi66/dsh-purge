@@ -1,3 +1,20 @@
+# 1.2.7
+
+## 中文
+
+- **修 1.2.6 的复发口子**：宿主重启会走「过期基线上刷新」自愈（`refreshStaleBaksForUpgrade`），原判据是「正文里没有 `dsh-purge` 字面量且与 bak 不同 → 认定成官方新版，把 bak 刷成正文」。但 #1/#22/#33/#48 这类补丁**只改文案、不写 marker 注释**，于是刚重建好的基线被下一次启动原样打回已打态——真机实测重启一次，8 个刚修好的文件全部复发成 `baseline_lost`（`dsh-agent-instructions/lib/index.js` 从 63281 字节的官方原件又变回 63970 字节的已打态）。
+- **判据换成补丁自己的**：逐文件按「marker 命中 + 原 pattern 已不命中」判定正文是否已被我们写过，命中就不动 bak；只有正文确实回到官方新版（原 pattern 还在）才刷新基线。拿不到补丁索引时退回旧的字面量判据，不改变无补丁文件的行为。
+- 新增 `test/upgrade-refresh.test.js` 3 条：已打态无字面量不刷基线、官方新版照常刷新、`applyPatches` 内部刷新后再 `revertAll` 回到官方新版而非旧版。全套 `node --test` **233 通过 / 0 失败**。
+- `npm run cycle:isolated` 在 rc.3 隔离树 **OK 6/6**，与 1.2.6 同口径。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Closes the 1.2.6 regression window**: every host boot runs the "stale baseline refresh" self-heal (`refreshStaleBaksForUpgrade`), which used to decide "no `dsh-purge` literal + differs from bak ⇒ this is the official new version, overwrite bak with the current bytes". Patches #1/#22/#33/#48 only rewrite sentences and never write marker comments, so every freshly rebuilt baseline was reverted to the patched state on the next boot — on the live host all 8 repaired files relapsed to `baseline_lost` after one restart (`dsh-agent-instructions/lib/index.js` went from the 63281-byte official copy back to the 63970-byte patched one).
+- **The refresh now uses the patch's own verdict**: per file it checks "marker present + original pattern gone"; when that holds the backup is left alone, and only a file that really is the official new version gets its baseline refreshed. Without a patch index it falls back to the old literal check, so files no patch touches keep the previous behaviour.
+- 3 new cases in `test/upgrade-refresh.test.js`; `node --test` **233 passing / 0 failing**. `npm run cycle:isolated` remains **OK 6/6** on the rc.3 tree.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.6
 
 ## 中文
