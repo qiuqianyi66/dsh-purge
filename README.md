@@ -39,12 +39,12 @@
 
 1. **规模**：82 条补丁，分布在 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface。
 2. **依赖**：目标宿主 DSH `0.2.2-rc.3`，Node.js ≥ 18，装进 profile 的 `node_modules`，不装全局、不碰远程仓库。
-3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 203 通过。
+3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 209 通过。
 
 | 快速事实 | 值 |
 | --- | --- |
 | 项目名 / 仓库 | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
-| 当前版本 / 宿主目标 | `1.1.91` / DSH `0.2.2-rc.3`（`dshTarget` 同值） |
+| 当前版本 / 宿主目标 | `1.2.0` / DSH `0.2.2-rc.3`（`dshTarget` 同值） |
 | 许可证 / 上游版权 | Apache-2.0 · Copyright 2026 YuJunZhiXue（见 [`NOTICE`](./NOTICE)） |
 | 运行前提 | Node.js ≥ 18；DSH 桌面版或官方 `dsh web`；pnpm |
 | 安装一条命令 | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
@@ -131,7 +131,7 @@ dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-pur
 
 压缩包地址必须写成 `codeload.github.com`；写成 `github.com/.../archive` 会 302 跳转，pnpm 直接报 `fetch failed`。
 
-**第 2 步 · 核对装上了没**（在 `$DSH_HOME` 下执行，期望输出 `1.1.91`）
+**第 2 步 · 核对装上了没**（在 `$DSH_HOME` 下执行，期望输出 `1.2.0`）
 
 ```sh
 node -p "require('./profiles/desktop/node_modules/dsh-purge/package.json').version"
@@ -223,12 +223,12 @@ purge_status   purge_apply   purge_revert
 
 ## 7. 兼容性与实测数据（2026-11-16）
 
-**当前版本 `1.1.91` 的靶子是 DSH `0.2.2-rc.3`**（`package.json` 的 `dshTarget` 同值）。`0.1.x`、`0.2.1-rc.x` 不在本版本目标内，需要旧版本请到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 取对应标签。
+**当前版本 `1.2.0` 的靶子是 DSH `0.2.2-rc.3`**（`package.json` 的 `dshTarget` 同值）。`0.1.x`、`0.2.1-rc.x` 不在本版本目标内，需要旧版本请到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 取对应标签。
 
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 | 证据 | 说明 |
 | --- | --- | --- | --- |
-| **0.2.2-rc.3** | **1.1.91** | 契约✓ 实打✓ 冒烟✓ 真机✗ | rc.3 桌面版起把运行时打进 resources/app.asar；面板「应用」会自动解包、挪走 asar、重启。rc.2 引入 SandboxEscalationError / approvalDenial 新原文，rc.2 与 rc.3 四个载体文件逐字节一致 |
+| **0.2.2-rc.3** | **1.2.0** | 契约✓ 实打✓ 冒烟✓ 真机✗ | rc.3 桌面版起把运行时打进 resources/app.asar；面板「应用」会自动解包、挪走 asar、重启。rc.2 引入 SandboxEscalationError / approvalDenial 新原文，rc.2 与 rc.3 四个载体文件逐字节一致 |
 | **0.2.2-rc.1** | **1.1.88** | 契约✓ 实打✓ 冒烟✓ 真机✗ | 只有 rc.1 能用旧 pattern；rc.2 起（含 rc.3）需要 1.1.89 的新 pattern，装 1.1.88 会静默失配 |
 | **0.2.1-rc.x** | unknown | — | 不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
 | **0.2.0-rc.2** | **1.1.40+** | — | 旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
@@ -258,7 +258,7 @@ purge_status   purge_apply   purge_revert
 | 离体实打 | 58 applied / 6 already / 7 missing_file / 2 skipped / 9 na；改动 31 个 `.js`，语法失败 0 | 同上 |
 | 真宿主诊断 | 82 条 = **42 条文件核验命中** + 29 条无文件字段（运行时注入，不落盘）+ 7 条本机无对应载体（可选：#28/#30/#31/#64/#65/#71/#76）+ 4 条已退役；**改过原文 0 · 目标已消失 0 · 载体缺失 0 · 部分副本未清洗 0** | `node node_modules/dsh-purge/bin/dsh-purge.js --diagnose` |
 | 宿主自检日志 | `surface:desktop` / `sealed:false` / `boot:host-untouched` | `$DSH_HOME/dsh-purge/logs/selfcheck.log` |
-| 单元测试 | 203 通过 / 0 失败 | `node --test` |
+| 单元测试 | 209 通过 / 0 失败 | `node --test` |
 | 版本关系 | rc.2 与 rc.3 的四个载体文件逐字节一致，失配源自 rc.2 而非 rc.3 | 解包 diff |
 
 机器可读版本在 [`compat.json`](./compat.json)，由 `lib/compat-matrix.js` 生成，`npm run compat:check` 在 CI 里校验，README 表格与它不会走散。
@@ -304,6 +304,11 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 
 覆盖项是**追加候选**：老宿主继续命中老锚点，新宿主命中新候选；旧锚点 0 命中不再按命中数契约拒写，但新锚点自身声明 `expect` 时仍严格校验。`dsh-purge --anchors` 只读列出覆盖条目与解析结果，`--diagnose` 会打一行 `⚓ 本地重锚 N 条生效` 标明来源；坏 JSON 只报错、不生效。
 
+### 写入与版本的两条硬约束
+
+- **fail-closed 写盘**：一条补丁的所有目标文件先在内存里算完，提交前逐文件校验内容指纹（磁盘原文仍等于计算时那份），再原子写入；任一步失败就把已写文件写回原文并报 `write_error:…:rolled_back_N`，不留「半打」状态。
+- **候选锚点与多版本**：`replacements` 里的 `pattern` 可写成数组（`["旧版原文", "新版原文"]`），只在唯一命中时替换，两版同处一份文件就整条拒写；`package.json` 的 `dshTargets` 可声明多个已验证宿主版本，命中其一即视为适配。未验证的版本不要写进去，`audit:next` 的「需重对齐 0」才是准入证据。
+
 ---
 
 ## 9. 还原、升级与卸载
@@ -323,7 +328,7 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 | --- | --- |
 | 原仓库 `YuJunZhiXue/dsh-purge` | 已删除 / 转私有；最后制品只验到 `0.2.2-rc.1` |
 | 镜像 `mmparko/dsh-purge` | 冻结在 `1.1.71` / `dshTarget 0.2.0-rc.2` |
-| 本仓库 `qiuqianyi66/dsh-purge` | `1.1.91` / `0.2.2-rc.3`，带离体审计、四级证据与 `compat.json` |
+| 本仓库 `qiuqianyi66/dsh-purge` | `1.2.0` / `0.2.2-rc.3`，带离体审计、四级证据与 `compat.json` |
 
 **怎么自己核实一条分支「真的适配了」：** 别只看 `dshTarget` 或版本号，去它的 `lib/core.js` 里搜新版本引入的原文 —— `SandboxEscalationError`、`approvalDenial`、`this exact`。搜不到，就说明这组 pattern 没补，装上去会静默失配。
 
@@ -396,7 +401,7 @@ dsh-purge/
 
 ```sh
 node -e "import('./lib/core.js').then(m=>console.log('patches='+m.ALL_PATCHES.length))"   # 期望 82
-node --test                                                                              # 期望 pass 203 / fail 0
+node --test                                                                              # 期望 pass 209 / fail 0
 npm run compat:check                                                                     # 期望「compat matrix / README / compat.json 三者一致」
 ```
 
@@ -412,4 +417,4 @@ npm run compat:check                                                            
 
 ---
 
-**English:** dsh-purge is an Apache-2.0 red-team evaluation plugin for [DeepSeek Harness](https://www.deepseek.com/harness/). It ships 82 grouped host patches and per-model prompt presets so a host-layer policy block can be told apart from a model refusal inside your own local install. `1.1.91` targets DSH `0.2.2-rc.3`; audit with `npm run audit:next -- --version <version> --fail-on drift` before upgrading, require drift 0. Machine-readable matrix: [`compat.json`](./compat.json). Full English README: [`README.en.md`](./README.en.md). Authorized local use only.
+**English:** dsh-purge is an Apache-2.0 red-team evaluation plugin for [DeepSeek Harness](https://www.deepseek.com/harness/). It ships 82 grouped host patches and per-model prompt presets so a host-layer policy block can be told apart from a model refusal inside your own local install. `1.2.0` targets DSH `0.2.2-rc.3`; audit with `npm run audit:next -- --version <version> --fail-on drift` before upgrading, require drift 0. Machine-readable matrix: [`compat.json`](./compat.json). Full English README: [`README.en.md`](./README.en.md). Authorized local use only.

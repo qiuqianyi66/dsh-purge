@@ -32,12 +32,12 @@
 
 1. **Scale** — 82 patches across 65 carrier keys (concrete host files), covering both the web and desktop surfaces.
 2. **Requirements** — target host DSH `0.2.2-rc.3`, Node.js ≥ 18, installed into a profile's `node_modules`; nothing global, nothing written to remote repositories.
-3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 missing carriers and 0 partially-patched copies**; `node --test` 203 passing.
+3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 missing carriers and 0 partially-patched copies**; `node --test` 209 passing.
 
 | Quick fact | Value |
 | --- | --- |
 | Project / repository | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
-| Version / host target | `1.1.91` / DSH `0.2.2-rc.3` (same as `dshTarget`) |
+| Version / host target | `1.2.0` / DSH `0.2.2-rc.3` (same as `dshTarget`) |
 | License / upstream copyright | Apache-2.0 · Copyright 2026 YuJunZhiXue (see [`NOTICE`](./NOTICE)) |
 | Requirements | Node.js ≥ 18; DSH desktop app or official `dsh web`; pnpm |
 | One-line install | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
@@ -104,7 +104,7 @@ This is an evaluation tool, not an attack platform. The following limits are enf
 # step 1 — install (use "desktop" for the desktop app, "web" for dsh web)
 dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main
 
-# step 2 — confirm version (expect 1.1.91), run inside $DSH_HOME
+# step 2 — confirm version (expect 1.2.0), run inside $DSH_HOME
 node -p "require('./profiles/desktop/node_modules/dsh-purge/package.json').version"
 
 # step 3 — confirm the host will load it (must print true)
@@ -153,17 +153,17 @@ Sample of what a patch touches: #82 restores `DSH_PROFILE` when the desktop exe 
 
 ## 7. Compatibility and measured data (2026-11-16)
 
-Current release `1.1.91` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+Current release `1.2.0` targets DSH `0.2.2-rc.3` (same value as `dshTarget`). `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
 
 | dsh version | This repo | Evidence | Notes |
 | --- | --- | --- | --- |
-| **0.2.2-rc.3** | **1.1.91** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. rc.2 introduced the new `SandboxEscalationError` / `approvalDenial` text; rc.2 and rc.3 carrier files are byte-identical |
+| **0.2.2-rc.3** | **1.2.0** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. rc.2 introduced the new `SandboxEscalationError` / `approvalDenial` text; rc.2 and rc.3 carrier files are byte-identical |
 | **0.2.2-rc.1** | **1.1.88** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | Only rc.1 matches the old patterns; rc.2 and later need 1.1.89 patterns |
 | **0.2.1-rc.x** | unknown | — | Not a target of this version |
 | **0.2.0-rc.2** | **1.1.40+** | — | Older line, see Releases |
 | **0.1.7** | **1.1.39-** | — | Older line, see Releases |
 
-**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier, 0 partially-patched copies**; `node --test` 203 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
+**Measured 2026-11-16 on a local Windows desktop `0.2.2-rc.3`:** isolated audit 45 carriers / 78 patches / 56 recognized / 6 verify-only / **drift 0** / 11 unaudited; isolated apply 58 applied, 31 `.js` modified, 0 syntax failures; live host diagnosis 82 patches = **42 file-verified** + 29 runtime-injected (no file field) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carrier, 0 partially-patched copies**; `node --test` 209 passing / 0 failing. Machine-readable copy: [`compat.json`](./compat.json).
 
 **rc.3 desktop packaging, the one thing to know:** the runtime ships inside `resources/app.asar` (209,021,953 B), `resources/runtime` is empty and there is no plain `resources/app/dsh` tree. Electron reads the asar before a same-named directory, so patches must land in plain files and the asar must move out of the way — Apply does both and restarts the host; CLI `--apply` prints the manual rename step instead of killing your process. Since `1.1.90` the CLI also detects a desktop host from the `aiBase` path, so desktop-shell patches are no longer skipped in a plain Node process.
 
@@ -201,7 +201,7 @@ Few DSH plugins patch host sources; the known lines, checked 2026-11-15 against 
 | --- | --- |
 | Original `YuJunZhiXue/dsh-purge` | removed / private; last artifact verified only against `0.2.2-rc.1` |
 | Mirror `mmparko/dsh-purge` | frozen at `1.1.71` / `dshTarget 0.2.0-rc.2` |
-| This repo `qiuqianyi66/dsh-purge` | `1.1.91` / `0.2.2-rc.3`, with isolated audit, four evidence levels and `compat.json` |
+| This repo `qiuqianyi66/dsh-purge` | `1.2.0` / `0.2.2-rc.3`, with isolated audit, four evidence levels and `compat.json` |
 
 **How to verify a fork really adapted:** do not trust `dshTarget` or the version string — grep its `lib/core.js` for text the new host introduced, such as `SandboxEscalationError`, `approvalDenial`, `this exact`. Missing means the patterns were never added and the install will silently mismatch.
 
@@ -226,6 +226,11 @@ Drop a new anchor for one patch into `$DSH_HOME/dsh-purge/anchor-overrides.json`
 ```
 
 Overrides are **extra candidates**: older hosts keep matching the original anchor, newer hosts match the override; a zero-hit original no longer trips the hit-count contract, while an override that declares `expect` is still checked strictly. `dsh-purge --anchors` lists the entries and their parse result, `--diagnose` prints `⚓ 本地重锚 N 条生效` so the evidence always names its source, and a broken JSON only reports an error instead of taking effect.
+
+### Two hard rules for writes and versions
+
+- **Fail-closed writes** — every target file of one patch is computed in memory first; before committing, each file's content fingerprint is re-checked (the on-disk text must still be the text the patch was computed from), then written atomically. Any failure writes the already-written files back and reports `write_error:…:rolled_back_N`, so a patch never ends up half-applied.
+- **Candidate anchors and multiple versions** — `pattern` in `replacements` may be an array (`["old text", "new text"]`); it replaces only when exactly one variant is present, and refuses the patch when both are. `dshTargets` in `package.json` may list several verified host versions; matching any one counts as supported. Do not list an unverified version — a clean `audit:next` with zero drift is the admission evidence.
 
 ### Why do console numbers differ between machines?
 

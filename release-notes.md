@@ -1,3 +1,22 @@
+# 1.2.0
+
+## 中文
+
+- **本地重锚覆盖（用户可撤销）**：`$DSH_HOME/dsh-purge/anchor-overrides.json` 允许给某条补丁钉一个新锚点，`apply` / `status` / `diagnose` 共用同一份覆盖；覆盖项追加为候选，旧锚点 0 命中不再按命中数契约拒写，候选自带 `expect` 时仍严格校验。坏 JSON 只报错不生效，删文件即恢复；`--anchors` 只读查看，`--diagnose` 出 `⚓ 本地重锚 N 条生效`。
+- **fail-closed 补丁写盘**：一条补丁的全部目标文件先在内存算完，提交前逐文件校验内容指纹，再原子写入；任一文件失败即把已写文件回滚到原文，报 `write_error:…:rolled_back_N`，不再出现「第 1 个文件改了、第 2 个失败」的半打状态。
+- **候选锚点表与多版本声明**：`replacements[].pattern` 支持数组（旧版/新版原文二选一，唯一命中才替换，两版同时存在则整条拒写）；`package.json` 新增 `dshTargets`，可声明多个已验证宿主版本，命中其一即适配；诊断与探测同口径展开候选。
+- **回归测试**：`test/anchor-overrides.test.js` 6 条 + `test/transaction.test.js` 6 条（事务提交/指纹拦改/失败回滚、候选命中/歧义拒写、多版本命中），全套 `node --test` 209 通过 / 0 失败，`npm run compat:check` 三者一致。
+- 真机：无覆盖文件时行为不变（`--status` 70/71、`--diagnose` 42 命中、partial 0）；`--apply` 走事务路径后数字不变、无 write_error。
+- 维护者 qiuqianyi66；本版本系原始项目（作者 YuJunZhiXue）的衍生作品，Apache-2.0，保留 LICENSE/NOTICE 版权声明。
+
+## English
+
+- **Local re-anchor overrides**: `$DSH_HOME/dsh-purge/anchor-overrides.json` lets you pin a new anchor for one patch; `apply`, `status` and `diagnose` read the same file. Overrides are appended as candidates, a zero-hit original no longer trips the hit-count contract, and an override that declares `expect` is still checked strictly. Broken JSON reports an error without taking effect; delete the file to restore. `--anchors` lists entries, `--diagnose` prints `⚓ 本地重锚 N 条生效`.
+- **Fail-closed patch writes**: all target files of one patch are computed in memory first, fingerprinted before commit, then written atomically. Any failure rolls the already-written files back to their original text and reports `write_error:…:rolled_back_N`, so a patch is never half-applied.
+- **Candidate anchor table and multi-version declaration**: `pattern` in `replacements` accepts an array (old/new upstream text, replace only when exactly one is present, refuse when both are); `package.json` gains `dshTargets` so several verified host versions can be declared, any match counts as supported.
+- **Tests**: 6 anchor-override cases + 6 transaction cases (commit, fingerprint guard, rollback; candidate hit/ambiguity; multi-version match); `node --test` 209 passing / 0 failing, `npm run compat:check` consistent.
+- Maintainer qiuqianyi66. Derivative work of the original project by YuJunZhiXue, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.1.91
 
 ## 中文
