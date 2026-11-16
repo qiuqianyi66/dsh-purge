@@ -32,9 +32,15 @@
     },
     "hostDiagnose": {
       "host": "0.2.2-rc.3",
+      "surface": "desktop",
       "patches": 82,
+      "fileVerified": 42,
+      "noFileField": 29,
+      "optionalMissing": 7,
+      "retired": 4,
       "driftChangedSource": 0,
-      "retired": 4
+      "deadTarget": 0,
+      "carrierMissing": 0
     },
     "unitTests": {
       "passed": 194,

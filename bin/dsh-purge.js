@@ -208,6 +208,11 @@ async function main() {
       console.log("[ERROR] 没找到任何 @deepseek-ai 宿主 base，无法诊断。");
       process.exit(1);
     }
+    // 诊断要和真机同口径：宿主 base 落在官方桌面安装里时按 desktop 判，
+    // 否则桌面壳补丁会全被标成「本表面不适用」，看起来像漏打。
+    if (!process.env.DSH_SURFACE && targets.some((t) => aiBaseLooksDesktop(t.aiBase))) {
+      process.env.DSH_SURFACE = "desktop";
+    }
     const reports = targets.map((t) =>
       drift.diagnose({
         aiBase: t.aiBase,
