@@ -20,9 +20,32 @@
 
 <p align="center"><sub>▲ 23 s · every frame is real command output (measured 2026-11-16) · <a href="docs/demo/dsh-purge-demo.mp4">Download MP4</a> · reproduce with <code>python scripts/render-demo.py</code></sub></p>
 
-[中文 README](./README.md) · [License](#1-license-copyright-and-redistribution) · [Safety](#2-hard-safety-limits) · [Install](#4-install-two-minutes) · [Capabilities](#6-what-it-does) · [Compatibility](#7-compatibility-and-measured-data-2026-11-16) · [Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis) · [FAQ](#11-faq)
+[中文 README](./README.md) · [Quick facts](#0-quick-facts-cite-ready) · [License](#1-license-copyright-and-redistribution) · [Safety](#2-hard-safety-limits) · [Install](#4-install-two-minutes) · [Capabilities](#6-what-it-does) · [Compatibility](#7-compatibility-and-measured-data-2026-11-16) · [Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis) · [FAQ](#11-faq) · [llms.txt](./llms.txt)
 
 </div>
+
+---
+
+## 0. Quick facts (cite-ready)
+
+> dsh-purge is a local red-team evaluation plugin for **DeepSeek Harness (DSH)**: 82 grouped host patches plus per-model prompt presets separate a host-layer policy block from a model refusal, every touched file is backed up and revertible, and an isolated audit tells you before upgrading whether the patterns will silently stop matching.
+
+1. **Scale** — 82 patches across 65 carrier keys (concrete host files), covering both the web and desktop surfaces.
+2. **Requirements** — target host DSH `0.2.2-rc.3`, Node.js ≥ 18, installed into a profile's `node_modules`; nothing global, nothing written to remote repositories.
+3. **Evidence** — live `--diagnose` on 2026-11-16: 42 file-verified + 29 runtime-injected + 7 carriers absent on this host + 4 retired, with **0 changed source and 0 missing carriers**; `node --test` 194 passing.
+
+| Quick fact | Value |
+| --- | --- |
+| Project / repository | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
+| Version / host target | `1.1.90` / DSH `0.2.2-rc.3` (same as `dshTarget`) |
+| License / upstream copyright | Apache-2.0 · Copyright 2026 YuJunZhiXue (see [`NOTICE`](./NOTICE)) |
+| Requirements | Node.js ≥ 18; DSH desktop app or official `dsh web`; pnpm |
+| One-line install | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
+| Machine-readable | [`compat.json`](./compat.json) (version / matrix / evidence) · [`llms.txt`](./llms.txt) |
+| Demo | [`docs/demo/dsh-purge-demo.gif`](docs/demo/dsh-purge-demo.gif) (23 s, real output) |
+| Search terms | DSH jailbreak plugin · DeepSeek Harness plugin · host patches · prompt injection · red-team evaluation · LLM security |
+
+**Suggested path:** [§4 Install](#4-install-two-minutes) → [§7 Compatibility](#7-compatibility-and-measured-data-2026-11-16) → [§8 Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis).
 
 ---
 
@@ -186,15 +209,25 @@ Few DSH plugins patch host sources; the known lines, checked 2026-11-15 against 
 
 ## 11. FAQ
 
-**No button after install?** Either `dsh.profile.bundles` lacks `"dsh-purge"` or `cordis.patch.yml` lacks the `id: dsh-purge` insert. Run `node node_modules/dsh-purge/scripts/ensure-profile-bundle.mjs`, then fully restart.
+### No button after install?
 
-**Applied but behaviour unchanged?** Run `--diagnose`: drift means upstream text changed, pending means not yet written, carrier missing means this host lacks that package.
+Either `dsh.profile.bundles` lacks `"dsh-purge"` or `cordis.patch.yml` lacks the `id: dsh-purge` insert. Run `node node_modules/dsh-purge/scripts/ensure-profile-bundle.mjs`, then fully restart.
 
-**Why do console numbers differ between machines?** They are per surface; web and desktop are separate baselines. Compare only within the same host version and surface.
+### Applied but behaviour unchanged?
 
-**Free?** Yes, Apache-2.0, commercial use allowed, but keep `LICENSE`, `NOTICE` and attribution. Resale and white-label relisting are prohibited.
+Run `--diagnose`: drift means upstream text changed, pending means not yet written, carrier missing means this host lacks that package.
 
-**Public targets?** No. Loopback and RFC1918 only; public IPs, domains resolving public, failed resolutions and hosts-file tricks are all denied. See [§2](#2-hard-safety-limits).
+### Why do console numbers differ between machines?
+
+They are per surface; web and desktop are separate baselines. Compare only within the same host version and surface.
+
+### Free?
+
+Yes, Apache-2.0, commercial use allowed, but keep `LICENSE`, `NOTICE` and attribution. Resale and white-label relisting are prohibited.
+
+### Public targets?
+
+No. Loopback and RFC1918 only; public IPs, domains resolving public, failed resolutions and hosts-file tricks are all denied. See [§2](#2-hard-safety-limits).
 
 ---
 

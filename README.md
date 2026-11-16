@@ -25,9 +25,34 @@
 
 <p align="center"><sub>▲ 23 秒 · 画面全部取自真实命令输出（2026-11-16 本机实测）· <a href="docs/demo/dsh-purge-demo.mp4">下载 MP4</a> · 复现：<code>python scripts/render-demo.py</code></sub></p>
 
-[版权与授权](#1-授权版权与再分发) · [安全边界](#2-安全边界红线) · [安装](#4-安装三分钟) · [能力](#6-能做什么) · [兼容与实测](#7-兼容性与实测数据2026-11-16) · [自检](#8-升级前自检与漂移诊断) · [FAQ](#11-常见问题)
+[版权与授权](#1-授权版权与再分发) · [安全边界](#2-安全边界红线) · [速览](#0-30-秒速览可直接引用) · [安装](#4-安装三分钟) · [能力](#6-能做什么) · [兼容与实测](#7-兼容性与实测数据2026-11-16) · [自检](#8-升级前自检与漂移诊断) · [FAQ](#11-常见问题)
 
 </div>
+
+---
+
+## 0. 30 秒速览（可直接引用）
+
+> dsh-purge 是 **DeepSeek Harness（DSH）的本机红队评测插件**：用 82 条分组宿主补丁和按模型替换的提示词，把「宿主层策略拦截」和「模型层拒答」分开观测；每个被改文件先备份、可一键还原；升级宿主前能用离体审计判断会不会静默失效。
+
+三句话讲清楚它：
+
+1. **规模**：82 条补丁，分布在 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface。
+2. **依赖**：目标宿主 DSH `0.2.2-rc.3`，Node.js ≥ 18，装进 profile 的 `node_modules`，不装全局、不碰远程仓库。
+3. **证据**：2026-11-16 真机 `--diagnose` = 42 条文件核验命中 + 29 条运行时注入 + 7 条本机无载体 + 4 条退役，**改过原文 0 / 载体缺失 0**；`node --test` 194 通过。
+
+| 快速事实 | 值 |
+| --- | --- |
+| 项目名 / 仓库 | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
+| 当前版本 / 宿主目标 | `1.1.90` / DSH `0.2.2-rc.3`（`dshTarget` 同值） |
+| 许可证 / 上游版权 | Apache-2.0 · Copyright 2026 YuJunZhiXue（见 [`NOTICE`](./NOTICE)） |
+| 运行前提 | Node.js ≥ 18；DSH 桌面版或官方 `dsh web`；pnpm |
+| 安装一条命令 | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
+| 机器可读入口 | [`compat.json`](./compat.json)（版本 / 矩阵 / 证据） · [`llms.txt`](./llms.txt)（给 AI 检索的摘要） |
+| 演示 | [`docs/demo/dsh-purge-demo.gif`](docs/demo/dsh-purge-demo.gif)（23 秒，真实命令输出） |
+| 常用检索词 | DSH 破甲插件 · DeepSeek Harness 插件 · 宿主补丁 · 提示词注入 · jailbreak / red-team evaluation · LLM security |
+
+**建议路径：** [§4 安装](#4-安装三分钟) → [§7 兼容与实测](#7-兼容性与实测数据2026-11-16) → [§8 升级前审计](#8-升级前自检与漂移诊断)。
 
 ---
 
@@ -296,28 +321,28 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 
 ## 11. 常见问题
 
-**装完为什么没有按钮？**
+### 装完为什么没有按钮？
 两处配置缺一：profile 的 `dsh.profile.bundles` 里没有 `"dsh-purge"`，或 `cordis.patch.yml` 里没有 `id: dsh-purge` 的 insert。跑 `node node_modules/dsh-purge/scripts/ensure-profile-bundle.mjs` 补上，然后完全重启宿主。
 
-**点了「应用」，模型行为却没有变化？**
+### 点了「应用」，模型行为却没有变化？
 先 `--diagnose`。「漂移」＝官方原文变了；「待应用」＝还没写盘；「载体缺失」＝这台宿主没有那个包，正常跳过。三种都不是「插件坏了」。
 
-**面板显示的数字为什么和别人不一样？**
+### 面板显示的数字为什么和别人不一样？
 面板按 surface 统计，Web 与桌面是两套基线。比较之前先确认同一个宿主版本、同一个 surface。
 
-**升级 DSH 之后插件会失效吗？**
+### 升级 DSH 之后插件会失效吗？
 两种结果：原文没变 → 继续命中；原文变了 → 待应用或跳过，宿主不会被乱改，但补丁也不会生效。所以升级前审计、升级后诊断。
 
-**装了插件会不会改官方远程仓库或官方源码？**
+### 装了插件会不会改官方远程仓库或官方源码？
 不会。只在你点「应用」时写本机目标文件，且每个文件先备份；不改任何远程仓库。
 
-**能拿它打公网或别人的系统吗？**
+### 能拿它打公网或别人的系统吗？
 不能。攻击任务只放行本机回环和 RFC1918 私网，公网 IP、解析到公网的域名、解析失败、hosts 篡改一律不放行；口头授权、密钥、网段都不扩权。详见 [§2](#2-安全边界红线)。
 
-**它是免费的吗？能商用吗？**
+### 它是免费的吗？能商用吗？
 免费，Apache-2.0，允许商用与再分发，但必须保留 `LICENSE`、`NOTICE` 与来源署名；禁止倒卖、换皮上架与收费群分发。
 
-**适配一个新版本要多久？**
+### 适配一个新版本要多久？
 看宿主改了什么：改文案（如 #36 一句 justification）补一条 pattern；改判定结构（如 rc.2 把 throw 换成错误码、把拒绝换成 `approvalDenial`）要按载体重写锚点。做法一律是追加新 pattern、保留旧 pattern，老宿主不掉档。
 
 ---
@@ -347,10 +372,13 @@ dsh-purge/
 │   ├── audit-next.mjs       # 新版本离体审计（升级前必跑）
 │   ├── upstream-sync.mjs    # 宿主 / 矩阵 / 上游三方巡检
 │   ├── gen-compat-readme.mjs# 由矩阵生成 README 表与 compat.json
+│   ├── render-demo.py       # 真实输出逐帧渲染演示 GIF / MP4
 │   └── ensure-profile-bundle.mjs
 ├── test/                    # 单元测试（node --test）
 ├── client.js                # 侧栏与面板
 ├── compat.json              # 机器可读矩阵（生成物）
+├── llms.txt                 # 给 AI 检索的摘要入口
+├── docs/demo/               # 23 秒演示 GIF / MP4
 └── cordis.patch.yml         # profile 打包补丁
 ```
 

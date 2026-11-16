@@ -32,6 +32,7 @@
     "compat.json",
     "README.md",
     "README.en.md",
+    "llms.txt",
     "LICENSE",
     "NOTICE"
   ],
