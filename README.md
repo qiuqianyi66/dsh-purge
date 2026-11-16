@@ -129,12 +129,12 @@ purge_status   purge_apply   purge_revert        # 模型工具
 
 ## 兼容与证据
 
-**1.1.89 已适配 DSH 0.2.2-rc.3**；不要拿本版本去打 `0.1.x` 或 `0.2.1-rc.x`。
+**1.1.90 已适配 DSH 0.2.2-rc.3**（含 rc.3 桌面版把运行时打进 `app.asar` 的新布局）；不要拿本版本去打 `0.1.x` 或 `0.2.1-rc.x`。
 
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 | 证据 | 说明 |
 | --- | --- | --- | --- |
-| **0.2.2-rc.3** | **1.1.89** | 契约✓ 实打✓ 冒烟✗ 真机✗ | rc.2 引入 SandboxEscalationError / approvalDenial 新原文（rc.2 与 rc.3 四个载体文件逐字节一致），本版补的是这组 pattern |
+| **0.2.2-rc.3** | **1.1.90** | 契约✓ 实打✓ 冒烟✓ 真机✗ | rc.3 桌面版起把运行时打进 resources/app.asar；面板「应用」会自动解包、挪走 asar、重启。rc.2 引入 SandboxEscalationError / approvalDenial 新原文，rc.2 与 rc.3 四个载体文件逐字节一致 |
 | **0.2.2-rc.1** | **1.1.88** | 契约✓ 实打✓ 冒烟✓ 真机✗ | 只有 rc.1 能用旧 pattern；rc.2 起（含 rc.3）需要 1.1.89 的新 pattern，装 1.1.88 会静默失配 |
 | **0.2.1-rc.x** | unknown | — | 不是本版本目标；到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 选对应旧标签 |
 | **0.2.0-rc.2** | **1.1.40+** | — | 旧线，见 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) |
@@ -148,13 +148,19 @@ purge_status   purge_apply   purge_revert        # 模型工具
 - **冒烟**：真宿主上 `--diagnose` 漂移 0、能启动。
 - **真机**：应用到真宿主并完成面板 / 按钮的人工验收。
 
-**最近一次机械验证（2026-11-15）**
+**0.2.2-rc.3 桌面版换了打包方式**：整个 dsh 运行时被塞进 `resources/app.asar`（209 MB），`resources/runtime` 为空，不再有 rc.1 那种 `resources/app/dsh` 明文目录。Electron 的加载顺序是 asar 优先于同名目录，所以补丁必须写进明文、并且让 asar 不再原位：
+
+- 面板点「应用」：插件自动把 asar 解到 `resources/app`（451 MB、338 个 `@deepseek-ai` 包）、补上 `app.asar.unpacked` 里的原生件、把 asar 改名 `.bak`、重启宿主，全程不需要你动手。
+- 命令行 `--apply`：不替你杀进程。写完补丁后如果 `app.asar` 还在原位，末尾会明确提示「宿主会优先读它」；退出宿主、把 `app.asar` 改名，再从 exe 启动即可。
+- 命令行原先在 node 里跑，探不到 Electron 的 `resourcesPath`，会把自己当 web 宿主而整批跳过桌面壳补丁；1.1.90 起按 `aiBase` 是否落在 `resources/app/dsh/...` 自动判成 desktop，不再漏 `#82/#83` 这类补丁。
+
+**最近一次机械验证（2026-11-16）**
 
 | 项 | 结果 |
 | --- | --- |
 | rc.3 离体审计 | 载体 45 键 · 补丁 78 条 · 认得 56 · 校验型 6 · **需重对齐 0** · 未审计 11（载体不在 npm 包内） |
 | rc.3 实打 | 58 applied / 6 already / 7 missing_file / 2 skipped / 9 na；改动 31 个 `.js`，语法失败 0 |
-| 真宿主（0.2.2-rc.1） | 82 条补丁，改过原文 **0**，退役 4 |
+| 真宿主（0.2.2-rc.3 桌面版） | 解包到 `resources/app` 后 82 条补丁：71 直接命中、7 条本表面不适用、4 条跳过；`--diagnose` 改过原文 0、退役 4；宿主启动后插件自检日志记 `sealed:false`、`boot:host-untouched` |
 | 单元测试 | 194 通过 / 0 失败 |
 | 版本关系 | rc.2 与 rc.3 的四个载体文件**逐字节一致**，失配源自 rc.2 的原文改动 |
 

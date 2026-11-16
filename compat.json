@@ -1,6 +1,6 @@
 {
   "name": "dsh-purge",
-  "version": "1.1.89",
+  "version": "1.1.90",
   "dshTarget": "0.2.2-rc.3",
   "generatedBy": "scripts/gen-compat-readme.mjs",
   "source": "lib/compat-matrix.js",
@@ -11,7 +11,7 @@
     "device": "真机交互：应用到真宿主并完成面板/按钮人工验收"
   },
   "verification": {
-    "verifiedOn": "2026-11-15",
+    "verifiedOn": "2026-11-16",
     "audit": {
       "version": "0.2.2-rc.3",
       "carriers": 45,
@@ -31,7 +31,7 @@
       "syntaxFailures": 0
     },
     "hostDiagnose": {
-      "host": "0.2.2-rc.1",
+      "host": "0.2.2-rc.3",
       "patches": 82,
       "driftChangedSource": 0,
       "retired": 4
@@ -44,15 +44,15 @@
   "matrix": [
     {
       "dsh": "0.2.2-rc.3",
-      "plugin": "1.1.89",
+      "plugin": "1.1.90",
       "status": "supported",
       "evidence": {
         "contract": "verified",
         "applySim": "verified",
-        "hostSmoke": "not-run",
+        "hostSmoke": "verified",
         "device": "not-run"
       },
-      "note": "rc.2 引入 SandboxEscalationError / approvalDenial 新原文（rc.2 与 rc.3 四个载体文件逐字节一致），本版补的是这组 pattern"
+      "note": "rc.3 桌面版起把运行时打进 resources/app.asar；面板「应用」会自动解包、挪走 asar、重启。rc.2 引入 SandboxEscalationError / approvalDenial 新原文，rc.2 与 rc.3 四个载体文件逐字节一致"
     },
     {
       "dsh": "0.2.2-rc.1",

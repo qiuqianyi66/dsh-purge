@@ -1,6 +1,6 @@
 {
   "name": "dsh-purge",
-  "version": "1.1.89",
+  "version": "1.1.90",
   "description": "DeepSeek Harness（DSH）破甲 / 红队评测插件：82 条分组宿主补丁 + 按模型替换提示词，把宿主层拦截与模型回答分开观测；适配 DSH 0.2.2-rc.3，补丁可一键还原。Jailbreak & red-team evaluation plugin for DSH — grouped host patches, per-model prompts, one-click revert. Forks require attribution.",
   "type": "module",
   "main": "lib/index.js",
@@ -118,3 +118,4 @@
   },
   "dshTarget": "0.2.2-rc.3"
 }
+

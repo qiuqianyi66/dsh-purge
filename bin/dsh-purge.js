@@ -155,6 +155,30 @@ function printStatus(state) {
   return out.join("\n");
 }
 
+/**
+ * CLI 跑在 node 里，detectSurface 看不到 Electron 的 resourcesPath。
+ * aiBase 若落在官方桌面安装的 `resources/app/dsh/...` 下，说明打的是桌面宿主；
+ * 不切成 desktop 就整批漏掉桌面壳补丁（#82/#83 等），日志还会写成「na」。
+ */
+function aiBaseLooksDesktop(aiBase) {
+  const norm = path.normalize(aiBase || "");
+  if (!/[\\/]resources[\\/]app[\\/]dsh[\\/]node_modules[\\/]@deepseek-ai$/i.test(norm)) return false;
+  const resources = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(norm)))));
+  try {
+    return fs.readdirSync(path.dirname(resources)).some((f) => /\.exe$/i.test(f));
+  } catch {
+    return false;
+  }
+}
+
+/** app.asar 密封时 apply 会先解开再写；CLI 给出确定的下一步，不留给用户猜。 */
+function sealedAsarHint(aiBase) {
+  const norm = path.normalize(aiBase || "");
+  if (!/[\\/]resources[\\/]app[\\/]dsh[\\/]node_modules[\\/]@deepseek-ai$/i.test(norm)) return "";
+  const asar = path.join(path.dirname(path.dirname(path.dirname(path.dirname(norm)))), "app.asar");
+  return fs.existsSync(asar) ? asar : "";
+}
+
 async function main() {
   const mode = args.find((a) => ["--apply", "--revert", "--uninstall", "--status", "--edit", "--diagnose", "--preupdate", "--help"].includes(a));
 
@@ -438,7 +462,13 @@ async function main() {
     return;
   }
 
-  const state = await core.gatherState();
+  let state = await core.gatherState();
+  // status/apply/revert/uninstall 都可能落在桌面宿主上，一律按真实安装形态判一次；
+  // diagnose/preupdate 走独立的只读枚举，不受影响。
+  if (!process.env.DSH_SURFACE && aiBaseLooksDesktop(state.ai_base)) {
+    process.env.DSH_SURFACE = "desktop";
+    state = await core.gatherState();
+  }
   console.log(printStatus(state));
   console.log("");
 
@@ -483,7 +513,16 @@ async function main() {
       console.log("  ⚠ 未定位 shim 目录，跳过注入");
     }
     console.log("");
-    console.log("全部完成 / All done。重启 dsh 生效 / Restart dsh to take effect.");
+    const sealed = sealedAsarHint(state.ai_base);
+    if (sealed) {
+      // 密封 asar 还在原处时 Electron 优先读 asar，补丁写在 resources/app 里等于没生效。
+      console.log(`  ⚠ app.asar 仍在，宿主会优先读它：${sealed}`);
+      console.log("    退出宿主后把 app.asar 改名（例如 app.asar.bak），再从 exe 启动，补丁才进进程。");
+      console.log("    桌面面板点「应用」会自动做这一步；CLI 不会替你杀进程，所以必须手动。");
+    } else {
+      console.log("  asar 已解包，补丁目录就是进程加载的目录 / unpacked, patches are live paths");
+    }
+    console.log("全部完成 / All done。重启 dsh 生效 / Restart dsh to take effect。");
   } else if (mode === "--revert") {
     const force = args.includes("--force");
     if (state.ai_base || core.enumeratePatchAiBases().length) {
