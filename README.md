@@ -16,6 +16,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff)](package.json)
 [![Patches](https://img.shields.io/badge/patches-82-informational)](lib/core.js)
 [![Audit](https://img.shields.io/badge/rc.3%20audit-0%20drift-brightgreen)](compat.json)
+[![M8ven Score](https://m8ven.ai/badge/mcp/qiuqianyi66/dsh-purge)](https://m8ven.ai/mcp/qiuqianyi66/dsh-purge?s=readme)
 [![M8ven Score](https://m8ven.ai/badge/mcp/qiuqianyi66-dsh-purge-zqj82m7v=cf89723ca8602daa38992979418ddb3c)](https://m8ven.ai/mcp/qiuqianyi66-dsh-purge-zqj82m7v=readme)
 
 ```sh
