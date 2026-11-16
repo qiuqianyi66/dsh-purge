@@ -14,6 +14,12 @@
 
 **Read this first:** authorized, self-owned environments only. Licensing in [§1](#1-license-copyright-and-redistribution), safety limits in [§2](#2-hard-safety-limits).
 
+<p align="center">
+  <img src="docs/demo/dsh-purge-demo.gif" alt="dsh-purge 23-second demo: install → diagnose → pre-upgrade audit → unit tests" width="100%">
+</p>
+
+<p align="center"><sub>▲ 23 s · every frame is real command output (measured 2026-11-16) · <a href="docs/demo/dsh-purge-demo.mp4">Download MP4</a> · reproduce with <code>python scripts/render-demo.py</code></sub></p>
+
 [中文 README](./README.md) · [License](#1-license-copyright-and-redistribution) · [Safety](#2-hard-safety-limits) · [Install](#4-install-two-minutes) · [Capabilities](#6-what-it-does) · [Compatibility](#7-compatibility-and-measured-data-2026-11-16) · [Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis) · [FAQ](#11-faq)
 
 </div>
