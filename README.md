@@ -224,6 +224,8 @@ purge_status   purge_apply   purge_revert
 
 **当前版本 `1.2.10` 的靶子是 DSH `0.2.2-rc.3`**（`package.json` 的 `dshTarget` 同值）。`0.1.x`、`0.2.1-rc.x` 不在本版本目标内，需要旧版本请到 [Releases](https://github.com/qiuqianyi66/dsh-purge/releases) 取对应标签。
 
+`0.2.2-rc.2` 未登记为适配目标（缺真机冒烟），但 2026-11-17 离体审计 78 条补丁 **0 条需重对齐**（`upstream-reports/0.2.2-rc.2.json`），且 rc.2 与 rc.3 的四个载体文件逐字节一致。
+
 <!-- compat:table:start -->
 | dsh 版本 | 本仓库版本 | 证据 | 说明 |
 | --- | --- | --- | --- |
@@ -328,13 +330,15 @@ node scripts/upstream-sync.mjs --offline     # 也可 --plan / --json
 
 ## 10. 与同类项目的位置
 
-改宿主源码的 DSH 插件本来就不多，历史上出现过的几条线（2026-11-15 复核，以各仓库自述与 `package.json` 为准）：
+改宿主源码的 DSH 插件本来就不多，历史上出现过的几条线（2026-11-17 复核，星数与发版以 GitHub API 实查为准，分析见 [`docs/plans/competitor-audit-20261117.md`](./docs/plans/competitor-audit-20261117.md)）：
 
-| 线 | 状态 |
+| 线 | 状态（2026-11-17） |
 | --- | --- |
-| 原仓库 `YuJunZhiXue/dsh-purge` | 已删除 / 转私有；最后制品只验到 `0.2.2-rc.1` |
-| 镜像 `mmparko/dsh-purge` | 冻结在 `1.1.71` / `dshTarget 0.2.0-rc.2` |
-| 本仓库 `qiuqianyi66/dsh-purge` | `1.2.10` / `0.2.2-rc.3`，带离体审计、四级证据与 `compat.json` |
+| 原仓库 `YuJunZhiXue/dsh-purge` | 404，已删除 / 转私有；最后制品只验到 `0.2.2-rc.1` |
+| 镜像 `mmparko/dsh-purge` | ★5229，10-13 后停更，冻结在 `1.1.71` / `dshTarget 0.2.0-rc.2` |
+| 镜像 `WoYun520/dsh-purge` | ★622，10-21 后停更 |
+| 社区版 `kingcharleslzy-ai/dsh-purge` | ★9408，`1.7.18`（11-16 发版），86 条补丁 / 6 个工作流 / MIT；README 自述多版本通过，`dshTarget` 仍写 `0.2.1-rc.1` |
+| 本仓库 `qiuqianyi66/dsh-purge` | ★10，`1.2.10` / `0.2.2-rc.3`，带离体审计、四级证据与 `compat.json` |
 
 **怎么自己核实一条分支「真的适配了」：** 别只看 `dshTarget` 或版本号，去它的 `lib/core.js` 里搜新版本引入的原文 —— `SandboxEscalationError`、`approvalDenial`、`this exact`。搜不到，就说明这组 pattern 没补，装上去会静默失配。
 

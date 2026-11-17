@@ -35,5 +35,8 @@ jobs:
       - name: Check compat matrix vs README
         run: npm run compat:check
 
+      - name: Check npm pack whitelist
+        run: npm run pack:check
+
       - name: Run unit tests
         run: npm test

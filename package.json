@@ -43,6 +43,7 @@
     "upstream:sync": "node scripts/upstream-sync.mjs",
     "audit:next": "node scripts/audit-next.mjs",
     "cycle:isolated": "node scripts/isolated-cycle.mjs",
+    "pack:check": "node scripts/pack-check.mjs",
     "postinstall": "node scripts/ensure-profile-bundle.mjs",
     "test": "node --test"
   },
