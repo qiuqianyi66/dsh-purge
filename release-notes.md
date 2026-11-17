@@ -1,3 +1,21 @@
+# 1.2.10
+
+## 中文
+
+- **修「红队模式被重复注册挤掉」**：1.2.9 把预设写进 rc.3 声明行后，宿主 loader 会在启动时注册 `redteam`；插件运行时又调用 `agentPresets.register()`，得到 `Duplicate agent preset: redteam`，模式下拉因此被过滤。`preset-declare.json` 会停在 `register-failed`。
+- 新版分支改为**只验证、不重复注册**：检测到 profile 已有 `preset-redteam` 声明行时，等待 loader 的注册结果并写回 `registered` / `registered-broken`，不再调用 `registry.register()`；rc.2 的运行时注册路径保留。
+- 成功状态会清掉上一轮遗留的 `error` 字段，避免面板显示旧错误。
+- 真机复验：`preset-declare.json` = `ok:true / phase:registered / plugins:19 / broken:null / error:null`；`/redteam/api` version 1.2.9、164 技能、blockers 0。全套 `node --test` **233 通过 / 0 失败**；`compat:check` 一致。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **Fixes the red-team preset being squeezed out by duplicate registration**: 1.2.9 wrote the rc.3 declaration row, so the host loader already registered `redteam` at startup; the plugin then called `agentPresets.register()` again and hit `Duplicate agent preset: redteam`, which filtered the mode out of the picker. `preset-declare.json` stayed at `register-failed`.
+- The modern branch now **verifies instead of registering again**: when the profile already carries the `preset-redteam` declaration row, it waits for the loader's registration and writes `registered` / `registered-broken` without calling `registry.register()`; the rc.2 runtime path is unchanged.
+- Successful status clears the stale `error` field from the previous attempt.
+- Live check: `preset-declare.json` = `ok:true / phase:registered / plugins:19 / broken:null / error:null`; `/redteam/api` reports version 1.2.9, 164 skills and 0 blockers. `node --test` **233 passing / 0 failing**; `compat:check` clean.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.9
 
 ## 中文
