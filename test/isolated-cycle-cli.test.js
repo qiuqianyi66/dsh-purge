@@ -4,8 +4,9 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
-const SCRIPT = path.resolve(import.meta.dirname, "..", "scripts", "isolated-cycle.mjs");
+const SCRIPT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "scripts", "isolated-cycle.mjs");
 
 function run(args) {
   try {
