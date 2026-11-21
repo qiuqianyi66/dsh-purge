@@ -1,3 +1,21 @@
+# 1.2.13
+
+## 中文
+
+- **CLI 卸载真的清干净了（H1）**：`--uninstall` 以前只打印结果，完全没用卸载器算出来的 cleanup，真机留下 `dsh-purge-vendor` 3.81MB 与 `dsh-purge-vendor.previous` 3.80MB。现在清理清单覆盖 vendor 本体 / `.previous` / `.dsh-purge-install-backup` / 安装中断留下的 `.dsh-purge-vendor.tmp-*`，并走和面板同一条「先退进程、再删目录、再拉起」的重启链。只认安装器固定名字，用户手工留档的 `dsh-purge-vendor.<ver>.bak-*` 不动；`DSH_SURFACE` 会话内或 `--no-restart` 时不杀当前宿主，改为就地删并把被占用的残留如实列出来。`--json` 增加 `cleanup_removed` / `cleanup_scheduled` / `cleanup_left`。
+- **装完确认插件真的加载（H2）**：`restartDsh` 以前只轮询 `Get-Process 'DeepSeek Harness'` 数量，进程一起来就报「已重启 DSH」，插件没 activate 也算成功。现在进程出现后继续等最多 30 秒，按时间戳找一条 `action=boot` 的新自检记录（不按文件大小判断——日志轮转会让大小失真）；等到就输出「插件已加载（outcome=…）」，等不到降级为「DSH 已启动，但 30 秒内没看到插件自检，请打开面板确认或跑 `--diagnose`」，不把安装判成失败。
+- **文案不再把人带偏（H3）**：安装输出把 `package.json` 的 `dshTarget` 当作「宿主」打印，rc.3 机器会显示「宿主 rc.5」——那是插件声明的目标，不是实测宿主，现在拆成「版本 / 目标宿主 target」。`--profile` 拼错时报 `NO_PROFILE_NAMED`，列出实际 profile 名并给出可直接复制的重试命令；只有 profiles 目录真的为空才提示「先启动一次 DSH」。
+- **重启前 5 秒倒计时 + Node 版本校验（H4）**：安装成功后不再立即关窗，改在真实 TTY 上倒数 5 秒（`--restart-delay 0` 跳过，`--no-restart` 不重启，非 TTY 的 Agent/CI 不倒数也不等待）。`install.cmd` / `install.sh` 在跑安装器之前用 `node -e` 校验主版本 ≥ 18，失败给出当前版本与「打开一次 DSH 用内置 Node」的处置；`bin/dsh-purge.js` 顶部再加一道兜底，覆盖直接 `node bin/dsh-purge.js` 和旧 npm script 两种入口。
+- **测试**：新增 10 条（卸载清单覆盖与用户留档保护、清单不留假路径、boot 只认新记录、非 boot 不算确认、拼错 profile 与空目录区分、倒计时开关、dry-run 不进倒计时、两个安装脚本含版本校验且 `install.cmd` 保持纯 CRLF）。全套 `node --test` **273 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
+
+## English
+
+- **CLI uninstall actually removes the plugin trees (H1)**: `--uninstall` used to print its result and ignore the cleanup list the uninstaller had already computed, leaving `dsh-purge-vendor` (3.81MB) and `dsh-purge-vendor.previous` (3.80MB) behind on a real host. The cleanup list now covers the vendor tree, `.previous`, `.dsh-purge-install-backup` and leftover `.dsh-purge-vendor.tmp-*` staging dirs, and goes through the same "quit host, delete, relaunch" helper the panel uses. Only fixed installer-generated names are touched — user-kept archives such as `dsh-purge-vendor.<ver>.bak-*` survive. Inside a `DSH_SURFACE` session or with `--no-restart` the running host is never killed: dirs are removed in place and anything still locked is reported. `--json` gains `cleanup_removed` / `cleanup_scheduled` / `cleanup_left`.
+- **Installer confirms the plugin actually loaded (H2)**: `restartDsh` only polled the `DeepSeek Harness` process count, so "restarted" was reported before the plugin had a chance to activate. It now waits up to 30s for a `boot` self-check entry whose timestamp is newer than this restart (timestamp-based, not file-size based — log rotation makes size unreliable). Success prints `plugin loaded (outcome=…)`; timeout degrades to "DSH started but no plugin self-check within 30s — open the panel or run `--diagnose`" and never fails the install.
+- **Labels no longer mislead (H3)**: the installer printed `package.json`'s `dshTarget` as the "host", so an rc.3 machine read "host rc.5" — that is the declared target, not the detected host. Output is now split into version and `target`. A mistyped `--profile` reports `NO_PROFILE_NAMED` with the actual profile names and a copy-pasteable retry command; only a genuinely empty profiles directory says "start DSH once".
+- **5-second countdown and Node version gate (H4)**: a successful install no longer closes the window instantly; on a real TTY it counts down 5 seconds (`--restart-delay 0` skips, `--no-restart` does not restart, non-TTY Agent/CI runs neither prompt nor wait). `install.cmd` / `install.sh` verify the Node major is ≥ 18 with `node -e` before launching, and explain how to reuse the Node bundled with DSH; `bin/dsh-purge.js` repeats the check so direct `node` invocations and old npm scripts are covered too.
+- **Tests**: 10 new cases (cleanup coverage + user archive protection, no phantom paths in the list, boot record must be newer, non-boot actions never confirm, mistyped vs empty profiles, countdown gating, dry-run never counts down, both installers carry the version gate and `install.cmd` stays pure CRLF). Full `node --test` is **273 pass / 0 fail**; compat / fixture / native / pack checks all green.
+
 # 1.2.12
 
 ## 中文
