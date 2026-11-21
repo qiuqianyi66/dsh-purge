@@ -1,7 +1,7 @@
 {
   "name": "dsh-purge",
-  "version": "1.2.10",
-  "description": "DeepSeek Harness（DSH）破甲 / 红队评测插件：82 条分组宿主补丁 + 按模型替换提示词，把宿主层拦截与模型回答分开观测；适配 DSH 0.2.2-rc.3，补丁可一键还原。Jailbreak & red-team evaluation plugin for DSH — grouped host patches, per-model prompts, one-click revert. Forks require attribution.",
+  "version": "1.2.11",
+  "description": "DeepSeek Harness（DSH）破甲 / 红队评测插件：82 条分组宿主补丁 + 按模型替换提示词，把宿主层拦截与模型回答分开观测；适配 DSH 0.2.2-rc.3 / rc.5，补丁可一键还原。Jailbreak & red-team evaluation plugin for DSH — grouped host patches, per-model prompts, one-click revert. Forks require attribution.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -41,6 +41,9 @@
     "build:client": "node scripts/build-client.mjs",
     "compat:check": "node scripts/gen-compat-readme.mjs --check",
     "upstream:sync": "node scripts/upstream-sync.mjs",
+    "upstream:radar": "node scripts/upstream-radar.mjs",
+    "upstream:diff": "node scripts/upstream-src-diff.mjs",
+    "native:gen": "node scripts/f6-native-gen.mjs",
     "audit:next": "node scripts/audit-next.mjs",
     "cycle:isolated": "node scripts/isolated-cycle.mjs",
     "pack:check": "node scripts/pack-check.mjs",
@@ -119,8 +122,9 @@
   "engines": {
     "node": ">=18"
   },
-  "dshTarget": "0.2.2-rc.3",
+  "dshTarget": "0.2.2-rc.5",
   "dshTargets": [
-    "0.2.2-rc.3"
+    "0.2.2-rc.3",
+    "0.2.2-rc.5"
   ]
 }

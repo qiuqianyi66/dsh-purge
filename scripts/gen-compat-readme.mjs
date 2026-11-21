@@ -17,6 +17,7 @@ import {
   COMPAT_MATRIX,
   COMPAT_CURRENT,
   COMPAT_VERIFICATION,
+  DSH_RELEASES,
   EVIDENCE_LEVELS,
 } from "../lib/compat-matrix.js";
 
@@ -67,6 +68,18 @@ function renderCompatJson() {
     source: "lib/compat-matrix.js",
     evidenceLevels: EVIDENCE_LEVELS,
     verification: COMPAT_VERIFICATION,
+    // 逐宿主版本档位（宿主视角）：让 agent/CI 能一眼看出 rc.5 是「已适配未真机」而不是「不支持」。
+    releases: Object.fromEntries(
+      Object.entries(DSH_RELEASES).map(([dsh, r]) => [
+        dsh,
+        {
+          status: r.status,
+          plugin: r.plugin,
+          evidence: r.evidence || null,
+          note: stripLinks(r.note),
+        },
+      ]),
+    ),
     matrix: COMPAT_MATRIX.map((e) => ({
       dsh: e.dsh,
       plugin: e.plugin,

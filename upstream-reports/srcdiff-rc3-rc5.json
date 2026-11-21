@@ -1,0 +1,180 @@
+{
+  "from": "0.2.2-rc.3",
+  "to": "0.2.2-rc.5",
+  "generatedAt": "2026-11-21T08:44:33.190Z",
+  "packages": [
+    {
+      "pkg": "dsh-api-remotes",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/client.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-base",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "./cordis.patch.yml"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-client-modules",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/index.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-client-ui-settings-account",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/client.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-client-ui-settings-general",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/client.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-client-ui-settings-web-search",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/client/locales.ts",
+        "src/client/WebSearchCard.tsx",
+        "lib/client.js",
+        "lib/types/client/locales.d.ts",
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-client-ui-sidebar",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/client.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-llm",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/error.ts",
+        "lib/index.js",
+        "lib/types/error.d.ts",
+        "lib/types/error.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-llm-deepseek",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/translate.ts",
+        "lib/index.js",
+        "lib/types/translate.d.ts",
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-repeat-tool-reminder",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "lib/index.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-tool-cordis",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/api-catalog.ts",
+        "lib/types/api-catalog.js"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-tool-web",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/search.ts",
+        "lib/index.js",
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-web",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/index.ts",
+        "src/types.ts",
+        "lib/index.js",
+        "lib/typert.host.js",
+        "lib/typert.remote-client.js",
+        "lib/types/index.d.ts",
+        "lib/types/index.js",
+        "lib/types/types.d.ts",
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-web-deepseek-api",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    },
+    {
+      "pkg": "dsh-web-search-deepseek",
+      "added": [],
+      "removed": [],
+      "modified": [
+        "src/provider.ts",
+        "src/types.ts",
+        "lib/index.js",
+        "lib/types/provider.d.ts",
+        "lib/types/types.d.ts",
+        "./README.i18n.yaml",
+        "./README.md",
+        "./README.zh.md"
+      ],
+      "metaChanged": false
+    }
+  ]
+}

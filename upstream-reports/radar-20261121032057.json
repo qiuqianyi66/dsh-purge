@@ -1,0 +1,1905 @@
+{
+  "checkedAt": "2026-11-21T03:20:57.252Z",
+  "aiBase": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai",
+  "local": {
+    "root": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide",
+    "versions": [
+      {
+        "version": "v0.1.7-rc.2",
+        "changes": 2
+      },
+      {
+        "version": "v0.2.0-rc.2",
+        "changes": 6
+      },
+      {
+        "version": "v0.2.1-alpha.1",
+        "changes": 22
+      },
+      {
+        "version": "v0.2.1-alpha.2",
+        "changes": 12
+      },
+      {
+        "version": "v0.2.1-alpha.3",
+        "changes": 1
+      },
+      {
+        "version": "v0.2.1-alpha.4",
+        "changes": 3
+      },
+      {
+        "version": "v0.2.1-rc.1",
+        "changes": 2
+      },
+      {
+        "version": "v0.2.1-rc.2",
+        "changes": 33
+      },
+      {
+        "version": "v0.2.1-rc.3",
+        "changes": 13
+      },
+      {
+        "version": "v0.2.1-rc.4",
+        "changes": 3
+      },
+      {
+        "version": "v0.2.2-alpha.2",
+        "changes": 22
+      },
+      {
+        "version": "v0.2.2-alpha.3",
+        "changes": 5
+      },
+      {
+        "version": "v0.2.2-rc.1",
+        "changes": 19
+      }
+    ]
+  },
+  "remote": {
+    "gap": [
+      "v0.2.2-rc.2",
+      "v0.2.2-rc.3",
+      "v0.2.2-rc.4"
+    ],
+    "fetched": 20,
+    "truncated": true,
+    "errors": []
+  },
+  "probeError": "",
+  "hitPatchIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    17,
+    22,
+    23,
+    24,
+    26,
+    29,
+    32,
+    34,
+    35,
+    36,
+    37,
+    43,
+    51,
+    53,
+    55,
+    58,
+    60,
+    61,
+    62,
+    63,
+    67,
+    68,
+    69,
+    70,
+    72,
+    73,
+    74,
+    78,
+    80,
+    85,
+    86,
+    87,
+    88
+  ],
+  "rows": [
+    {
+      "version": "v0.1.7-rc.2",
+      "change": "schedule-optional-bundle",
+      "description": "The Web composition no longer carries the Schedule rows; the Automation tasks optional bundle inserts them.",
+      "matchedPackages": [
+        "dsh-web-app"
+      ],
+      "patchIds": [
+        4,
+        24,
+        26,
+        32,
+        43,
+        53,
+        63,
+        70,
+        73,
+        80
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.1.7-rc.2\\schedule-optional-bundle\\guide.md"
+    },
+    {
+      "version": "v0.1.7-rc.2",
+      "change": "transcript-view-legacy-normal",
+      "description": "The legacy ui-chat.transcriptView value normal, and an unset value in non-Desktop Web, now display Detailed instead of Standard.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.1.7-rc.2\\transcript-view-legacy-normal\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "account-sign-in-errors",
+      "description": "Account sign-in transport failures now report no-response instead of network.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\account-sign-in-errors\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "bundled-python-tests",
+      "description": "Bundled NumPy and pandas omit their upstream test suites.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\bundled-python-tests\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "primary-runtime-python-aliases",
+      "description": "Custom primary-runtime payloads require relocatable Python interpreter aliases.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\primary-runtime-python-aliases\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "remove-runtime-invariants",
+      "description": "The runtime invariant registry package and every package's `./invariant` subpath export are removed.",
+      "matchedPackages": [
+        "dsh-session",
+        "dsh-agent-loop"
+      ],
+      "patchIds": [
+        55,
+        58,
+        67,
+        68,
+        74,
+        86,
+        87,
+        88
+      ],
+      "unmatchedServices": [
+        "invariants"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\remove-runtime-invariants\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "schedule-bundle-retired",
+      "description": "The Automation tasks optional bundle is removed; the Web composition mounts Schedule itself.",
+      "matchedPackages": [
+        "dsh-web-app"
+      ],
+      "patchIds": [
+        4,
+        24,
+        26,
+        32,
+        43,
+        53,
+        63,
+        70,
+        73,
+        80
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\schedule-bundle-retired\\guide.md"
+    },
+    {
+      "version": "v0.2.0-rc.2",
+      "change": "subpath-plugin-display-manifest",
+      "description": "Subpath plugins no longer read display text or icons from an exported <subpath>/package.json; they use locale meta and <subpath>/icon.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.0-rc.2\\subpath-plugin-display-manifest\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "deepseek-model-discovery",
+      "description": "DeepSeek API-key model discovery requires a configured credential.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\deepseek-model-discovery\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "desktop-test-auth-popup",
+      "description": "Desktop test builds require local opt-in before showing any Feishu update-policy authentication dialogs.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\desktop-test-auth-popup\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "experimental-package-composition",
+      "description": "Explicit installation, peer dependencies, and configuration for optional hooks, webhooks, tools, and skills.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\experimental-package-composition\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "instruction-home-override",
+      "description": "The `agent-instructions` row no longer accepts `dshHome`; instruction loading always resolves the harness home from `$DSH_HOME` or `~/.dsh`.",
+      "matchedPackages": [
+        "dsh-agent-instructions"
+      ],
+      "patchIds": [
+        1,
+        2,
+        3
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\instruction-home-override\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "job-id-identity",
+      "description": "JobId now identifies one background execution across registry lifetimes.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\job-id-identity\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "jsonl-persistence-plugin",
+      "description": "JSONL persistence uses a namespace plugin import; direct service-class construction and class type annotations must use the persistence service instead.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "plugin",
+        "sessionPersistence"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\jsonl-persistence-plugin\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "mock-messages-events",
+      "description": "Messages mock streams publish named SSE events for native SDK consumers.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\mock-messages-events\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "native-subagent-bundle-tools",
+      "description": "Claude Code and Codex bundles add global delegation tools while retaining their package and row identities.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\native-subagent-bundle-tools\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "new-session-generations",
+      "description": "New Session creates a fresh Agent instead of reusing an existing empty Session.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\new-session-generations\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "plugin-option-placement",
+      "description": "dsh plugin reads --profile only before the forwarded pnpm arguments and prints its own help.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\plugin-option-placement\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "python-optional-resources",
+      "description": "Python runtime wheels require explicit downloads for Office conversion and bundled authoring environments.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\python-optional-resources\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "python-ptc-sandbox",
+      "description": "Python PTC compositions require sandbox services, and direct Python file operations follow the resolved file policy.",
+      "matchedPackages": [
+        "dsh-sandbox-local",
+        "dsh-sandbox-policy"
+      ],
+      "patchIds": [
+        6,
+        15,
+        61
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\python-ptc-sandbox\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "session-title-adapters",
+      "description": "Custom title routes require registered adapters and reasoning efforts in increasing order.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "llm"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\session-title-adapters\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "session-title-provider-strategy",
+      "description": "Session-title providers register directly, own their strategy settings, and share only prepared execution.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "sessionTitle"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\session-title-provider-strategy\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "ssh-helper-launch",
+      "description": "SSH and Node PTC configurations use explicit launch modes, and SSH clients require a matching protocol-2 helper.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "ssh"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\ssh-helper-launch\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "subagent-activations",
+      "description": "Managed subagent activations replace foreground and Job-backed delegation, its configuration keys, and the published in-process driver.",
+      "matchedPackages": [
+        "dsh-tool-subagent",
+        "dsh-subagent"
+      ],
+      "patchIds": [
+        23,
+        37
+      ],
+      "unmatchedServices": [
+        "subagents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\subagent-activations\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "subagent-preset-composition",
+      "description": "Subagent persona and toolFilter configuration is replaced by Agent Preset composition.",
+      "matchedPackages": [
+        "dsh-tool-subagent"
+      ],
+      "patchIds": [
+        23
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\subagent-preset-composition\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "team-direct-inbox",
+      "description": "Agent Teams removes its pending-message limit and stops delivering historical queued mail.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "agentTeams"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\team-direct-inbox\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "terminal-command-labels",
+      "description": "Custom TerminalBlock consumers must provide localized accessible names for overflowing command lines.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\terminal-command-labels\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "tool-presentation-mode",
+      "description": "Tool presentation accepts native or ptc; the mixed both mode is rejected.",
+      "matchedPackages": [
+        "dsh-tools"
+      ],
+      "patchIds": [
+        60,
+        62
+      ],
+      "unmatchedServices": [
+        "tools"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\tool-presentation-mode\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "web-listener-trust-config",
+      "description": "The Web profile replaces the `webRuntime` service and the `web-runtime` row's `trustedHosts` config with `webStartup`, and rejects a wildcard listener host.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "webRuntime",
+        "webStartup"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\web-listener-trust-config\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.1",
+      "change": "working-directory",
+      "description": "Session working directories replace built-in cwd configuration, and tool presentation metadata also runs for nested PTC calls.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.1\\working-directory\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "cordis-timer-wrappers",
+      "description": "Timer wrappers return void in TypeScript and ignore calls after disposal.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "throttle",
+        "debounce",
+        "timer"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\cordis-timer-wrappers\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "deepseek-account-identity-watch",
+      "description": "DeepSeekAccount.watch no longer includes Platform identity changes unless explicitly requested.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\deepseek-account-identity-watch\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "deepseek-account-model-catalog",
+      "description": "The DeepSeek account route no longer accepts a models catalog; the account listing supplies its models and modelOverrides adjusts them.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\deepseek-account-model-catalog\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "desktop-font-size-shortcuts",
+      "description": "Desktop font-size shortcuts reserve key combinations previously available to custom shortcuts.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\desktop-font-size-shortcuts\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "from-default-profile-replaces-target",
+      "description": "`--from-default-profile` now replaces an existing custom profile instead of refusing it.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\from-default-profile-replaces-target\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "operator-connect",
+      "description": "Non-page Clients default to no forwarded interactions and use raw streams without browser recovery.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\operator-connect\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "pi-ai-azure-provider",
+      "description": "The pi-ai Azure provider route is renamed from azure-openai-responses to azure.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\pi-ai-azure-provider\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "pi-ai-model-discovery",
+      "description": "pi-ai routes that name a credential hide their models until the credential is configured.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\pi-ai-model-discovery\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "plugin-install-over-installed",
+      "description": "With HMR, installing a package that is already installed fails with already-installed; an upgrade removes the package first.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\plugin-install-over-installed\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "plugin-manager-view-fields",
+      "description": "viewProfilePackage from @deepseek-ai/dsh-plugin-manager/operations requires the manifest fields it prints.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\plugin-manager-view-fields\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "sdk-minimal-image-compaction",
+      "description": "The sdk-minimal default tool roster adds read_image and automatically summarizes older context.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\sdk-minimal-image-compaction\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.2",
+      "change": "stored-credentials-precedence",
+      "description": "Stored credentials now precede environment fallbacks when the store is mounted; the shipped headless profile omits stored authentication.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.2\\stored-credentials-precedence\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.3",
+      "change": "plugin-engines-dsh",
+      "description": "Plugin compatibility checks read engines.dsh before DSH peerDependencies, and refusals report requirements instead of peers.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.3\\plugin-engines-dsh\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.4",
+      "change": "account-notification-fields",
+      "description": "AccountBonusNotification exposes unvalidated optional metadata and permits notices without an expiry.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.4\\account-notification-fields\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.4",
+      "change": "model-switch-compaction",
+      "description": "Automatic model switches require a valid destination pressure budget and successful compaction.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.4\\model-switch-compaction\\guide.md"
+    },
+    {
+      "version": "v0.2.1-alpha.4",
+      "change": "session-model-selection",
+      "description": "Session model choices are fixed at step preparation, and projection types move to their owning package.",
+      "matchedPackages": [
+        "dsh-agent-loop"
+      ],
+      "patchIds": [
+        55,
+        67,
+        68,
+        74,
+        86,
+        87,
+        88
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-alpha.4\\session-model-selection\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.1",
+      "change": "agent-instructions-chain-budgets",
+      "description": "The maxBytes budget of @deepseek-ai/dsh-agent-instructions caps each instruction chain separately, so a baseline holding both chains can reach twice the configured size.",
+      "matchedPackages": [
+        "dsh-agent-instructions"
+      ],
+      "patchIds": [
+        1,
+        2,
+        3
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.1\\agent-instructions-chain-budgets\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.1",
+      "change": "subagent-control-tools",
+      "description": "Custom subagent compositions must update model-selection settings and register discovery through main entries.",
+      "matchedPackages": [
+        "dsh-tool-subagent"
+      ],
+      "patchIds": [
+        23
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.1\\subagent-control-tools\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "agent-runtime-owner",
+      "description": "Agent creation and resume options rename parentAgent to ownerAgent for runtime ownership.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "agents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\agent-runtime-owner\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "agent-team-subagents",
+      "description": "Agent Teams uses the standard subagent tools and Session ids; Team-specific creation, messaging, listing, interruption, and their configuration keys are removed.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "agentTeams",
+        "subagents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\agent-team-subagents\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "approval-projection-dependency",
+      "description": "Custom ApprovalService compositions must provide sessionProjections and await service activation.",
+      "matchedPackages": [
+        "dsh-user-approval",
+        "dsh-session"
+      ],
+      "patchIds": [
+        5,
+        9,
+        10,
+        11,
+        12,
+        58,
+        68
+      ],
+      "unmatchedServices": [
+        "plugin",
+        "approval"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\approval-projection-dependency\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "auto-review-shutdown",
+      "description": "Auto review Sessions retain their permission preset when the application closes and require the integration when reopened.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\auto-review-shutdown\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "auto-review-user-sources",
+      "description": "Auto review recognizes user-sourced task instructions across input transports and existing history.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\auto-review-user-sources\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "built-in-japanese",
+      "description": "Built-in language registrations conflict with third-party language packs using the same ids.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "locale"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\built-in-japanese\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "conditional-tools",
+      "description": "Tool declarations come only from step-admitted registrations: `system-prompt/assemble` no longer carries tools, conditional tools need a resolved step set, and `exit_plan_mode` is declared only after a Session first enters plan mode.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "tools"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\conditional-tools\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "context-menu-services",
+      "description": "Custom Client compositions must provide the context-menu and file-action services required by GUI plugins.",
+      "matchedPackages": [
+        "dsh-web-app"
+      ],
+      "patchIds": [
+        4,
+        24,
+        26,
+        32,
+        43,
+        53,
+        63,
+        70,
+        73,
+        80
+      ],
+      "unmatchedServices": [
+        "menus",
+        "contextMenus",
+        "slots"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\context-menu-services\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "cua-consent-storage",
+      "description": "Computer Use application consent moves from profile configuration to durable profile-scoped storage.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\cua-consent-storage\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "cua-preset-scope",
+      "description": "Standalone native CUA compositions must explicitly select global tool registration.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\cua-preset-scope\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "cua-relative-coordinates",
+      "description": "CUA relative coordinates accept integers from 0 to 999 and reject the former endpoint 1000.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\cua-relative-coordinates\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "file-drag-callbacks",
+      "description": "Custom image factories and Markdown image delegates must supply file preparation callbacks.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "fileDrag"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\file-drag-callbacks\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "headless-policy-composition",
+      "description": "Headless compositions that disable the command-line provider must supply their sandbox policy configuration directly.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\headless-policy-composition\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "model-badge-package-removal",
+      "description": "The fixed 1017 model badge package is removed; model badges come from the DeepSeek model listing.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\model-badge-package-removal\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "new-session-blank-reuse",
+      "description": "New Session reuses a blank Session in the Workspace again instead of creating a fresh Agent on every call.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\new-session-blank-reuse\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "node-24",
+      "description": "DSH requires Node.js 24.9 or newer and no longer supports Node.js 22.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\node-24\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "official-bundle-lists",
+      "description": "The bundle lists and profile templates move from @deepseek-ai/dsh-app-boot to @deepseek-ai/dsh-official-bundles.",
+      "matchedPackages": [
+        "dsh-app-boot"
+      ],
+      "patchIds": [
+        78
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\official-bundle-lists\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "persistent-terminal-controls",
+      "description": "Persistent-terminal bundle controls leave the Plugins page; profile configuration still enables and disables the bundle.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\persistent-terminal-controls\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "pi-ai-default-capacities",
+      "description": "Undescribed pi-ai models inherit larger context and output capacities unless the provider configures explicit defaults.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\pi-ai-default-capacities\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "pi-ai-model-catalog",
+      "description": "The pi-ai 1.3.0 catalog removes model IDs and lowers some model capacities.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\pi-ai-model-catalog\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "pi-ai-protocol-replay",
+      "description": "pi-ai 1.3.0 changes provider protocols, reasoning choices, history replay, and invalid tool-argument handling.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\pi-ai-protocol-replay\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "ptc-script-format",
+      "description": "PTC programFormat includes Script syntax, and consumers read retainsState for cross-call memory.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\ptc-script-format\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "sdk-desktop-context",
+      "description": "The existing SDK profile includes native desktop tools and model context.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\sdk-desktop-context\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "sdk-minimal-checkpoints",
+      "description": "The sdk-minimal profile now stops model and tool dispatch when session persistence cannot complete a checkpoint.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\sdk-minimal-checkpoints\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "session-projection-handles",
+      "description": "Session projection registration resolves asynchronously to a retained reader; the callable result and registry-level state reads are deprecated.",
+      "matchedPackages": [
+        "dsh-subagent",
+        "dsh-agent-loop",
+        "dsh-api-session-controller"
+      ],
+      "patchIds": [
+        23,
+        37,
+        55,
+        67,
+        68,
+        74,
+        85,
+        86,
+        87,
+        88
+      ],
+      "unmatchedServices": [
+        "agents",
+        "agentPresets",
+        "tokenMeter",
+        "sessionProjections"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\session-projection-handles\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "session-store-writes",
+      "description": "Store-owned Sessions reject writes before creation announcement completes and after removal.",
+      "matchedPackages": [
+        "dsh-permission-presets"
+      ],
+      "patchIds": [
+        51
+      ],
+      "unmatchedServices": [
+        "agents",
+        "sessions"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\session-store-writes\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "session-team-mode",
+      "description": "Agent Teams defaults off for new Sessions and uses a saved per-Session selection.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\session-team-mode\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "subagent-activation-options",
+      "description": "SubagentActivationSpec accepts task options directly instead of a nested request object.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "subagents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\subagent-activation-options\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "subagent-service-methods",
+      "description": "The subagent service removes drainChildren, listChildren, and list.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "subagents",
+        "sessionQuery"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\subagent-service-methods\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "subagent-user-controls",
+      "description": "Subagent user controls address only the target Session, rename the interrupt endpoint, and require target Session permissions instead of global permissions.",
+      "matchedPackages": [
+        "dsh-subagent"
+      ],
+      "patchIds": [
+        23,
+        37
+      ],
+      "unmatchedServices": [
+        "subagents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\subagent-user-controls\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "tool-executor-plugins",
+      "description": "Tool execution modes move from dsh-tools configuration into explicit executor plugins.",
+      "matchedPackages": [
+        "dsh-tools",
+        "dsh-tool-executor-ptc"
+      ],
+      "patchIds": [
+        60,
+        62
+      ],
+      "unmatchedServices": [
+        "ptcRuntime"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\tool-executor-plugins\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "web-fetch-private-destinations",
+      "description": "The HTTP fetch provider no longer rejects non-public destinations, and HttpFetchProvider no longer accepts an address resolver.",
+      "matchedPackages": [
+        "dsh-tool-web"
+      ],
+      "patchIds": [
+        29
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\web-fetch-private-destinations\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.2",
+      "change": "webserver-index-peer",
+      "description": "WebServer index rendering takes the Peer the page speaks for, and the `webserver/index-inject` event passes that Peer to listeners.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "webServer",
+        "connection",
+        "emit"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.2\\webserver-index-peer\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "attachment-read-access",
+      "description": "Image read requests require a complete attachment reference and no longer check Session membership.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\attachment-read-access\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "computer-use-helper-permissions",
+      "description": "Computer Use needs permission for its own helper application instead of the terminal that launches DSH.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\computer-use-helper-permissions\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "cua-bundle-id-consent",
+      "description": "macOS Computer Use grants use bundle identifiers and require renewed consent for old application identities.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\cua-bundle-id-consent\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "generated-worktree-names",
+      "description": "Generated worktree names replace the worktree- prefix and full UUID suffix with dsh- and Session-derived names.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "worktrees"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\generated-worktree-names\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "inbox-only-agent-wait",
+      "description": "Task-board changes no longer end wait_agent calls; send a message to request further work.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\inbox-only-agent-wait\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "independent-session-forks",
+      "description": "Ordinary Session forks stop recording their source relationship and stop appearing as subagents.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\independent-session-forks\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "ptc-caller-cancellation",
+      "description": "Caller-cancelled run_code results use ABORTED instead of CODE_RUN_FAILED.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\ptc-caller-cancellation\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "session-follow-activation",
+      "description": "Session follow callers must explicitly request background Agent activation.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\session-follow-activation\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "subagent-runtime-ownership",
+      "description": "Agent factory ownership parameters and registry tree queries are removed; subagent Activations own runtime tree membership.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "subagents",
+        "agents"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\subagent-runtime-ownership\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "team-mode-menu",
+      "description": "The Team mode slash command is removed; use the root conversation menu.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "agentTeams"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\team-mode-menu\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "team-projection",
+      "description": "Team projection stops restoring historical teammates and mailbox state while retaining tasks and saved mode.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\team-projection\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "web-file-downloads",
+      "description": "Custom file-action menus must offer save-as only on Desktop and browser downloads on Web.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "fileActions"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\web-file-downloads\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.3",
+      "change": "web-search-defaults",
+      "description": "One web_search call accepts 10 queries and returns 10 sources by default, and the DeepSeek Search API provider paces its requests.",
+      "matchedPackages": [
+        "dsh-tool-web"
+      ],
+      "patchIds": [
+        29
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.3\\web-search-defaults\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.4",
+      "change": "model-listing-refresh",
+      "description": "DeepSeek model listings refresh automatically after first use, and custom listing-cache owners must supply live settings and change notifications.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "locale"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.4\\model-listing-refresh\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.4",
+      "change": "reasoning-body-props",
+      "description": "Reasoning Body Slot text carries display-ready content, with original output in rawText.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.4\\reasoning-body-props\\guide.md"
+    },
+    {
+      "version": "v0.2.1-rc.4",
+      "change": "sandbox-unsupported-policy-error",
+      "description": "The sandbox package removes SandboxUnsupportedPolicyError; Windows processes ignore additional writable roots.",
+      "matchedPackages": [
+        "dsh-sandbox"
+      ],
+      "patchIds": [
+        13,
+        14,
+        34,
+        35,
+        36
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.1-rc.4\\sandbox-unsupported-policy-error\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "context-menu-target",
+      "description": "Client plugins must use the prefixed context menu types and hooks and register keyed icon components.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "slots"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\context-menu-target\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "cordis-loader-entry-trees",
+      "description": "Loader entry trees report mutations through commit(change), and Include persists them through a journal.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\cordis-loader-entry-trees\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "css-anchored-menus",
+      "description": "Client UI consumers must replace JavaScript panel positioning and Menu rectangle callbacks with CSS anchors.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\css-anchored-menus\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "cua-source-dev-helper",
+      "description": "Source-built Computer Use helpers use a separate development bundle identifier and need one new macOS permission grant.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\cua-source-dev-helper\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "desktop-stable-channel",
+      "description": "The Desktop stable update channel is named stable instead of latest.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\desktop-stable-channel\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "forge-git-permissions",
+      "description": "Forge Git queries use Session permissions and disable configured diff helpers.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\forge-git-permissions\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "forge-worktree-entry",
+      "description": "The Plugins page replaces the standalone Git worktrees card with Change requests & worktrees.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\forge-worktree-entry\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "fs-observation-policy-default-off",
+      "description": "The fs-observation-policy row ships disabled, so write, edit, and apply_patch no longer require a prior read, and dsh-base plus the Web standard preset gain apply_patch.",
+      "matchedPackages": [
+        "dsh-fs-observation-policy"
+      ],
+      "patchIds": [
+        17
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\fs-observation-policy-default-off\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "llm-error-builtin-codes",
+      "description": "`new LlmError` accepts only built-in failure codes; other codes go through `LlmError.fromFailure`.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\llm-error-builtin-codes\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "llm-request-purpose-declarations",
+      "description": "Auxiliary LLM request purposes require producer-owned type declarations instead of a shared fixed union.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\llm-request-purpose-declarations\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "pi-ai-request-image-count",
+      "description": "pi-ai routes now offload the oldest history images once a request carries more than 50 retained images.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\pi-ai-request-image-count\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "projection-event-frames",
+      "description": "Live Session projection frames list every key one committed event changed instead of carrying one key each.",
+      "matchedPackages": [
+        "dsh-api-session-controller"
+      ],
+      "patchIds": [
+        85,
+        86
+      ],
+      "unmatchedServices": [
+        "sessionProjections"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\projection-event-frames\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "projection-released-checkpoint",
+      "description": "`ctx.sessionProjections.checkpoint(session)` keeps a released unit's last row instead of omitting it.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "sessionProjections",
+        "sessions"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\projection-released-checkpoint\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "projection-snapshot-scope",
+      "description": "Projection snapshot reads compute only the returned units, the registry cached snapshot read is deprecated, and Session list summaries omit context pressure and breakdown.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "sessionProjections",
+        "sessionProjectionCache"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\projection-snapshot-scope\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "retained-ptc-timeout",
+      "description": "Retained Node PTC uses cooperative stop on timeout or cancellation, with process termination when acknowledgment fails.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\retained-ptc-timeout\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "schedule-agent-tools",
+      "description": "The Schedule model tools become `schedule_create`, `schedule_list`, `schedule_view`, and `schedule_edit` over every Host task, and `schedule_update` and `schedule_delete` are removed.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\schedule-agent-tools\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "schedule-remote-host-tasks",
+      "description": "Schedule clients use one Host-wide management API and typed timing records; stored Host tasks keep the existing domain and layout.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\schedule-remote-host-tasks\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "sdk-run-commands",
+      "description": "SDK run recognizes native commands and returns RunResult after its input completes.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\sdk-run-commands\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "session-header-menu",
+      "description": "Custom Web compositions must provide context menus for Session actions, and export dialogs now remain visible across Session switches.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\session-header-menu\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "subagent-explicit-reasoning",
+      "description": "Subagent reasoning overrides require an explicit provider and model, and explicit routes use model-default reasoning when effort is omitted.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\subagent-explicit-reasoning\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "web-search-credential-modes",
+      "description": "DeepSeek web search and fetch take their endpoint from the DeepSeek model route; the shared baseURL, apiKeyEnv, and apiKey fields are removed in favor of per-capability fields.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\web-search-credential-modes\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.2",
+      "change": "web-search-default-provider",
+      "description": "The shipped Search default moves from legacy Messages search to the DeepSeek Search API, and the optional Exa and Perplexity search packages are removed.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.2\\web-search-default-provider\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.3",
+      "change": "chat-process-activity-context",
+      "description": "Chat ProcessActivity gains a context category, and the running activity uses RunningProcessActivity.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.3\\chat-process-activity-context\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.3",
+      "change": "office-kit-package",
+      "description": "`@deepseek-ai/dsh-office-kit` replaces `@deepseek-ai/dsh-office-to-pdf`, renaming its service, Remote methods, exported types, and configuration row.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "officeToPdf",
+        "officeKit"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.3\\office-kit-package\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.3",
+      "change": "office-operation-tools",
+      "description": "The `office-render`, `office-recalculate`, and `office-export-pdf` skills, the skill-office `node` and `cli` keys, and two Office CLI environment variables are removed; Office operations use skill-activated tools.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.3\\office-operation-tools\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.3",
+      "change": "office-skill-resources",
+      "description": "`DSH_BUNDLED_OFFICE_SKILLS` and the `office-skills/` resource directories are removed; Office skills load from the `skill-office` package's assets.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.3\\office-skill-resources\\guide.md"
+    },
+    {
+      "version": "v0.2.2-alpha.3",
+      "change": "subagent-names",
+      "description": "Subagent control and Team task tools address agents by name, list_agents rows change, and subagent catalogs write payload version 3.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "agentTeams"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-alpha.3\\subagent-names\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "account-notification-fields",
+      "description": "Generic account notification APIs replace bonus-specific methods and notification requests use the Harness domain.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\account-notification-fields\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "account-remote-provider",
+      "description": "Move account plugin composition and Remote imports to the concrete deepseek-account service.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "deepseekAccount",
+        "remote"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\account-remote-provider\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "archive-worktrees",
+      "description": "Archiving a Session can remove its clean worktree while retaining the branch, and the Forge bundle mounts one worktree service.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\archive-worktrees\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "attachment-error-codes",
+      "description": "AttachmentError now extends HarnessError, so tool and model-request failures record attachment codes instead of losing them or reporting UNKNOWN.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\attachment-error-codes\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "cua-ax-read-limits",
+      "description": "macOS reads more AX nodes by default and accepts per-read overrides of configured traversal budgets.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\cua-ax-read-limits\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "cua-hover-ax-only",
+      "description": "macOS mouseMove requires AX alternate UI by default and returns HOVER_UNAVAILABLE instead of moving the user's cursor.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\cua-hover-ax-only\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "cua-native-platform",
+      "description": "Migrate CUA scripts and custom native providers to scoped window input, string element IDs, and platform capabilities.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\cua-native-platform\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "dsh-doc-skill",
+      "description": "Creator mode replaces its four skills with one `dsh-doc` skill, and the repository documentation skill becomes `dsh-doc-writing`.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\dsh-doc-skill\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "forge-change-request-overview",
+      "description": "ChangeRequestSnapshot gains required overview fields, ChangeRequestCheck gains the required rerun field, and ForgeActionFailure gains the unknown code.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forge"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\forge-change-request-overview\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "forge-pinned-diff",
+      "description": "ForgeProvider.diff and ctx.forge.diff take the head commit to read, ForgeFailure gains the stale code, and ChangeRequestSnapshot gains threadsTruncated.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forge"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\forge-pinned-diff\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "forge-review-reads",
+      "description": "ForgeFailure gains the unsupported code, which ctx.forge.readReview returns for a provider without review reads.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forge"
+      ],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\forge-review-reads\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "plugin-update-method",
+      "description": "BundleInfo.updatable is replaced by BundleInfo.update, and ManagementError gains the unexpected-package code.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\plugin-update-method\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "runtime-context-reminders",
+      "description": "Runtime-context log text gains reminder framing, and clear markers record empty snapshot sections.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\runtime-context-reminders\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "session-append-overloads",
+      "description": "Code that replaces Session.append must implement both the single-event and array overloads.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\session-append-overloads\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "subagent-interrupt-default",
+      "description": "Built-in configurations disable interrupt_agent for subagents and Team mode.",
+      "matchedPackages": [
+        "dsh-web-app"
+      ],
+      "patchIds": [
+        4,
+        24,
+        26,
+        32,
+        43,
+        53,
+        63,
+        70,
+        73,
+        80
+      ],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\subagent-interrupt-default\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "terminal-backend-cleanup-error",
+      "description": "TerminalBackendCleanupError extends TerminalError instead of AggregateError and carries the CLEANUP_FAILED code.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\terminal-backend-cleanup-error\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "terminal-bundle-sidebar-backend",
+      "description": "The experimental terminal bundle opens Agent terminals in the Web sidebar and replaces its optional-terminal-bash and optional-terminal-pwsh rows with optional-terminal-panel.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\terminal-bundle-sidebar-backend\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "web-search-billing",
+      "description": "DeepSeek Search and Fetch add per-capability billing and replace provider authentication fields with ordered credential sources.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\web-search-billing\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.1",
+      "change": "window-drag-regions",
+      "description": "Custom Client overlays that relied on global macOS no-drag exclusions must declare their window regions.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide\\v0.2.2-rc.1\\window-drag-regions\\guide.md"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "client-module-metadata",
+      "description": "Client artifact metadata and static library manifests require rebuilding custom browser bundles and updating direct static-artifact consumers.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/client-module-metadata"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "connection-page-peer",
+      "description": "WebServer routes require authentication by default, and default Token login moves to a Provider plugin.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "connection"
+      ],
+      "source": "master:v0.2.2-rc.2/connection-page-peer"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "cordis-root-and-intercept-metadata",
+      "description": "Cordis 4.0.0-rc.12 replaces ctx.root with ctx[Context.root] and renames the service intercept-metadata API.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "root",
+        "intercept",
+        "isolate",
+        "parallel"
+      ],
+      "source": "master:v0.2.2-rc.2/cordis-root-and-intercept-metadata"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "cua-agents-without-preset",
+      "description": "A native CUA provider configured with a preset id now gives Agents without an Agent preset the cua_run_code tool.",
+      "matchedPackages": [
+        "dsh-tool-executor-ptc"
+      ],
+      "patchIds": [
+        60
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/cua-agents-without-preset"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "cua-macos-provider",
+      "description": "Update direct dependencies and configuration overrides for the renamed macOS Computer Use provider.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/cua-macos-provider"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "cua-partial-observations",
+      "description": "macOS CUA returns marked partial AX observations and distinguishes observation failures from stale input snapshots.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/cua-partial-observations"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "deepseek-files-timeout",
+      "description": "Keep a longer image upload deadline on slow DeepSeek gateways.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/deepseek-files-timeout"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "experimental-tool-error-codes",
+      "description": "Experimental and hook plugin tool failures record error codes, NativeError, OarFailure, and StagehandDrainError become HarnessError subclasses, and browser cleanup rejects with BrowserSessionError.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/experimental-tool-error-codes"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "package-export-cleanup",
+      "description": "Update removed package subpaths; retained identity constructors remain available.",
+      "matchedPackages": [
+        "dsh-tools"
+      ],
+      "patchIds": [
+        60,
+        62
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/package-export-cleanup"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "python-ptc-removal",
+      "description": "Python PTC runtime packages, external providers, SDK renderers and Python-specific binding APIs are removed; migrate to TypeScript PTC.",
+      "matchedPackages": [
+        "dsh-tool-executor-ptc"
+      ],
+      "patchIds": [
+        60
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/python-ptc-removal"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "session-status-package",
+      "description": "Session status types and the useSessionStatus hook move to @deepseek-ai/dsh-client-ui-session-status/client, ctx.uiSession.sessionStatus becomes an injected service, and completion reminders follow Host reading records.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "uiSession"
+      ],
+      "source": "master:v0.2.2-rc.2/session-status-package"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "shared-search-filter",
+      "description": "ui-primitives no longer exports rankByName, and popupSelect commands no longer accept searchMode.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/shared-search-filter"
+    },
+    {
+      "version": "v0.2.2-rc.2",
+      "change": "shell-fs-tool-error-codes",
+      "description": "bash and pwsh report unadvertised sandbox_permissions and run_in_background as ToolArgsError, JOB_BACKGROUND_DISABLED is removed, and read_image reports MODEL_DOES_NOT_SUPPORT_IMAGES instead of IMAGE_UNSUPPORTED_MODEL.",
+      "matchedPackages": [
+        "dsh-tool-fs"
+      ],
+      "patchIds": [
+        22,
+        36
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.2/shell-fs-tool-error-codes"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "action-card-blocks",
+      "description": "Personalized recommendations cards come from action-card blocks in answers; the propose_action tool, the action-cards queuedMessageLimit field and the callId card field are gone.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "actionCards"
+      ],
+      "source": "master:v0.2.2-rc.3/action-card-blocks"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "client-hmr-plugin-events-stream",
+      "description": "`@deepseek-ai/dsh-client-hmr` removes `GET /plugins/events` and `EVENTS_ENDPOINT` for the authenticated `pluginEvents/follow` Remote stream, and browser plugins receive synced configuration in `apply`.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/client-hmr-plugin-events-stream"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "cordis-inspect-tool",
+      "description": "The cordis_inspect tool replaces cordis_inspect_list and cordis_inspect_query.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/cordis-inspect-tool"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "cordis-loader-entry-validation",
+      "description": "Cordis Loader 1.0.0-rc.9 and Include 1.2.0 parse YAML 1.2, reject malformed entries, and return PatchResult from applyEntryPatches.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/cordis-loader-entry-validation"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "create-worktree-tool-merged",
+      "description": "The `create_worktree` model tool is removed; `enter_worktree` creates a worktree or enters an existing one of the same name.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "worktrees"
+      ],
+      "source": "master:v0.2.2-rc.3/create-worktree-tool-merged"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "deepseek-file-policy",
+      "description": "Direct DeepSeekFileStore callers must supply a resolved file upload policy.",
+      "matchedPackages": [
+        "dsh-llm-deepseek"
+      ],
+      "patchIds": [
+        69,
+        72
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/deepseek-file-policy"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "deepseek-refusal-code",
+      "description": "The DeepSeek streamed content refusal code changes from MALFORMED_RESPONSE to CONTENT_REFUSED.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/deepseek-refusal-code"
+    }
+  ]
+}

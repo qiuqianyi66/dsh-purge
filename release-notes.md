@@ -1,3 +1,25 @@
+# 1.2.11
+
+## 中文
+
+- **rc.5 真机转正**：supported 目标从 `0.2.2-rc.3` 迁到 `0.2.2-rc.5`，rc.3 降为 legacy（1.2.11 仍覆盖）。82 条补丁 **0 条需要改**——rc.4/rc.5 的上游源码变更（base 组合删 `searchProvider: deepseek-search-api` 改由 dsh-web 按模型路由、rc.5 新增 `CONTENT_REFUSED`/`refusal()`）逐条核对，均不触及本插件 pattern。
+- **源码级差异工具**：新增 `npm run upstream:diff`（`scripts/upstream-src-diff.mjs`），对两棵隔离树逐文件 SHA-256 比对（290 包中 15 包变化），结构指纹剔除 version 字段防噪声。
+- **锚点 fixture 化**：`scripts/rc5-fixture-gen.mjs` 从真宿主机械提取锚点（找不到即 exit 2 不静默），`fixtures/host-anchors-0.2.2-rc.5.json` + `test/anchor-rc5.test.js` 8 条锁 #22/#7/#8/#63/#40；首跑即抓到单双引号真实差异（`'plan:policy'` vs `"plan:policy"`）。
+- **审计口径修复**：`audit-next.mjs` 此前跳过 RegExp 型 pattern，纯正则补丁（#40/#73）永远落 unknown；修后 rc.3/rc.5 同口径 ok58/verify6/unknown3/no-carrier11，drift 0。
+- **真机验证（0.2.2-rc.5 桌面版）**：官方 NSIS 安装器被安全软件拦临时文件写入（`Error writing temporary file`，TEMP 可写、换新 TEMP 仍拒、/NCRC 无效），改从官方 exe 解出 `app-64.7z` 落盘（sha512 与 nightly feed 一致）；宿主 21782 文件 / 338 个 @deepseek-ai 包，`--apply` **70/71 已清洗、0 待清洗**，`--diagnose` 载体 56 / 改原文 0 / 目标消失 0 / 载体缺失 0 / 部分副本 0，可选缺失 7（正常跳过），主窗口正常启动。完整 338 包树 isolated-cycle G1–G6 全过（applied 55 / failed 0 / revert 46 mismatch 0）。
+- **测试防假红**：`compat-matrix-probe.test.js` 的宿主版本改为跟随 `COMPAT_CURRENT`，矩阵转正不再需要改测试（本轮转正时写死 rc.3 红过一次）。全套 `node --test` **251 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **rc.5 promoted on a real host**: the supported target moves from `0.2.2-rc.3` to `0.2.2-rc.5`; rc.3 becomes a legacy row (still covered by 1.2.11). **Zero of the 82 patches needed changes** — the rc.4/rc.5 upstream source deltas (base composition dropping `searchProvider: deepseek-search-api` in favor of dsh-web per-model routing; rc.5 adding `CONTENT_REFUSED` / `refusal()`) were checked line by line and touch none of this plugin's patterns.
+- **Source-level diff tooling**: new `npm run upstream:diff` (`scripts/upstream-src-diff.mjs`) compares two isolated trees file by file with SHA-256 (15 of 290 packages changed); structural fingerprints strip the version field to avoid noise.
+- **Anchor fixtures**: `scripts/rc5-fixture-gen.mjs` extracts anchors mechanically from the real host (exit 2, never silent, when an anchor is missing); `fixtures/host-anchors-0.2.2-rc.5.json` + `test/anchor-rc5.test.js` (8 tests) lock #22/#7/#8/#63/#40. The first run caught a real quote-style delta (`'plan:policy'` vs `"plan:policy"`).
+- **Audit coverage fix**: `audit-next.mjs` used to skip RegExp patterns, so regex-only patches (#40/#73) were stuck at unknown; after the fix rc.3 and rc.5 share the same distribution — ok 58 / verify 6 / unknown 3 / no-carrier 11, drift 0.
+- **Verified on a real 0.2.2-rc.5 desktop host**: the official NSIS installer was blocked from writing its temp file by security software (`Error writing temporary file`; TEMP writable, fresh TEMP still denied, /NCRC ineffective), so the payload was extracted from the official exe (`app-64.7z`, sha512 matching the nightly feed) and laid down directly; 21,782 files / 338 `@deepseek-ai` packages, `--apply` **70/71 cleaned, 0 pending**, `--diagnose` 56 carriers / 0 changed source / 0 dead target / 0 missing carrier / 0 partial copies, 7 optional carriers absent (expected), main window boots normally. Full 338-package tree isolated-cycle gates G1–G6 all pass (55 applied / 0 failed / 46 reverted, 0 mismatch).
+- **Test hardening**: `compat-matrix-probe.test.js` now derives the host version from `COMPAT_CURRENT` instead of hardcoding it, so future promotions do not break the suite (the hardcoded rc.3 went red once during this promotion). `node --test` **251 passing / 0 failing**; compat / fixture / native / pack checks all green.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.10
 
 ## 中文

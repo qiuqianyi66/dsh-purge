@@ -1,7 +1,7 @@
 {
   "name": "dsh-purge",
-  "version": "1.2.10",
-  "dshTarget": "0.2.2-rc.3",
+  "version": "1.2.11",
+  "dshTarget": "0.2.2-rc.5",
   "generatedBy": "scripts/gen-compat-readme.mjs",
   "source": "lib/compat-matrix.js",
   "evidenceLevels": {
@@ -11,48 +11,171 @@
     "device": "真机交互：应用到真宿主并完成面板/按钮人工验收"
   },
   "verification": {
-    "verifiedOn": "2026-11-16",
-    "audit": {
-      "version": "0.2.2-rc.3",
-      "carriers": 45,
-      "patches": 78,
-      "recognized": 56,
-      "verifyOnly": 6,
-      "drift": 0,
-      "unaudited": 11
-    },
-    "applySimulation": {
-      "applied": 58,
-      "already": 6,
-      "filesChanged": 49,
-      "jsFilesChecked": 39,
-      "syntaxFailures": 0,
-      "na": 15,
-      "skipped": 1,
-      "missingFile": 1
-    },
-    "hostDiagnose": {
-      "host": "0.2.2-rc.3",
+    "verifiedOn": "2026-11-21",
+    "current": {
+      "host": "0.2.2-rc.5",
       "surface": "desktop",
+      "install": "官方 NSIS 安装器被安全软件拦（Error writing temporary file；TEMP 可写、换新 TEMP 仍拒），改从 win-x64.exe 解出 app-64.7z 落盘：runtime 6136 文件 + app.asar 209083008 字节，runtime.json desktopVersion=0.2.2-rc.5",
+      "hostTree": {
+        "files": 21782,
+        "packages": 338
+      },
       "patches": 82,
-      "fileVerified": 71,
-      "partialCopies": 0,
-      "noFileField": 0,
-      "optionalMissing": 7,
-      "retired": 4,
-      "driftChangedSource": 0,
-      "deadTarget": 0,
-      "carrierMissing": 0
+      "hostApply": {
+        "applied": 70,
+        "denominator": 71,
+        "pending": 0,
+        "na": 11,
+        "skipped": 1
+      },
+      "hostDiagnose": {
+        "host": "0.2.2-rc.5",
+        "surface": "desktop",
+        "carriers": 56,
+        "fileVerified": 71,
+        "partialCopies": 0,
+        "noFileField": 0,
+        "optionalMissing": 7,
+        "retired": 4,
+        "driftChangedSource": 0,
+        "deadTarget": 0,
+        "carrierMissing": 0
+      },
+      "hostSmoke": "verified",
+      "device": "not-run",
+      "audit": {
+        "version": "0.2.2-rc.5",
+        "carriers": 45,
+        "patches": 78,
+        "recognized": 58,
+        "verifyOnly": 6,
+        "drift": 0,
+        "unaudited": 11
+      },
+      "isolatedCycle": {
+        "gates": "6/6",
+        "applied": 58,
+        "already": 6,
+        "failed": 0,
+        "filesChanged": 49,
+        "jsFilesChecked": 39,
+        "syntaxFailures": 0,
+        "revertMismatch": 0
+      },
+      "fullTree": {
+        "packages": 338,
+        "gates": "6/6",
+        "applied": 55,
+        "already": 6,
+        "failed": 0,
+        "filesChanged": 46,
+        "jsFilesChecked": 36,
+        "syntaxFailures": 0,
+        "drifted": 0,
+        "reverted": 46,
+        "revertMismatch": 0
+      },
+      "anchors": {
+        "fixtureRows": 7,
+        "generatedBy": "scripts/rc5-fixture-gen.mjs",
+        "drift": 0
+      },
+      "unitTests": {
+        "passed": 251,
+        "failed": 0
+      }
     },
-    "unitTests": {
-      "passed": 233,
-      "failed": 0
+    "legacyRc3": {
+      "hostDiagnose": {
+        "host": "0.2.2-rc.3",
+        "surface": "desktop",
+        "patches": 82,
+        "fileVerified": 71,
+        "partialCopies": 0,
+        "noFileField": 0,
+        "optionalMissing": 7,
+        "retired": 4,
+        "driftChangedSource": 0,
+        "deadTarget": 0,
+        "carrierMissing": 0
+      },
+      "audit": {
+        "version": "0.2.2-rc.3",
+        "carriers": 45,
+        "patches": 78,
+        "recognized": 58,
+        "verifyOnly": 6,
+        "drift": 0,
+        "unaudited": 11
+      },
+      "applySimulation": {
+        "applied": 58,
+        "already": 6,
+        "filesChanged": 49,
+        "jsFilesChecked": 39,
+        "syntaxFailures": 0,
+        "na": 15,
+        "skipped": 1,
+        "missingFile": 1
+      },
+      "unitTests": {
+        "passed": 233,
+        "failed": 0
+      }
+    }
+  },
+  "releases": {
+    "0.2.2-rc.5": {
+      "status": "supported",
+      "plugin": "1.2.11",
+      "evidence": {
+        "contract": "verified",
+        "applySim": "verified",
+        "hostSmoke": "verified",
+        "device": "not-run"
+      },
+      "note": "当前目标，真机转正：宿主 21782 文件 / 338 包，--apply 70/71 已清洗、--diagnose 载体 56 / 改原文 0 / 目标消失 0 / 可选缺失 7（正常跳过）、主窗口正常启动；离体 251 测试 + 完整树 G1–G6 全过。唯一坑：安装器 NSIS 自解压可能被安全软件拦（Error writing temporary file），可用解包落盘绕开"
+    },
+    "0.2.2-rc.4": {
+      "status": "unknown",
+      "plugin": "unknown",
+      "evidence": null,
+      "note": "未单独跑离体审计；rc.5 的结论不外推到 rc.4（rc.4 只改了 web 搜索默认路由，rc.5 又加了 CONTENT_REFUSED）"
+    },
+    "0.2.2-rc.3": {
+      "status": "legacy",
+      "plugin": "≤1.2.10",
+      "evidence": {
+        "contract": "verified",
+        "applySim": "verified",
+        "hostSmoke": "verified",
+        "device": "not-run"
+      },
+      "note": "1.2.10 时代的真机目标（82 条 drift 0）；1.2.11 仍覆盖 rc.3，但 supported 目标已转到 rc.5"
+    },
+    "0.2.2-rc.2": {
+      "status": "legacy",
+      "plugin": "1.1.89+",
+      "evidence": null,
+      "note": "rc.2 起沙箱升级错误文案改版，需 1.1.89 的新 pattern"
+    },
+    "0.2.2-rc.1": {
+      "status": "legacy",
+      "plugin": "1.1.88",
+      "evidence": null,
+      "note": "只有 rc.1 可用旧 pattern；对 rc.2/rc.3 装 1.1.88 会静默失配"
+    },
+    "0.2.1-rc.x": {
+      "status": "unsupported",
+      "plugin": "unknown",
+      "evidence": null,
+      "note": "不是本版本目标"
     }
   },
   "matrix": [
     {
-      "dsh": "0.2.2-rc.3",
-      "plugin": "1.2.10",
+      "dsh": "0.2.2-rc.5",
+      "plugin": "1.2.11",
       "status": "supported",
       "evidence": {
         "contract": "verified",
@@ -60,7 +183,19 @@
         "hostSmoke": "verified",
         "device": "not-run"
       },
-      "note": "rc.3 桌面版起把运行时打进 resources/app.asar；面板「应用」会自动解包、挪走 asar、重启。rc.2 引入 SandboxEscalationError / approvalDenial 新原文，rc.2 与 rc.3 四个载体文件逐字节一致"
+      "note": "rc.5 真机转正：安装批次被安全软件拦 NSIS 自解压（Error writing temporary file，TEMP 可写/换新 TEMP 仍拒），改走解包落盘；真机解开 21782 文件 / 338 个 @deepseek-ai 包，--apply 70/71、--diagnose 载体 56 / 改原文 0 / 目标消失 0，宿主主窗口正常启动"
+    },
+    {
+      "dsh": "0.2.2-rc.3",
+      "plugin": "≤1.2.10",
+      "status": "legacy",
+      "evidence": {
+        "contract": "verified",
+        "applySim": "verified",
+        "hostSmoke": "verified",
+        "device": "not-run"
+      },
+      "note": "rc.3 桌面版把运行时打进 resources/app.asar；面板「应用」自动解包、挪走 asar、重启。1.2.11 仍覆盖 rc.3，但 supported 目标已转 rc.5"
     },
     {
       "dsh": "0.2.2-rc.1",

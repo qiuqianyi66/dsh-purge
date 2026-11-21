@@ -1,22 +1,24 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { probeCompatMatrixRow } from "../lib/compat-matrix.js";
+import { probeCompatMatrixRow, COMPAT_CURRENT } from "../lib/compat-matrix.js";
 
+// 宿主版本跟随 COMPAT_CURRENT，不写死：矩阵转正（rc.3→rc.5→…）时本测试不需要跟着改，
+// 写死版本会在每次发版时制造假红（1.2.11 转正时就红过一次）。
 const baseState = {
-  host_version: "0.2.2-rc.3",
+  host_version: COMPAT_CURRENT.dsh,
   plugin_version: "1.1.89",
-  host_target: "0.2.2-rc.3",
+  host_target: COMPAT_CURRENT.dsh,
   ai_base: "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai",
 };
 
 test("located：实测 supported 且与静态矩阵一致", () => {
   const row = probeCompatMatrixRow(baseState, {
     level: "located",
-    evidence: "宿主 0.2.2-rc.3 与适配目标一致",
+    evidence: `宿主 ${COMPAT_CURRENT.dsh} 与适配目标一致`,
   });
   assert.equal(row.status, "supported");
   assert.equal(row.level, "located");
-  assert.equal(row.dsh, "0.2.2-rc.3");
+  assert.equal(row.dsh, COMPAT_CURRENT.dsh);
   assert.equal(row.matrix_match.same, true);
   assert.equal(row.matrix_match.staticStatus, "supported");
 });

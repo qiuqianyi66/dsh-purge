@@ -1,0 +1,353 @@
+{
+  "checkedAt": "2026-11-21T03:22:37.235Z",
+  "aiBase": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai",
+  "local": {
+    "root": "D:\\DeepSeek Harness\\resources\\app\\dsh\\node_modules\\@deepseek-ai\\dsh\\docs\\upgrade-guide",
+    "versions": [
+      {
+        "version": "v0.1.7-rc.2",
+        "changes": 2
+      },
+      {
+        "version": "v0.2.0-rc.2",
+        "changes": 6
+      },
+      {
+        "version": "v0.2.1-alpha.1",
+        "changes": 22
+      },
+      {
+        "version": "v0.2.1-alpha.2",
+        "changes": 12
+      },
+      {
+        "version": "v0.2.1-alpha.3",
+        "changes": 1
+      },
+      {
+        "version": "v0.2.1-alpha.4",
+        "changes": 3
+      },
+      {
+        "version": "v0.2.1-rc.1",
+        "changes": 2
+      },
+      {
+        "version": "v0.2.1-rc.2",
+        "changes": 33
+      },
+      {
+        "version": "v0.2.1-rc.3",
+        "changes": 13
+      },
+      {
+        "version": "v0.2.1-rc.4",
+        "changes": 3
+      },
+      {
+        "version": "v0.2.2-alpha.2",
+        "changes": 22
+      },
+      {
+        "version": "v0.2.2-alpha.3",
+        "changes": 5
+      },
+      {
+        "version": "v0.2.2-rc.1",
+        "changes": 19
+      }
+    ]
+  },
+  "remote": {
+    "gap": [
+      "v0.2.2-rc.3",
+      "v0.2.2-rc.4"
+    ],
+    "fetched": 23,
+    "truncated": false,
+    "errors": [
+      "v0.2.2-rc.4/web-search-deepseek-model-default: GitHub API 403 https://api.github.com/repos/deepseek-ai/deepseek-harness/contents/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md?ref=master",
+      "v0.2.2-rc.4/workspace-write-boundary-follows-root: GitHub API 403 https://api.github.com/repos/deepseek-ai/deepseek-harness/contents/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md?ref=master"
+    ]
+  },
+  "probeError": "",
+  "hitPatchIds": [
+    23,
+    26,
+    56,
+    69,
+    70,
+    72,
+    73,
+    77,
+    78,
+    80,
+    85,
+    86
+  ],
+  "rows": [
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "action-card-blocks",
+      "description": "Personalized recommendations cards come from action-card blocks in answers; the propose_action tool, the action-cards queuedMessageLimit field and the callId card field are gone.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "actionCards"
+      ],
+      "source": "master:v0.2.2-rc.3/action-card-blocks"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "client-hmr-plugin-events-stream",
+      "description": "`@deepseek-ai/dsh-client-hmr` removes `GET /plugins/events` and `EVENTS_ENDPOINT` for the authenticated `pluginEvents/follow` Remote stream, and browser plugins receive synced configuration in `apply`.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/client-hmr-plugin-events-stream"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "cordis-inspect-tool",
+      "description": "The cordis_inspect tool replaces cordis_inspect_list and cordis_inspect_query.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/cordis-inspect-tool"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "cordis-loader-entry-validation",
+      "description": "Cordis Loader 1.0.0-rc.9 and Include 1.2.0 parse YAML 1.2, reject malformed entries, and return PatchResult from applyEntryPatches.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/cordis-loader-entry-validation"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "create-worktree-tool-merged",
+      "description": "The `create_worktree` model tool is removed; `enter_worktree` creates a worktree or enters an existing one of the same name.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "worktrees"
+      ],
+      "source": "master:v0.2.2-rc.3/create-worktree-tool-merged"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "deepseek-file-policy",
+      "description": "Direct DeepSeekFileStore callers must supply a resolved file upload policy.",
+      "matchedPackages": [
+        "dsh-llm-deepseek"
+      ],
+      "patchIds": [
+        69,
+        72
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/deepseek-file-policy"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "deepseek-refusal-code",
+      "description": "The DeepSeek streamed content refusal code changes from MALFORMED_RESPONSE to CONTENT_REFUSED.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/deepseek-refusal-code"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "deepseek-request-auth",
+      "description": "DeepSeek model routes and web providers require the new dsh-deepseek-auth plugin; the llm-deepseek credential helpers, the dsh-llm API key check, the route plugins' config exports, and account Agent inspection are removed.",
+      "matchedPackages": [
+        "dsh-llm-deepseek"
+      ],
+      "patchIds": [
+        69,
+        72
+      ],
+      "unmatchedServices": [
+        "deepseekAuth",
+        "agents",
+        "plugin"
+      ],
+      "source": "master:v0.2.2-rc.3/deepseek-request-auth"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "forge-command-rules",
+      "description": "forge-session no longer recognizes gh commands by itself; forge providers register the commands that bind change requests, and existing forgeChangeRequests checkpoints fold again once.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forgeSession"
+      ],
+      "source": "master:v0.2.2-rc.3/forge-command-rules"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "forge-provider-hosts",
+      "description": "ForgeProvider must list its hosts and name itself, ForgeReadiness carries a sign-in command, and ForgeReviewData lists the review decisions the reader may submit.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forge"
+      ],
+      "source": "master:v0.2.2-rc.3/forge-provider-hosts"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "profile-context-overlay-paths",
+      "description": "ProfileContext replaces parsed overlays with overlay file paths that every composition rereads.",
+      "matchedPackages": [
+        "dsh-app-boot"
+      ],
+      "patchIds": [
+        78
+      ],
+      "unmatchedServices": [
+        "profileContext"
+      ],
+      "source": "master:v0.2.2-rc.3/profile-context-overlay-paths"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "ptc-mcp-image-values",
+      "description": "Admitted MCP image blocks carry an attachment reference and reach PTC programs as Image values instead of base64 JSON.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/ptc-mcp-image-values"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "ptc-output-limit",
+      "description": "PTC display-output overflow truncates output while execution continues.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/ptc-output-limit"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "ptc-tool-result-inspection",
+      "description": "Direct inspection of unchanged PTC object and array tool results uses tool-rendered text, and custom Node bootstraps require protocol 5.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/ptc-tool-result-inspection"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "session-fork-source",
+      "description": "Agent factory callers create forks by naming the shared parent prefix beside the seed.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/session-fork-source"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "session-panel-entries",
+      "description": "Background jobs, subagents, and forge change requests move from the Session header and right sidebar into the Session panel, which removes the subagent footer slot and retires the forge tab type.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [
+        "forgeChanges",
+        "sidebarRight"
+      ],
+      "source": "master:v0.2.2-rc.3/session-panel-entries"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "session-retain-conversation-facet",
+      "description": "Client plugins that render a Session's Conversation retain it with the conversation facet.",
+      "matchedPackages": [
+        "dsh-api-session-controller",
+        "dsh-client-ui-conversation"
+      ],
+      "patchIds": [
+        56,
+        77,
+        85,
+        86
+      ],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/session-retain-conversation-facet"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "settings-section-plugins-page",
+      "description": "Settings → Built-in plugins, its two packages, and the `settings.plugins.tab` slot are removed; plugin settings pages also appear on the Plugins page.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/settings-section-plugins-page"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "subagent-initial-task-source",
+      "description": "In-process continuable subagents record their initial delegated task as an agent-message from the parent agent instead of a user message.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/subagent-initial-task-source"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "subagent-model-selection-live-setting",
+      "description": "Subagent model selection reads the current Host setting at each call instead of a policy recorded in each Session.",
+      "matchedPackages": [
+        "dsh-tool-subagent"
+      ],
+      "patchIds": [
+        23
+      ],
+      "unmatchedServices": [
+        "subagentModelSelection"
+      ],
+      "source": "master:v0.2.2-rc.3/subagent-model-selection-live-setting"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "upstream-skills-base-row",
+      "description": "The base profile bundle gains the `upstream-skills` row, which stays pending and adds a boot warning in a composition that disables the `skill` row.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.3/upstream-skills-base-row"
+    },
+    {
+      "version": "v0.2.2-rc.3",
+      "change": "working-directory-tool-removed",
+      "description": "The `working_directory` model tool, its package, and the `cwd` parameter of the subagent tools are removed; only Host operations move a Session's directory.",
+      "matchedPackages": [
+        "dsh-tool-subagent",
+        "dsh-sdk-minimal"
+      ],
+      "patchIds": [
+        23,
+        26,
+        70,
+        73,
+        80
+      ],
+      "unmatchedServices": [
+        "subagents"
+      ],
+      "source": "master:v0.2.2-rc.3/working-directory-tool-removed"
+    },
+    {
+      "version": "v0.2.2-rc.4",
+      "change": "forge-rate-limited-failure",
+      "description": "ForgeFailure.code gains rate-limited, which forge-github returns when GitHub refuses a read under its rate limit, so an exhaustive switch over the code no longer compiles.",
+      "matchedPackages": [],
+      "patchIds": [],
+      "unmatchedServices": [],
+      "source": "master:v0.2.2-rc.4/forge-rate-limited-failure"
+    }
+  ]
+}

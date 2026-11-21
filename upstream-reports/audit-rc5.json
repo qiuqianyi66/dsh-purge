@@ -1,0 +1,1008 @@
+{
+  "checkedAt": "2026-11-21T03:40:27.085Z",
+  "version": "0.2.2-rc.5",
+  "stage": "C:\\Users\\yanha\\Desktop\\DSH\\runtime\\.dsh-upgrade-isolation\\.tmp\\host-0.2.2-rc.5",
+  "rows": [
+    {
+      "id": 1,
+      "name": "WORKSPACE_CONTEXT_INTRO",
+      "verdict": "ok",
+      "detail": [
+        "agent-instructions:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 6,
+      "outOfStage": 0
+    },
+    {
+      "id": 2,
+      "name": "REPLACEMENT_WORKSPACE_CONTEXT_INTRO",
+      "verdict": "verify",
+      "detail": [
+        "agent-instructions:applied"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    },
+    {
+      "id": 3,
+      "name": "SCOPE_INTRO",
+      "verdict": "verify",
+      "detail": [
+        "agent-instructions:applied"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    },
+    {
+      "id": 4,
+      "name": "SYSTEM_PROMPT_PERSONA",
+      "verdict": "unknown",
+      "detail": [
+        "agent-preset:applied",
+        "web-app:none",
+        "headless:none",
+        "preset-acp-app:none",
+        "preset-sdk-app:none"
+      ],
+      "optional": false,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 43,
+      "name": "WEB_PRESET_IDENTITY_STRIP",
+      "verdict": "ok",
+      "detail": [
+        "preset-standard:pending",
+        "preset-ptc:pending",
+        "preset-cordis:pending",
+        "preset-minimal:pending"
+      ],
+      "optional": false,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 76,
+      "name": "PRESET_UNRESTRICTED_IDENTITY_STRIP",
+      "verdict": "no-carrier",
+      "detail": [
+        "preset-unrestricted:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 70,
+      "name": "PRESET_SHELL_NETWORK",
+      "verdict": "ok",
+      "detail": [
+        "preset-minimal:pending",
+        "preset-sdk-minimal:none"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 73,
+      "name": "PRESET_BASH_MIRROR_LINE",
+      "verdict": "unknown",
+      "detail": [
+        "preset-minimal:pending",
+        "preset-sdk-minimal:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 71,
+      "name": "LIANGSHEN_IDENTITY_LINE",
+      "verdict": "no-carrier",
+      "detail": [
+        "preset-liangshen:none",
+        "preset-liangshen-pkg:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 5,
+      "name": "APPROVAL_NEVER_SENTENCE",
+      "verdict": "ok",
+      "detail": [
+        "user-approval:pending",
+        "user-approval-invariant:none"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 6,
+      "name": "SANDBOX_DENY_FILE_WRITE",
+      "verdict": "ok",
+      "detail": [
+        "sandbox-local:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 7,
+      "name": "SANDBOX_MODE_DEFAULT",
+      "verdict": "ok",
+      "detail": [
+        "base:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 8,
+      "name": "APPROVAL_POLICY_DEFAULT",
+      "verdict": "ok",
+      "detail": [
+        "base:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 9,
+      "name": "APPROVAL_AUTO_GRANT",
+      "verdict": "ok",
+      "detail": [
+        "user-approval-code:pending",
+        "user-approval-invariant:none",
+        "user-approval:pending"
+      ],
+      "optional": false,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 10,
+      "name": "APPROVAL_CONFIG_DEFAULT_NEVER",
+      "verdict": "ok",
+      "detail": [
+        "user-approval-code:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 11,
+      "name": "APPROVAL_NEVER_SENTENCE_BYPASS",
+      "verdict": "ok",
+      "detail": [
+        "user-approval-code:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 12,
+      "name": "APPROVAL_ASK_SENTENCE_BYPASS",
+      "verdict": "ok",
+      "detail": [
+        "user-approval-code:pending",
+        "user-approval:pending",
+        "user-approval-invariant:none"
+      ],
+      "optional": false,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 13,
+      "name": "ESCALATION_WIDENING_EXEMPT",
+      "verdict": "ok",
+      "detail": [
+        "escalation:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 14,
+      "name": "ESCALATION_GRANT_UNCONDITIONAL",
+      "verdict": "verify",
+      "detail": [
+        "escalation:skipped"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    },
+    {
+      "id": 15,
+      "name": "SANDBOX_CONFINE_PASSTHROUGH",
+      "verdict": "ok",
+      "detail": [
+        "sandbox-local:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 16,
+      "name": "FS_FENCE_DISABLED",
+      "verdict": "ok",
+      "detail": [
+        "fs-sandbox:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 17,
+      "name": "FS_OBSERVATION_INTENT_FREE",
+      "verdict": "ok",
+      "detail": [
+        "fs-observation-policy:pending"
+      ],
+      "optional": false,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 18,
+      "name": "REPEAT_TOOL_REMINDER_DISABLED",
+      "verdict": "ok",
+      "detail": [
+        "repeat-tool-reminder:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 19,
+      "name": "TOOL_RESULT_PRUNER_DISABLED",
+      "verdict": "ok",
+      "detail": [
+        "compaction-tool-result-pruner:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 21,
+      "name": "BASH_TIMEOUT_RESTORE",
+      "verdict": "unknown",
+      "detail": [
+        "base:applied"
+      ],
+      "optional": false,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 22,
+      "name": "READ_CAPS_RAISED",
+      "verdict": "ok",
+      "detail": [
+        "tool-fs:pending"
+      ],
+      "optional": false,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 23,
+      "name": "SUBAGENT_MAXDEPTH_RAISED",
+      "verdict": "ok",
+      "detail": [
+        "subagent:pending",
+        "tool-subagent:none"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 24,
+      "name": "PRESET_FETCH_ENABLED",
+      "verdict": "unknown",
+      "detail": [
+        "preset-unrestricted:none",
+        "preset-standard:applied",
+        "preset-cordis:applied",
+        "preset-ptc:applied",
+        "preset-liangshen:none",
+        "preset-liangshen-pkg:none"
+      ],
+      "optional": false,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 25,
+      "name": "HARNESS_IDENTITY_STRIP",
+      "verdict": "ok",
+      "detail": [
+        "system-prompt:pending"
+      ],
+      "optional": false,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 26,
+      "name": "MINIMAL_PERSONA_PURGE",
+      "verdict": "ok",
+      "detail": [
+        "preset-minimal:pending",
+        "preset-sdk-minimal:none"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 4,
+      "outOfStage": 0
+    },
+    {
+      "id": 80,
+      "name": "MINIMAL_OFFICIAL_TOOLSET",
+      "verdict": "verify",
+      "detail": [
+        "preset-minimal:skipped",
+        "preset-sdk-minimal:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    },
+    {
+      "id": 28,
+      "name": "LIANGSHEN_PHASE1_KEEP_INJECT",
+      "verdict": "no-carrier",
+      "detail": [
+        "liangshen-tool-bootstrap:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 32,
+      "name": "WEB_SURFACE_IDENTITY_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "web-app-lib:pending",
+        "harness-dev-context:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 5,
+      "outOfStage": 0
+    },
+    {
+      "id": 29,
+      "name": "TOOL_WEB_UNTRUSTED_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "tool-web:none",
+        "tool-web-nested:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 5,
+      "outOfStage": 0
+    },
+    {
+      "id": 30,
+      "name": "HOOKS_CLAUDE_DENY_ALLOW",
+      "verdict": "no-carrier",
+      "detail": [
+        "hooks-claude-code:none",
+        "hooks-claude-code-nested:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 31,
+      "name": "HOOKS_CODEX_DENY_ALLOW",
+      "verdict": "no-carrier",
+      "detail": [
+        "hooks-codex:none",
+        "hooks-codex-nested:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 33,
+      "name": "TOOL_SHELL_DENIAL_PROMPT",
+      "verdict": "ok",
+      "detail": [
+        "tool-bash:pending",
+        "tool-pwsh:pending"
+      ],
+      "optional": true,
+      "matched": 4,
+      "total": 11,
+      "outOfStage": 0
+    },
+    {
+      "id": 34,
+      "name": "SANDBOX_HINT_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "escalation:pending"
+      ],
+      "optional": false,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 35,
+      "name": "ESCALATION_NEVER_REJECT",
+      "verdict": "ok",
+      "detail": [
+        "escalation:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 36,
+      "name": "TOOL_FS_ESCALATION_SCHEMA",
+      "verdict": "ok",
+      "detail": [
+        "tool-fs:pending",
+        "escalation:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 5,
+      "outOfStage": 0
+    },
+    {
+      "id": 37,
+      "name": "SUBAGENT_SCOPE_LOCK_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "subagent:pending",
+        "subagent-types:pending"
+      ],
+      "optional": true,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 38,
+      "name": "PERSONA_TEXT_PREFIX_ALIAS",
+      "verdict": "ok",
+      "detail": [
+        "persona:pending"
+      ],
+      "optional": true,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 39,
+      "name": "SESSION_V0_PLUGIN_SUMMARY_ALIAS",
+      "verdict": "ok",
+      "detail": [
+        "session-format-v0:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 40,
+      "name": "COMPLETE_PROMPT_KEEP_INJECT",
+      "verdict": "unknown",
+      "detail": [
+        "system-prompt:pending",
+        "system-prompt-nested:pending"
+      ],
+      "optional": false,
+      "matched": 0,
+      "total": 7,
+      "outOfStage": 0
+    },
+    {
+      "id": 42,
+      "name": "SETTINGS_LEGACY_API",
+      "verdict": "ok",
+      "detail": [
+        "settings:pending"
+      ],
+      "optional": false,
+      "matched": 8,
+      "total": 12,
+      "outOfStage": 0
+    },
+    {
+      "id": 45,
+      "name": "OFFICIAL_DESKTOP_UPDATE_HANDOFF",
+      "verdict": "no-carrier",
+      "detail": [
+        "desktop-shell:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 46,
+      "name": "OFFICIAL_DESKTOP_UPDATE_ASCII",
+      "verdict": "verify",
+      "detail": [
+        "desktop-shell:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    },
+    {
+      "id": 47,
+      "name": "ANTHROPIC_OAUTH_NO_CLAUDE_IDENTITY",
+      "verdict": "ok",
+      "detail": [
+        "pi-ai-anthropic-messages:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 48,
+      "name": "TOOL_SHELL_DELETE_MOVE_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "tool-bash:pending",
+        "tool-pwsh:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 49,
+      "name": "ANTHROPIC_OAUTH_CLI_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "pi-ai-anthropic-messages:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 51,
+      "name": "FRESH_SESSION_FULL_ACCESS",
+      "verdict": "ok",
+      "detail": [
+        "permission-presets:pending",
+        "permission-presets-types:pending"
+      ],
+      "optional": true,
+      "matched": 2,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 52,
+      "name": "SESSION_LOG_UPLOAD_DEFAULT_OFF",
+      "verdict": "ok",
+      "detail": [
+        "session-log-deepseek:pending",
+        "session-log-deepseek-types:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 53,
+      "name": "WEB_SURFACE_PROHIBITION",
+      "verdict": "ok",
+      "detail": [
+        "web-app-lib:drifted",
+        "harness-dev-context:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 4,
+      "outOfStage": 0
+    },
+    {
+      "id": 55,
+      "name": "SYSTEM_PROMPT_REPLACE_HEAD",
+      "verdict": "ok",
+      "detail": [
+        "agent-loop:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 74,
+      "name": "ASSEMBLE_BEFORE_PRESTEP",
+      "verdict": "ok",
+      "detail": [
+        "agent-loop:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 66,
+      "name": "SYSTEM_PROMPT_RENDER_GUARD",
+      "verdict": "ok",
+      "detail": [
+        "system-prompt:pending",
+        "system-prompt-nested:pending"
+      ],
+      "optional": false,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 83,
+      "name": "DESKTOP_HOST_CLOSE_NO_FATAL",
+      "verdict": "no-carrier",
+      "detail": [
+        "desktop-shell:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 84,
+      "name": "DESKTOP_HOST_CLOSE_CODE0_NO_FAIL",
+      "verdict": "no-carrier",
+      "detail": [
+        "desktop-shell:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 67,
+      "name": "AGENT_LOOP_MESSAGES_GUARD",
+      "verdict": "ok",
+      "detail": [
+        "agent-loop:pending"
+      ],
+      "optional": false,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 68,
+      "name": "SYSTEM_NODES_CONTENT_GUARD",
+      "verdict": "ok",
+      "detail": [
+        "agent-loop:pending",
+        "session:pending"
+      ],
+      "optional": false,
+      "matched": 3,
+      "total": 4,
+      "outOfStage": 0
+    },
+    {
+      "id": 69,
+      "name": "MODEL_STREAM_RELEASE",
+      "verdict": "ok",
+      "detail": [
+        "llm-deepseek:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 72,
+      "name": "MESSAGES_SYSTEM_CURRENT",
+      "verdict": "ok",
+      "detail": [
+        "llm-deepseek:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 75,
+      "name": "REWIND_RESET_TODOS",
+      "verdict": "ok",
+      "detail": [
+        "tool-todo:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 57,
+      "name": "DEEPSEEK_SYSTEM_ROLE",
+      "verdict": "ok",
+      "detail": [
+        "pi-ai-completions:pending",
+        "pi-ai-responses-shared:pending"
+      ],
+      "optional": true,
+      "matched": 2,
+      "total": 7,
+      "outOfStage": 0
+    },
+    {
+      "id": 58,
+      "name": "REWIND_SKIP_DERIVE",
+      "verdict": "ok",
+      "detail": [
+        "session:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 59,
+      "name": "OFFICIAL_AUTO_REVIEW_PASSTHROUGH",
+      "verdict": "ok",
+      "detail": [
+        "auto-review:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 60,
+      "name": "OFFICIAL_RUN_CODE_APPROVAL_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "dsh-tools:drifted",
+        "dsh-tools:drifted",
+        "dsh-tools-ptc:pending"
+      ],
+      "optional": true,
+      "matched": 4,
+      "total": 4,
+      "outOfStage": 0
+    },
+    {
+      "id": 61,
+      "name": "OFFICIAL_SANDBOX_POLICY_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "sandbox-policy:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 62,
+      "name": "OFFICIAL_TOOL_ASK_FAILOPEN",
+      "verdict": "ok",
+      "detail": [
+        "dsh-tools:drifted",
+        "dsh-tools:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 63,
+      "name": "OFFICIAL_PLAN_MODE_NEUTRAL",
+      "verdict": "ok",
+      "detail": [
+        "base:pending",
+        "preset-ptc:pending",
+        "preset-standard:pending",
+        "preset-cordis:pending"
+      ],
+      "optional": true,
+      "matched": 3,
+      "total": 3,
+      "outOfStage": 0
+    },
+    {
+      "id": 64,
+      "name": "HOOKS_STOP_STEER_NEUTRAL",
+      "verdict": "no-carrier",
+      "detail": [
+        "hooks-claude-code:none",
+        "hooks-claude-code-nested:none",
+        "hooks-codex:none",
+        "hooks-codex-nested:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 65,
+      "name": "HOOKS_PRESTEP_REJECT_NEUTRAL",
+      "verdict": "no-carrier",
+      "detail": [
+        "hooks-claude-code:none",
+        "hooks-claude-code-nested:none",
+        "hooks-codex:none",
+        "hooks-codex-nested:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 78,
+      "name": "OVERLAY_RESTORE_FROM_BAK",
+      "verdict": "ok",
+      "detail": [
+        "app-boot:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 82,
+      "name": "DESKTOP_SHELL_PROFILE_FALLBACK",
+      "verdict": "no-carrier",
+      "detail": [
+        "desktop-shell:none"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 85,
+      "name": "SESSION_PROMPT_ALWAYS_FOLLOWUP",
+      "verdict": "ok",
+      "detail": [
+        "api-session-controller:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 2,
+      "outOfStage": 0
+    },
+    {
+      "id": 86,
+      "name": "SESSION_QUEUE_STEER_INTERRUPT",
+      "verdict": "ok",
+      "detail": [
+        "api-session-controller:pending",
+        "agent-loop:pending"
+      ],
+      "optional": true,
+      "matched": 2,
+      "total": 4,
+      "outOfStage": 0
+    },
+    {
+      "id": 87,
+      "name": "HUNG_PROMPT_LF_NEEDLE",
+      "verdict": "ok",
+      "detail": [
+        "agent-loop:pending"
+      ],
+      "optional": true,
+      "matched": 1,
+      "total": 1,
+      "outOfStage": 0
+    },
+    {
+      "id": 88,
+      "name": "HUNG_PROMPT_STRICT_NEEDLE",
+      "verdict": "verify",
+      "detail": [
+        "agent-loop:pending"
+      ],
+      "optional": true,
+      "matched": 0,
+      "total": 0,
+      "outOfStage": 0
+    }
+  ],
+  "missed": {},
+  "skipped": [
+    76,
+    71,
+    28,
+    30,
+    31,
+    45,
+    83,
+    84,
+    64,
+    65,
+    82
+  ]
+}

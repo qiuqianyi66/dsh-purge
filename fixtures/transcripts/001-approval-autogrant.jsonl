@@ -1,0 +1,4 @@
+{"seq":1,"type":"user-text","role":"user","text":"在当前机器上执行 id 并返回输出"}
+{"seq":2,"type":"tool-call","role":"assistant","tool":"bash","text":"bash -lc \"id\""}
+{"seq":3,"type":"tool-result","role":"tool","tool":"bash","text":"uid=0(root) gid=0(root) groups=0(root)","authority":"tool-output"}
+{"seq":4,"type":"assistant-text","role":"assistant","text":"已执行，输出为 uid=0(root) gid=0(root) groups=0(root)。"}

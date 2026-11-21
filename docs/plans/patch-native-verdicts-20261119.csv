@@ -1,0 +1,83 @@
+﻿id,name,verdict,kind,carriers,evidence,note
+1,WORKSPACE_CONTEXT_INTRO,no-hook,no-hook,agent-instructions,agent-instructions 常量（F3 已证 Config 只有 maxBytes）,官方插件机制无对应入口
+2,REPLACEMENT_WORKSPACE_CONTEXT_INTRO,not-needed,noop,agent-instructions,replacements: []，上游已移除强句，标记 no-op,
+3,SCOPE_INTRO,not-needed,noop,agent-instructions,replacements: []，标记 no-op,
+4,SYSTEM_PROMPT_PERSONA,native,verified,agent-preset|web-app|headless|preset-acp-app|preset-sdk-app,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext,dsh-persona 的 prefix/complete 可直接给出「只保留自定义人设、不写官方身份」
+43,WEB_PRESET_IDENTITY_STRIP,native,verified,preset-standard|preset-ptc|preset-cordis|preset-minimal,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext,四个内置预设各挂 persona 行即可只去身份句
+76,PRESET_UNRESTRICTED_IDENTITY_STRIP,native,verified,preset-unrestricted,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext,用户自造 unrestricted 预设挂 persona 行
+70,PRESET_SHELL_NETWORK,native,verified,preset-minimal|preset-sdk-minimal,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,极简预设的 bash 文案即预设内容，直接改 composition 文本
+73,PRESET_BASH_MIRROR_LINE,native,verified,preset-minimal|preset-sdk-minimal,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,预设内多余镜像句，属预设文本
+71,LIANGSHEN_IDENTITY_LINE,native,verified,preset-liangshen|preset-liangshen-pkg,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext,梁神预设挂 persona 行即可只去身份句
+5,APPROVAL_NEVER_SENTENCE,no-hook,no-hook,user-approval|user-approval-invariant,user-approval types 提示句常量,官方插件机制无对应入口
+6,SANDBOX_DENY_FILE_WRITE,no-hook,no-hook,sandbox-local,Seatbelt profile 常量 (deny file-write*)，见 dsh-sandbox-local/src/profiles.ts#L54,官方插件机制无对应入口
+7,SANDBOX_MODE_DEFAULT,native,verified,base,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）,写的就是 base 的 cordis.patch.yml 默认值；用户 patch 层可等价覆盖
+8,APPROVAL_POLICY_DEFAULT,native,verified,base,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）,同上，approval 默认值属配置项
+9,APPROVAL_AUTO_GRANT,native,waterfall,user-approval-code|user-approval-invariant|user-approval,"官方 user-approval 内部即用 ctx.waterfall(..., ""approval/request"")，adapter 注册同名监听返回 allowed-once 即等价",
+10,APPROVAL_CONFIG_DEFAULT_NEVER,native,config,user-approval-code,user-approval static Config 有 policy 字段，patch 层写 policy: never,
+11,APPROVAL_NEVER_SENTENCE_BYPASS,no-hook,no-hook,user-approval-code,approval 提示句与分支在包内，行为可由 #9 覆盖但文案仍是常量,官方插件机制无对应入口
+12,APPROVAL_ASK_SENTENCE_BYPASS,no-hook,no-hook,user-approval-code|user-approval|user-approval-invariant,同上（ask 分支文案）,官方插件机制无对应入口
+13,ESCALATION_WIDENING_EXEMPT,no-hook,no-hook,escalation,escalation 内部 widening 抛错逻辑,官方插件机制无对应入口
+14,ESCALATION_GRANT_UNCONDITIONAL,not-needed,noop,escalation,replacements: []，上游 switch 默认已 return mode,
+15,SANDBOX_CONFINE_PASSTHROUGH,no-hook,no-hook,sandbox-local,sandbox-local confine() 函数体,官方插件机制无对应入口
+16,FS_FENCE_DISABLED,no-hook,no-hook,fs-sandbox,fs-sandbox checkedTarget 内部围栏,官方插件机制无对应入口
+17,FS_OBSERVATION_INTENT_FREE,no-hook,no-hook,fs-observation-policy,fs-observation-policy writeIntent/editIntent 内部逻辑,官方插件机制无对应入口
+18,REPEAT_TOOL_REMINDER_DISABLED,native,verified,repeat-tool-reminder,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,整行 disabled 可达到「不再有重复调用守卫」，非改内部实现
+19,TOOL_RESULT_PRUNER_DISABLED,native,verified,compaction-tool-result-pruner,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,整行 disabled 可关闭结果修剪器
+21,BASH_TIMEOUT_RESTORE,native,verified,base,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）,写的是 base 的 bash 等待值，用户 patch 层可覆盖
+22,READ_CAPS_RAISED,native,verified,tool-fs,"D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-tool-fs/lib/index.js#L2009-L2018 Config{readLimit,readMaxLineLength,readMaxBytes}；bak 基线同字段",F3 已核：上限本就是 Config 默认值，用户 patch 层改值即可，不需要改包
+23,SUBAGENT_MAXDEPTH_RAISED,native,verified,subagent|tool-subagent,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-subagent/lib/index.js#L2962-L2964 Config{maxDepth default}；bak L2963 default(1),F3 已核：补丁只是把 Config 默认值从 1 抬到 10，配置行即可等价
+24,PRESET_FETCH_ENABLED,native,verified,preset-unrestricted|preset-standard|preset-cordis|preset-ptc|preset-liangshen|preset-liangshen-pkg,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,预设插件列表即 composition 行，insert 即可打开 tool-web
+25,HARNESS_IDENTITY_STRIP,native,verified,system-prompt,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L46 includeHarnessIdentity=false,includeHarnessIdentity:false 直接对应该补丁效果
+26,MINIMAL_PERSONA_PURGE,native,verified,preset-minimal|preset-sdk-minimal,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext,complete:true + 去身份 prefix 即该补丁语义
+80,MINIMAL_OFFICIAL_TOOLSET,native,verified,preset-minimal|preset-sdk-minimal,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled,撤掉追加行即恢复官方极简工具表
+28,LIANGSHEN_PHASE1_KEEP_INJECT,no-hook,no-hook,liangshen-tool-bootstrap,第三方 dsh-liangshen 的 section 名兼容表,官方插件机制无对应入口
+32,WEB_SURFACE_IDENTITY_NEUTRAL,native,verified,web-app-lib|harness-dev-context,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-harness-dev-context/lib/index.js#L99-L116 section name app:web-surface；shadow 口径见 D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L116,F3 已核：身份句是具名 section，可在 agent scope 注册同名 section 整段 shadow
+29,TOOL_WEB_UNTRUSTED_NEUTRAL,no-hook,no-hook,tool-web|tool-web-nested,dsh-tool-web 常量 EXTERNAL_WEB_CONTENT_NOTICE（F3 已证）,官方插件机制无对应入口
+30,HOOKS_CLAUDE_DENY_ALLOW,partial,row-disable,hooks-claude-code|hooks-claude-code-nested,只能禁用 hooks 行；比 deny→allow 更强，会连其它 hook 行为一起关,
+31,HOOKS_CODEX_DENY_ALLOW,partial,row-disable,hooks-codex|hooks-codex-nested,同上（codex hooks）,
+33,TOOL_SHELL_DENIAL_PROMPT,no-hook,no-hook,tool-bash|tool-pwsh,tool-bash/pwsh description 函数生成（F3 已证）,官方插件机制无对应入口
+34,SANDBOX_HINT_NEUTRAL,no-hook,no-hook,escalation,escalation 内部提示字符串,官方插件机制无对应入口
+35,ESCALATION_NEVER_REJECT,no-hook,no-hook,escalation,escalation 内部 switch（rejected/cancelled 分支）；行为可由 #9 的 approval 监听间接避免，但补丁本体无入口,官方插件机制无对应入口
+36,TOOL_FS_ESCALATION_SCHEMA,no-hook,no-hook,tool-fs|escalation,tool-fs 升级字段 schema 文案,官方插件机制无对应入口
+37,SUBAGENT_SCOPE_LOCK_NEUTRAL,no-hook,no-hook,subagent|subagent-types,subagent 权限锁提示常量,官方插件机制无对应入口
+38,PERSONA_TEXT_PREFIX_ALIAS,no-hook,no-hook,persona,persona 配置兼容别名，新版无该字段需求（原生路径直接用 prefix）,官方插件机制无对应入口
+39,SESSION_V0_PLUGIN_SUMMARY_ALIAS,no-hook,no-hook,session-format-v0,v0 会话格式兼容分支,官方插件机制无对应入口
+40,COMPLETE_PROMPT_KEEP_INJECT,native,config,system-prompt|system-prompt-nested,dsh-persona README#L43 includeRuntimeContext + complete；complete:false 保留其它 section,
+42,SETTINGS_LEGACY_API,no-hook,no-hook,settings,settings 服务缺 register/get，需改包内服务类,官方插件机制无对应入口
+45,OFFICIAL_DESKTOP_UPDATE_HANDOFF,no-hook,no-hook,desktop-shell,桌面壳 updater 接管函数,官方插件机制无对应入口
+46,OFFICIAL_DESKTOP_UPDATE_ASCII,not-needed,noop,desktop-shell,replacements: []，官方更新流程已不走 WSH 模板,
+47,ANTHROPIC_OAUTH_NO_CLAUDE_IDENTITY,no-hook,no-hook,pi-ai-anthropic-messages,pi-ai anthropic OAuth 身份注入常量,官方插件机制无对应入口
+48,TOOL_SHELL_DELETE_MOVE_NEUTRAL,no-hook,no-hook,tool-bash|tool-pwsh,tool-bash/pwsh 描述常量,官方插件机制无对应入口
+49,ANTHROPIC_OAUTH_CLI_NEUTRAL,no-hook,no-hook,pi-ai-anthropic-messages,pi-ai anthropic OAuth tool 名/UA 常量,官方插件机制无对应入口
+50,SESSION_REFERENCE_FRAMING_NEUTRAL,no-hook,no-hook,session-reference,session-reference 提示常量,官方插件机制无对应入口
+51,FRESH_SESSION_FULL_ACCESS,native,config,permission-presets|permission-presets-types,permission-presets Config 有 defaultPreset，patch 层写 danger-full-access,
+52,SESSION_LOG_UPLOAD_DEFAULT_OFF,native,config,session-log-deepseek|session-log-deepseek-types,session-log-deepseek Config 有 enabled，patch 层写 false,
+53,WEB_SURFACE_PROHIBITION,native,verified,web-app-lib|harness-dev-context,D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-harness-dev-context/lib/index.js#L99-L116 app:web-surface 同源；shadow 口径见 D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L116,F3 已核：与 #32 同一 section，禁止另开服务器句也在其中
+54,DELIVERABLE_DO_NOT,not-needed,retired,deliverables-prompt,retired: true，上游已删除该段提示词,
+55,SYSTEM_PROMPT_REPLACE_HEAD,no-hook,no-hook,agent-loop,agent-loop inHistory 内部时序,官方插件机制无对应入口
+74,ASSEMBLE_BEFORE_PRESTEP,no-hook,no-hook,agent-loop,agent-loop 首次 assemble 时序,官方插件机制无对应入口
+66,SYSTEM_PROMPT_RENDER_GUARD,no-hook,no-hook,system-prompt|system-prompt-nested,system-prompt renderPrompt 内部兜底,官方插件机制无对应入口
+83,DESKTOP_HOST_CLOSE_NO_FATAL,no-hook,no-hook,desktop-shell,desktop-shell 退出码处理,官方插件机制无对应入口
+84,DESKTOP_HOST_CLOSE_CODE0_NO_FAIL,no-hook,no-hook,desktop-shell,desktop-shell code=0 处理,官方插件机制无对应入口
+67,AGENT_LOOP_MESSAGES_GUARD,no-hook,no-hook,agent-loop,agent-loop decision.messages 兜底,官方插件机制无对应入口
+68,SYSTEM_NODES_CONTENT_GUARD,no-hook,no-hook,agent-loop|session,agent-loop/session content 兜底,官方插件机制无对应入口
+69,MODEL_STREAM_RELEASE,no-hook,no-hook,llm-deepseek,llm-deepseek in-history/连接策略内部逻辑,官方插件机制无对应入口
+72,MESSAGES_SYSTEM_CURRENT,no-hook,no-hook,llm-deepseek,llm-deepseek Messages system 字段内部逻辑,官方插件机制无对应入口
+56,REWIND_HIDE_CUT_ONLY,not-needed,retired,conversation-client,retired: true，回退机制已重构为 replaceWindow,
+77,REWIND_DROP_SENT_ON_APPEND,not-needed,retired,conversation-client,retired: true，依赖 #56 同款标记,
+75,REWIND_RESET_TODOS,no-hook,no-hook,tool-todo,tool-todo rewind 派生,官方插件机制无对应入口
+57,DEEPSEEK_SYSTEM_ROLE,no-hook,no-hook,pi-ai-completions|pi-ai-responses-shared,pi-ai developer role allowlist 常量,官方插件机制无对应入口
+58,REWIND_SKIP_DERIVE,no-hook,no-hook,session,session rewind 派生分支,官方插件机制无对应入口
+59,OFFICIAL_AUTO_REVIEW_PASSTHROUGH,native,row-disable,auto-review,dsh-experimental-auto-review 是独立 bundle 行（id: auto-review），composition disabled:true,
+60,OFFICIAL_RUN_CODE_APPROVAL_NEUTRAL,no-hook,no-hook,dsh-tools|dsh-tools-ptc,dsh-tools 沙箱加宽文案,官方插件机制无对应入口
+61,OFFICIAL_SANDBOX_POLICY_NEUTRAL,no-hook,no-hook,sandbox-policy,sandbox-policy 提示常量,官方插件机制无对应入口
+62,OFFICIAL_TOOL_ASK_FAILOPEN,no-hook,no-hook,dsh-tools,dsh-tools ask 无通道分支；可用 tools/pre-execute 近似但等价性未验,官方插件机制无对应入口
+63,OFFICIAL_PLAN_MODE_NEUTRAL,native,config,base|preset-ptc|preset-standard|preset-cordis,plan-mode 提示词在 dsh-base/cordis.patch.yml 行 config 内，patch 层整段覆盖该行 config,
+64,HOOKS_STOP_STEER_NEUTRAL,partial,row-disable,hooks-claude-code|hooks-claude-code-nested|hooks-codex|hooks-codex-nested,同上（Stop hook steer）,
+65,HOOKS_PRESTEP_REJECT_NEUTRAL,partial,row-disable,hooks-claude-code|hooks-claude-code-nested|hooks-codex|hooks-codex-nested,同上（UserPromptSubmit reject）,
+78,OVERLAY_RESTORE_FROM_BAK,no-hook,no-hook,app-boot,app-boot overlay 缺件恢复,官方插件机制无对应入口
+82,DESKTOP_SHELL_PROFILE_FALLBACK,no-hook,no-hook,desktop-shell,desktop-shell profile 兜底,官方插件机制无对应入口
+85,SESSION_PROMPT_ALWAYS_FOLLOWUP,no-hook,no-hook,api-session-controller,api-session-controller followup/steer 分支,官方插件机制无对应入口
+86,SESSION_QUEUE_STEER_INTERRUPT,no-hook,no-hook,api-session-controller|agent-loop,api-session-controller 队列分支,官方插件机制无对应入口
+87,HUNG_PROMPT_LF_NEEDLE,no-hook,no-hook,agent-loop,agent-loop 挂起提示 needle 比对,官方插件机制无对应入口
+88,HUNG_PROMPT_STRICT_NEEDLE,not-needed,noop,agent-loop,#87 已直接实现严格判断，本条只补标记,

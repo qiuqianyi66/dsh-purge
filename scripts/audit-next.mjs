@@ -169,10 +169,15 @@ function audit() {
     let matched = 0;
     for (const rep of reps) {
       const pat = rep?.pattern;
-      if (typeof pat !== "string" || pat === "") {
-        matched += 0; // 正则形态不走这里，交给 filePatchOutcome 判
+      if (pat instanceof RegExp) {
+        // 正则锚点同样要算「认得」：原来直接跳过，导致纯正则补丁（#40/#21/#73）
+        // 无论官方文本多吻合都落 unknown，等于把可用的补丁当未审计。
+        // 去掉 g 避免 lastIndex 残留（只判「存在」不判个数）。
+        const re = new RegExp(pat.source, pat.flags.replace(/g/g, ""));
+        if (inStage.some((t) => re.test(t.replace(/\r\n/g, "\n")))) matched += 1;
         continue;
       }
+      if (typeof pat !== "string" || pat === "") continue;
       const needle = pat.replace(/\r\n/g, "\n");
       if (inStage.some((t) => t.replace(/\r\n/g, "\n").includes(needle))) matched += 1;
     }

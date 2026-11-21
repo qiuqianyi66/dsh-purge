@@ -116,3 +116,37 @@ test("retired 补丁单独归档：不进 dead_target，也不占 clean", () => 
   assert.equal(report.clean.length, 0);
   assert.deepEqual(report.dead_target.map((e) => e.id), [902]);
 });
+
+// N2 回归：单数 `marker` 的口径对齐。
+// 修复前 markersPresent 只读 `markers` 数组，而 apply 侧 patchApplied() 认单数 `marker`；
+// 于是 #7/#8 的 markers_ok 恒 false，判「已打」落到「文件里有没有 dsh-purge 字样」，
+// 而 base yml 里唯一写该字面量的是 #63 —— #63 一被跳过，#7/#8 就被误报 drifted。
+const BASE_ORIGINAL_MODE = "mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'\n";
+const BASE_PATCHED_MODE = "mode: !!js process.env.DSH_PERMISSION_MODE ?? 'danger-full-access'\n";
+const P7 = {
+  id: 7,
+  patterns: [BASE_ORIGINAL_MODE.trim()],
+  replace: BASE_PATCHED_MODE.trim(),
+  marker: BASE_PATCHED_MODE.trim(),
+};
+
+test("单数 marker 能被 markersPresent 读到（与 apply 侧同口径）", () => {
+  assert.equal(markersPresent(BASE_PATCHED_MODE, P7), true);
+  assert.equal(markersPresent(BASE_ORIGINAL_MODE, P7), false);
+});
+
+test("#7 已打且无 dsh-purge 字样：靠自身 marker + bak 差异判已生效，不再借 #63 的证据", () => {
+  const fp = fixture(BASE_PATCHED_MODE, BASE_ORIGINAL_MODE);
+  const row = probeCarrier(fp, P7);
+  assert.equal(row.marked, 0, "前提：文件里没有 dsh-purge 字样");
+  assert.equal(row.markers_ok, true);
+  assert.equal(row.verdict, "applied_by_marker");
+});
+
+test("#7 只有 marker 命中、没有任何改动证据 → 仍不谎报已生效", () => {
+  const fp = fixture(BASE_PATCHED_MODE);
+  const row = probeCarrier(fp, P7);
+  assert.equal(row.markers_ok, true);
+  assert.notEqual(row.verdict, "applied_by_marker");
+});
+

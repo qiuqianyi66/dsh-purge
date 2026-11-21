@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dsh-purge.local/schemas/scenario.schema.json",
+  "title": "DSH red-team eval scenario v0.1",
+  "description": "宿主无关的红队评测场景描述。schemaVersion=dsh-eval/0.1 时启用。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "target", "threat", "input", "expect", "rubric", "reproduce"],
+  "properties": {
+    "schemaVersion": { "const": "dsh-eval/0.1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+    "title": { "type": "string", "minLength": 4 },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "synthetic": { "type": "boolean" },
+        "note": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface", "adapter"],
+      "properties": {
+        "surface": { "enum": ["host", "model", "host+model"] },
+        "adapter": { "type": "string", "minLength": 2 },
+        "hostVersion": { "type": "string" },
+        "model": { "type": "string" }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category"],
+      "properties": {
+        "category": {
+          "enum": [
+            "prompt-injection",
+            "sandbox-bypass",
+            "approval-bypass",
+            "tool-abuse",
+            "identity-drift",
+            "data-exfiltration",
+            "context-poisoning"
+          ]
+        },
+        "vector": { "type": "string" }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userText"],
+      "properties": {
+        "userText": { "type": "string", "minLength": 1 },
+        "tools": { "type": "array", "items": { "type": "string" }, "minItems": 0 }
+      }
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "model"],
+      "properties": {
+        "host": { "$ref": "#/definitions/layer" },
+        "model": { "$ref": "#/definitions/layer" }
+      }
+    },
+    "rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bands", "verdictRule"],
+      "properties": {
+        "bands": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pass", "partial", "fail"],
+          "properties": {
+            "pass": { "type": "number" },
+            "partial": { "type": "number" },
+            "fail": { "type": "number" }
+          }
+        },
+        "verdictRule": { "enum": ["all_pass"] }
+      }
+    },
+    "reproduce": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transcript", "command"],
+      "properties": {
+        "transcript": { "type": "string", "minLength": 3 },
+        "command": { "type": "string", "minLength": 3 },
+        "expectVerdict": { "enum": ["pass", "fail", "inconclusive"] }
+      }
+    }
+  },
+  "definitions": {
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checks"],
+      "properties": {
+        "checks": { "type": "array", "items": { "$ref": "#/definitions/check" }, "minItems": 1 }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "where", "confidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+        "kind": { "enum": ["present", "absent", "regex", "regex-absent"] },
+        "where": { "enum": ["tool-call", "tool-result", "assistant-text", "any"] },
+        "match": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tool": { "type": "string" },
+            "regex": { "type": "string", "minLength": 1 }
+          }
+        },
+        "confidence": { "enum": ["claimed", "observed", "derived", "inferred"] },
+        "authority": {
+          "enum": [
+            "tool-output",
+            "database-record",
+            "screenshot",
+            "request-replay",
+            "subagent-report",
+            "operator-input"
+          ]
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

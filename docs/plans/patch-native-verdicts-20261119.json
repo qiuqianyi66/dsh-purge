@@ -1,0 +1,1676 @@
+{
+  "summary": {
+    "generatedAt": "2026-11-19T06:23:30.459Z",
+    "patchTotal": 82,
+    "patchVerdicts": {
+      "no-hook": 44,
+      "not-needed": 8,
+      "native": 26,
+      "partial": 4
+    },
+    "carrierTotal": 65,
+    "carrierClasses": {
+      "no-hook": 28,
+      "native": 24,
+      "free": 2,
+      "partial": 11
+    },
+    "carriers": {
+      "native": [
+        "agent-preset",
+        "auto-review",
+        "base",
+        "compaction-tool-result-pruner",
+        "harness-dev-context",
+        "headless",
+        "permission-presets",
+        "permission-presets-types",
+        "preset-acp-app",
+        "preset-cordis",
+        "preset-liangshen",
+        "preset-liangshen-pkg",
+        "preset-minimal",
+        "preset-ptc",
+        "preset-sdk-app",
+        "preset-sdk-minimal",
+        "preset-standard",
+        "preset-unrestricted",
+        "repeat-tool-reminder",
+        "session-log-deepseek",
+        "session-log-deepseek-types",
+        "tool-subagent",
+        "web-app",
+        "web-app-lib"
+      ],
+      "partial": [
+        "hooks-claude-code",
+        "hooks-claude-code-nested",
+        "hooks-codex",
+        "hooks-codex-nested",
+        "subagent",
+        "system-prompt",
+        "system-prompt-nested",
+        "tool-fs",
+        "user-approval",
+        "user-approval-code",
+        "user-approval-invariant"
+      ],
+      "free": [
+        "conversation-client",
+        "deliverables-prompt"
+      ]
+    },
+    "note": "native 只计官方入口已取证的；partial 表示只能整行禁用等更强语义；unknown 不计入可迁移。"
+  },
+  "rows": [
+    {
+      "id": 1,
+      "name": "WORKSPACE_CONTEXT_INTRO",
+      "array": "PATCHES",
+      "carriers": [
+        "agent-instructions"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-instructions 常量（F3 已证 Config 只有 maxBytes）",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 2,
+      "name": "REPLACEMENT_WORKSPACE_CONTEXT_INTRO",
+      "array": "PATCHES",
+      "carriers": [
+        "agent-instructions"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "noop",
+      "evidence": "replacements: []，上游已移除强句，标记 no-op"
+    },
+    {
+      "id": 3,
+      "name": "SCOPE_INTRO",
+      "array": "PATCHES",
+      "carriers": [
+        "agent-instructions"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "noop",
+      "evidence": "replacements: []，标记 no-op"
+    },
+    {
+      "id": 4,
+      "name": "SYSTEM_PROMPT_PERSONA",
+      "array": "PATCHES",
+      "carriers": [
+        "agent-preset",
+        "web-app",
+        "headless",
+        "preset-acp-app",
+        "preset-sdk-app"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext",
+      "note": "dsh-persona 的 prefix/complete 可直接给出「只保留自定义人设、不写官方身份」"
+    },
+    {
+      "id": 43,
+      "name": "WEB_PRESET_IDENTITY_STRIP",
+      "array": "PATCHES",
+      "carriers": [
+        "preset-standard",
+        "preset-ptc",
+        "preset-cordis",
+        "preset-minimal"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext",
+      "note": "四个内置预设各挂 persona 行即可只去身份句"
+    },
+    {
+      "id": 76,
+      "name": "PRESET_UNRESTRICTED_IDENTITY_STRIP",
+      "array": "PATCHES",
+      "carriers": [
+        "preset-unrestricted"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext",
+      "note": "用户自造 unrestricted 预设挂 persona 行"
+    },
+    {
+      "id": 70,
+      "name": "PRESET_SHELL_NETWORK",
+      "array": "PATCHES",
+      "carriers": [
+        "preset-minimal",
+        "preset-sdk-minimal"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "极简预设的 bash 文案即预设内容，直接改 composition 文本"
+    },
+    {
+      "id": 73,
+      "name": "PRESET_BASH_MIRROR_LINE",
+      "array": "PATCHES",
+      "carriers": [
+        "preset-minimal",
+        "preset-sdk-minimal"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "预设内多余镜像句，属预设文本"
+    },
+    {
+      "id": 71,
+      "name": "LIANGSHEN_IDENTITY_LINE",
+      "array": "PATCHES",
+      "carriers": [
+        "preset-liangshen",
+        "preset-liangshen-pkg"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext",
+      "note": "梁神预设挂 persona 行即可只去身份句"
+    },
+    {
+      "id": 5,
+      "name": "APPROVAL_NEVER_SENTENCE",
+      "array": "PATCHES",
+      "carriers": [
+        "user-approval",
+        "user-approval-invariant"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "user-approval types 提示句常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 6,
+      "name": "SANDBOX_DENY_FILE_WRITE",
+      "array": "CODE_PATCHES",
+      "carriers": [
+        "sandbox-local"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "Seatbelt profile 常量 (deny file-write*)，见 dsh-sandbox-local/src/profiles.ts#L54",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 7,
+      "name": "SANDBOX_MODE_DEFAULT",
+      "array": "CODE_PATCHES",
+      "carriers": [
+        "base"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）",
+      "note": "写的就是 base 的 cordis.patch.yml 默认值；用户 patch 层可等价覆盖"
+    },
+    {
+      "id": 8,
+      "name": "APPROVAL_POLICY_DEFAULT",
+      "array": "CODE_PATCHES",
+      "carriers": [
+        "base"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）",
+      "note": "同上，approval 默认值属配置项"
+    },
+    {
+      "id": 9,
+      "name": "APPROVAL_AUTO_GRANT",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "user-approval-code",
+        "user-approval-invariant",
+        "user-approval"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "waterfall",
+      "evidence": "官方 user-approval 内部即用 ctx.waterfall(..., \"approval/request\")，adapter 注册同名监听返回 allowed-once 即等价"
+    },
+    {
+      "id": 10,
+      "name": "APPROVAL_CONFIG_DEFAULT_NEVER",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "user-approval-code"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "config",
+      "evidence": "user-approval static Config 有 policy 字段，patch 层写 policy: never"
+    },
+    {
+      "id": 11,
+      "name": "APPROVAL_NEVER_SENTENCE_BYPASS",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "user-approval-code"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "approval 提示句与分支在包内，行为可由 #9 覆盖但文案仍是常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 12,
+      "name": "APPROVAL_ASK_SENTENCE_BYPASS",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "user-approval-code",
+        "user-approval",
+        "user-approval-invariant"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "同上（ask 分支文案）",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 13,
+      "name": "ESCALATION_WIDENING_EXEMPT",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "escalation"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "escalation 内部 widening 抛错逻辑",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 14,
+      "name": "ESCALATION_GRANT_UNCONDITIONAL",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "escalation"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "noop",
+      "evidence": "replacements: []，上游 switch 默认已 return mode"
+    },
+    {
+      "id": 15,
+      "name": "SANDBOX_CONFINE_PASSTHROUGH",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "sandbox-local"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "sandbox-local confine() 函数体",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 16,
+      "name": "FS_FENCE_DISABLED",
+      "array": "ENGINE_PATCHES",
+      "carriers": [
+        "fs-sandbox"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "fs-sandbox checkedTarget 内部围栏",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 17,
+      "name": "FS_OBSERVATION_INTENT_FREE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "fs-observation-policy"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "fs-observation-policy writeIntent/editIntent 内部逻辑",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 18,
+      "name": "REPEAT_TOOL_REMINDER_DISABLED",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "repeat-tool-reminder"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "整行 disabled 可达到「不再有重复调用守卫」，非改内部实现"
+    },
+    {
+      "id": 19,
+      "name": "TOOL_RESULT_PRUNER_DISABLED",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "compaction-tool-result-pruner"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "整行 disabled 可关闭结果修剪器"
+    },
+    {
+      "id": 21,
+      "name": "BASH_TIMEOUT_RESTORE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "base"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/practices.md#L22 Config 走 cordis.patch.yml（用户 patch 层随升级存活）",
+      "note": "写的是 base 的 bash 等待值，用户 patch 层可覆盖"
+    },
+    {
+      "id": 22,
+      "name": "READ_CAPS_RAISED",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-fs"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-tool-fs/lib/index.js#L2009-L2018 Config{readLimit,readMaxLineLength,readMaxBytes}；bak 基线同字段",
+      "note": "F3 已核：上限本就是 Config 默认值，用户 patch 层改值即可，不需要改包"
+    },
+    {
+      "id": 23,
+      "name": "SUBAGENT_MAXDEPTH_RAISED",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "subagent",
+        "tool-subagent"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-subagent/lib/index.js#L2962-L2964 Config{maxDepth default}；bak L2963 default(1)",
+      "note": "F3 已核：补丁只是把 Config 默认值从 1 抬到 10，配置行即可等价"
+    },
+    {
+      "id": 24,
+      "name": "PRESET_FETCH_ENABLED",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "preset-unrestricted",
+        "preset-standard",
+        "preset-cordis",
+        "preset-ptc",
+        "preset-liangshen",
+        "preset-liangshen-pkg"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "预设插件列表即 composition 行，insert 即可打开 tool-web"
+    },
+    {
+      "id": 25,
+      "name": "HARNESS_IDENTITY_STRIP",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "system-prompt"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L46 includeHarnessIdentity=false",
+      "note": "includeHarnessIdentity:false 直接对应该补丁效果"
+    },
+    {
+      "id": 26,
+      "name": "MINIMAL_PERSONA_PURGE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "preset-minimal",
+        "preset-sdk-minimal"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-persona/README.md#L32-L44 prefix/suffix/complete/includeRuntimeContext",
+      "note": "complete:true + 去身份 prefix 即该补丁语义"
+    },
+    {
+      "id": 80,
+      "name": "MINIMAL_OFFICIAL_TOOLSET",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "preset-minimal",
+        "preset-sdk-minimal"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-agent-preset/skills/dsh-doc/references/composition-reference.md#L7-L20 insert/覆盖 config/disabled",
+      "note": "撤掉追加行即恢复官方极简工具表"
+    },
+    {
+      "id": 28,
+      "name": "LIANGSHEN_PHASE1_KEEP_INJECT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "liangshen-tool-bootstrap"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "第三方 dsh-liangshen 的 section 名兼容表",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 32,
+      "name": "WEB_SURFACE_IDENTITY_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "web-app-lib",
+        "harness-dev-context"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-harness-dev-context/lib/index.js#L99-L116 section name app:web-surface；shadow 口径见 D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L116",
+      "note": "F3 已核：身份句是具名 section，可在 agent scope 注册同名 section 整段 shadow"
+    },
+    {
+      "id": 29,
+      "name": "TOOL_WEB_UNTRUSTED_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-web",
+        "tool-web-nested"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "dsh-tool-web 常量 EXTERNAL_WEB_CONTENT_NOTICE（F3 已证）",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 30,
+      "name": "HOOKS_CLAUDE_DENY_ALLOW",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "hooks-claude-code",
+        "hooks-claude-code-nested"
+      ],
+      "status": "unknown",
+      "verdict": "partial",
+      "kind": "row-disable",
+      "evidence": "只能禁用 hooks 行；比 deny→allow 更强，会连其它 hook 行为一起关"
+    },
+    {
+      "id": 31,
+      "name": "HOOKS_CODEX_DENY_ALLOW",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "hooks-codex",
+        "hooks-codex-nested"
+      ],
+      "status": "unknown",
+      "verdict": "partial",
+      "kind": "row-disable",
+      "evidence": "同上（codex hooks）"
+    },
+    {
+      "id": 33,
+      "name": "TOOL_SHELL_DENIAL_PROMPT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-bash",
+        "tool-pwsh"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "tool-bash/pwsh description 函数生成（F3 已证）",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 34,
+      "name": "SANDBOX_HINT_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "escalation"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "escalation 内部提示字符串",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 35,
+      "name": "ESCALATION_NEVER_REJECT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "escalation"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "escalation 内部 switch（rejected/cancelled 分支）；行为可由 #9 的 approval 监听间接避免，但补丁本体无入口",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 36,
+      "name": "TOOL_FS_ESCALATION_SCHEMA",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-fs",
+        "escalation"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "tool-fs 升级字段 schema 文案",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 37,
+      "name": "SUBAGENT_SCOPE_LOCK_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "subagent",
+        "subagent-types"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "subagent 权限锁提示常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 38,
+      "name": "PERSONA_TEXT_PREFIX_ALIAS",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "persona"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "persona 配置兼容别名，新版无该字段需求（原生路径直接用 prefix）",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 39,
+      "name": "SESSION_V0_PLUGIN_SUMMARY_ALIAS",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "session-format-v0"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "v0 会话格式兼容分支",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 40,
+      "name": "COMPLETE_PROMPT_KEEP_INJECT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "system-prompt",
+        "system-prompt-nested"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "config",
+      "evidence": "dsh-persona README#L43 includeRuntimeContext + complete；complete:false 保留其它 section"
+    },
+    {
+      "id": 42,
+      "name": "SETTINGS_LEGACY_API",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "settings"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "settings 服务缺 register/get，需改包内服务类",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 45,
+      "name": "OFFICIAL_DESKTOP_UPDATE_HANDOFF",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "desktop-shell"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "桌面壳 updater 接管函数",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 46,
+      "name": "OFFICIAL_DESKTOP_UPDATE_ASCII",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "desktop-shell"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "noop",
+      "evidence": "replacements: []，官方更新流程已不走 WSH 模板"
+    },
+    {
+      "id": 47,
+      "name": "ANTHROPIC_OAUTH_NO_CLAUDE_IDENTITY",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "pi-ai-anthropic-messages"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "pi-ai anthropic OAuth 身份注入常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 48,
+      "name": "TOOL_SHELL_DELETE_MOVE_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-bash",
+        "tool-pwsh"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "tool-bash/pwsh 描述常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 49,
+      "name": "ANTHROPIC_OAUTH_CLI_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "pi-ai-anthropic-messages"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "pi-ai anthropic OAuth tool 名/UA 常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 50,
+      "name": "SESSION_REFERENCE_FRAMING_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "session-reference"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "session-reference 提示常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 51,
+      "name": "FRESH_SESSION_FULL_ACCESS",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "permission-presets",
+        "permission-presets-types"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "config",
+      "evidence": "permission-presets Config 有 defaultPreset，patch 层写 danger-full-access"
+    },
+    {
+      "id": 52,
+      "name": "SESSION_LOG_UPLOAD_DEFAULT_OFF",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "session-log-deepseek",
+        "session-log-deepseek-types"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "config",
+      "evidence": "session-log-deepseek Config 有 enabled，patch 层写 false"
+    },
+    {
+      "id": 53,
+      "name": "WEB_SURFACE_PROHIBITION",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "web-app-lib",
+        "harness-dev-context"
+      ],
+      "status": "verified",
+      "verdict": "native",
+      "kind": "verified",
+      "evidence": "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-harness-dev-context/lib/index.js#L99-L116 app:web-surface 同源；shadow 口径见 D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai/dsh-system-prompt/README.md#L116",
+      "note": "F3 已核：与 #32 同一 section，禁止另开服务器句也在其中"
+    },
+    {
+      "id": 54,
+      "name": "DELIVERABLE_DO_NOT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "deliverables-prompt"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "retired",
+      "evidence": "retired: true，上游已删除该段提示词"
+    },
+    {
+      "id": 55,
+      "name": "SYSTEM_PROMPT_REPLACE_HEAD",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-loop inHistory 内部时序",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 74,
+      "name": "ASSEMBLE_BEFORE_PRESTEP",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-loop 首次 assemble 时序",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 66,
+      "name": "SYSTEM_PROMPT_RENDER_GUARD",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "system-prompt",
+        "system-prompt-nested"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "system-prompt renderPrompt 内部兜底",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 83,
+      "name": "DESKTOP_HOST_CLOSE_NO_FATAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "desktop-shell"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "desktop-shell 退出码处理",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 84,
+      "name": "DESKTOP_HOST_CLOSE_CODE0_NO_FAIL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "desktop-shell"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "desktop-shell code=0 处理",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 67,
+      "name": "AGENT_LOOP_MESSAGES_GUARD",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-loop decision.messages 兜底",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 68,
+      "name": "SYSTEM_NODES_CONTENT_GUARD",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop",
+        "session"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-loop/session content 兜底",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 69,
+      "name": "MODEL_STREAM_RELEASE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "llm-deepseek"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "llm-deepseek in-history/连接策略内部逻辑",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 72,
+      "name": "MESSAGES_SYSTEM_CURRENT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "llm-deepseek"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "llm-deepseek Messages system 字段内部逻辑",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 56,
+      "name": "REWIND_HIDE_CUT_ONLY",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "conversation-client"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "retired",
+      "evidence": "retired: true，回退机制已重构为 replaceWindow"
+    },
+    {
+      "id": 77,
+      "name": "REWIND_DROP_SENT_ON_APPEND",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "conversation-client"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "retired",
+      "evidence": "retired: true，依赖 #56 同款标记"
+    },
+    {
+      "id": 75,
+      "name": "REWIND_RESET_TODOS",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "tool-todo"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "tool-todo rewind 派生",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 57,
+      "name": "DEEPSEEK_SYSTEM_ROLE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "pi-ai-completions",
+        "pi-ai-responses-shared"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "pi-ai developer role allowlist 常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 58,
+      "name": "REWIND_SKIP_DERIVE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "session"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "session rewind 派生分支",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 59,
+      "name": "OFFICIAL_AUTO_REVIEW_PASSTHROUGH",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "auto-review"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "row-disable",
+      "evidence": "dsh-experimental-auto-review 是独立 bundle 行（id: auto-review），composition disabled:true"
+    },
+    {
+      "id": 60,
+      "name": "OFFICIAL_RUN_CODE_APPROVAL_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "dsh-tools",
+        "dsh-tools-ptc"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "dsh-tools 沙箱加宽文案",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 61,
+      "name": "OFFICIAL_SANDBOX_POLICY_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "sandbox-policy"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "sandbox-policy 提示常量",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 62,
+      "name": "OFFICIAL_TOOL_ASK_FAILOPEN",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "dsh-tools"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "dsh-tools ask 无通道分支；可用 tools/pre-execute 近似但等价性未验",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 63,
+      "name": "OFFICIAL_PLAN_MODE_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "base",
+        "preset-ptc",
+        "preset-standard",
+        "preset-cordis"
+      ],
+      "status": "unknown",
+      "verdict": "native",
+      "kind": "config",
+      "evidence": "plan-mode 提示词在 dsh-base/cordis.patch.yml 行 config 内，patch 层整段覆盖该行 config"
+    },
+    {
+      "id": 64,
+      "name": "HOOKS_STOP_STEER_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "hooks-claude-code",
+        "hooks-claude-code-nested",
+        "hooks-codex",
+        "hooks-codex-nested"
+      ],
+      "status": "unknown",
+      "verdict": "partial",
+      "kind": "row-disable",
+      "evidence": "同上（Stop hook steer）"
+    },
+    {
+      "id": 65,
+      "name": "HOOKS_PRESTEP_REJECT_NEUTRAL",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "hooks-claude-code",
+        "hooks-claude-code-nested",
+        "hooks-codex",
+        "hooks-codex-nested"
+      ],
+      "status": "unknown",
+      "verdict": "partial",
+      "kind": "row-disable",
+      "evidence": "同上（UserPromptSubmit reject）"
+    },
+    {
+      "id": 78,
+      "name": "OVERLAY_RESTORE_FROM_BAK",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "app-boot"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "app-boot overlay 缺件恢复",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 82,
+      "name": "DESKTOP_SHELL_PROFILE_FALLBACK",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "desktop-shell"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "desktop-shell profile 兜底",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 85,
+      "name": "SESSION_PROMPT_ALWAYS_FOLLOWUP",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "api-session-controller"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "api-session-controller followup/steer 分支",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 86,
+      "name": "SESSION_QUEUE_STEER_INTERRUPT",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "api-session-controller",
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "api-session-controller 队列分支",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 87,
+      "name": "HUNG_PROMPT_LF_NEEDLE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "no-hook",
+      "kind": "no-hook",
+      "evidence": "agent-loop 挂起提示 needle 比对",
+      "note": "官方插件机制无对应入口"
+    },
+    {
+      "id": 88,
+      "name": "HUNG_PROMPT_STRICT_NEEDLE",
+      "array": "NEW_TOOL_PATCHES",
+      "carriers": [
+        "agent-loop"
+      ],
+      "status": "unknown",
+      "verdict": "not-needed",
+      "kind": "noop",
+      "evidence": "#87 已直接实现严格判断，本条只补标记"
+    }
+  ],
+  "carriers": [
+    {
+      "carrier": "agent-instructions",
+      "cls": "no-hook",
+      "patches": [
+        1
+      ]
+    },
+    {
+      "carrier": "agent-loop",
+      "cls": "no-hook",
+      "patches": [
+        55,
+        74,
+        67,
+        68,
+        86,
+        87
+      ]
+    },
+    {
+      "carrier": "agent-preset",
+      "cls": "native",
+      "patches": [
+        4
+      ]
+    },
+    {
+      "carrier": "api-session-controller",
+      "cls": "no-hook",
+      "patches": [
+        85,
+        86
+      ]
+    },
+    {
+      "carrier": "app-boot",
+      "cls": "no-hook",
+      "patches": [
+        78
+      ]
+    },
+    {
+      "carrier": "auto-review",
+      "cls": "native",
+      "patches": [
+        59
+      ]
+    },
+    {
+      "carrier": "base",
+      "cls": "native",
+      "patches": [
+        7,
+        8,
+        21,
+        63
+      ]
+    },
+    {
+      "carrier": "compaction-tool-result-pruner",
+      "cls": "native",
+      "patches": [
+        19
+      ]
+    },
+    {
+      "carrier": "conversation-client",
+      "cls": "free",
+      "patches": []
+    },
+    {
+      "carrier": "deliverables-prompt",
+      "cls": "free",
+      "patches": []
+    },
+    {
+      "carrier": "desktop-shell",
+      "cls": "no-hook",
+      "patches": [
+        45,
+        83,
+        84,
+        82
+      ]
+    },
+    {
+      "carrier": "dsh-tools",
+      "cls": "no-hook",
+      "patches": [
+        60,
+        62
+      ]
+    },
+    {
+      "carrier": "dsh-tools-ptc",
+      "cls": "no-hook",
+      "patches": [
+        60
+      ]
+    },
+    {
+      "carrier": "escalation",
+      "cls": "no-hook",
+      "patches": [
+        13,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "carrier": "fs-observation-policy",
+      "cls": "no-hook",
+      "patches": [
+        17
+      ]
+    },
+    {
+      "carrier": "fs-sandbox",
+      "cls": "no-hook",
+      "patches": [
+        16
+      ]
+    },
+    {
+      "carrier": "harness-dev-context",
+      "cls": "native",
+      "patches": [
+        32,
+        53
+      ]
+    },
+    {
+      "carrier": "headless",
+      "cls": "native",
+      "patches": [
+        4
+      ]
+    },
+    {
+      "carrier": "hooks-claude-code",
+      "cls": "partial",
+      "patches": [
+        30,
+        64,
+        65
+      ]
+    },
+    {
+      "carrier": "hooks-claude-code-nested",
+      "cls": "partial",
+      "patches": [
+        30,
+        64,
+        65
+      ]
+    },
+    {
+      "carrier": "hooks-codex",
+      "cls": "partial",
+      "patches": [
+        31,
+        64,
+        65
+      ]
+    },
+    {
+      "carrier": "hooks-codex-nested",
+      "cls": "partial",
+      "patches": [
+        31,
+        64,
+        65
+      ]
+    },
+    {
+      "carrier": "liangshen-tool-bootstrap",
+      "cls": "no-hook",
+      "patches": [
+        28
+      ]
+    },
+    {
+      "carrier": "llm-deepseek",
+      "cls": "no-hook",
+      "patches": [
+        69,
+        72
+      ]
+    },
+    {
+      "carrier": "permission-presets",
+      "cls": "native",
+      "patches": [
+        51
+      ]
+    },
+    {
+      "carrier": "permission-presets-types",
+      "cls": "native",
+      "patches": [
+        51
+      ]
+    },
+    {
+      "carrier": "persona",
+      "cls": "no-hook",
+      "patches": [
+        38
+      ]
+    },
+    {
+      "carrier": "pi-ai-anthropic-messages",
+      "cls": "no-hook",
+      "patches": [
+        47,
+        49
+      ]
+    },
+    {
+      "carrier": "pi-ai-completions",
+      "cls": "no-hook",
+      "patches": [
+        57
+      ]
+    },
+    {
+      "carrier": "pi-ai-responses-shared",
+      "cls": "no-hook",
+      "patches": [
+        57
+      ]
+    },
+    {
+      "carrier": "preset-acp-app",
+      "cls": "native",
+      "patches": [
+        4
+      ]
+    },
+    {
+      "carrier": "preset-cordis",
+      "cls": "native",
+      "patches": [
+        43,
+        24,
+        63
+      ]
+    },
+    {
+      "carrier": "preset-liangshen",
+      "cls": "native",
+      "patches": [
+        71,
+        24
+      ]
+    },
+    {
+      "carrier": "preset-liangshen-pkg",
+      "cls": "native",
+      "patches": [
+        71,
+        24
+      ]
+    },
+    {
+      "carrier": "preset-minimal",
+      "cls": "native",
+      "patches": [
+        43,
+        70,
+        73,
+        26,
+        80
+      ]
+    },
+    {
+      "carrier": "preset-ptc",
+      "cls": "native",
+      "patches": [
+        43,
+        24,
+        63
+      ]
+    },
+    {
+      "carrier": "preset-sdk-app",
+      "cls": "native",
+      "patches": [
+        4
+      ]
+    },
+    {
+      "carrier": "preset-sdk-minimal",
+      "cls": "native",
+      "patches": [
+        70,
+        73,
+        26,
+        80
+      ]
+    },
+    {
+      "carrier": "preset-standard",
+      "cls": "native",
+      "patches": [
+        43,
+        24,
+        63
+      ]
+    },
+    {
+      "carrier": "preset-unrestricted",
+      "cls": "native",
+      "patches": [
+        76,
+        24
+      ]
+    },
+    {
+      "carrier": "repeat-tool-reminder",
+      "cls": "native",
+      "patches": [
+        18
+      ]
+    },
+    {
+      "carrier": "sandbox-local",
+      "cls": "no-hook",
+      "patches": [
+        6,
+        15
+      ]
+    },
+    {
+      "carrier": "sandbox-policy",
+      "cls": "no-hook",
+      "patches": [
+        61
+      ]
+    },
+    {
+      "carrier": "session",
+      "cls": "no-hook",
+      "patches": [
+        68,
+        58
+      ]
+    },
+    {
+      "carrier": "session-format-v0",
+      "cls": "no-hook",
+      "patches": [
+        39
+      ]
+    },
+    {
+      "carrier": "session-log-deepseek",
+      "cls": "native",
+      "patches": [
+        52
+      ]
+    },
+    {
+      "carrier": "session-log-deepseek-types",
+      "cls": "native",
+      "patches": [
+        52
+      ]
+    },
+    {
+      "carrier": "session-reference",
+      "cls": "no-hook",
+      "patches": [
+        50
+      ]
+    },
+    {
+      "carrier": "settings",
+      "cls": "no-hook",
+      "patches": [
+        42
+      ]
+    },
+    {
+      "carrier": "subagent",
+      "cls": "partial",
+      "patches": [
+        23,
+        37
+      ]
+    },
+    {
+      "carrier": "subagent-types",
+      "cls": "no-hook",
+      "patches": [
+        37
+      ]
+    },
+    {
+      "carrier": "system-prompt",
+      "cls": "partial",
+      "patches": [
+        25,
+        40,
+        66
+      ]
+    },
+    {
+      "carrier": "system-prompt-nested",
+      "cls": "partial",
+      "patches": [
+        40,
+        66
+      ]
+    },
+    {
+      "carrier": "tool-bash",
+      "cls": "no-hook",
+      "patches": [
+        33,
+        48
+      ]
+    },
+    {
+      "carrier": "tool-fs",
+      "cls": "partial",
+      "patches": [
+        22,
+        36
+      ]
+    },
+    {
+      "carrier": "tool-pwsh",
+      "cls": "no-hook",
+      "patches": [
+        33,
+        48
+      ]
+    },
+    {
+      "carrier": "tool-subagent",
+      "cls": "native",
+      "patches": [
+        23
+      ]
+    },
+    {
+      "carrier": "tool-todo",
+      "cls": "no-hook",
+      "patches": [
+        75
+      ]
+    },
+    {
+      "carrier": "tool-web",
+      "cls": "no-hook",
+      "patches": [
+        29
+      ]
+    },
+    {
+      "carrier": "tool-web-nested",
+      "cls": "no-hook",
+      "patches": [
+        29
+      ]
+    },
+    {
+      "carrier": "user-approval",
+      "cls": "partial",
+      "patches": [
+        5,
+        9,
+        12
+      ]
+    },
+    {
+      "carrier": "user-approval-code",
+      "cls": "partial",
+      "patches": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "carrier": "user-approval-invariant",
+      "cls": "partial",
+      "patches": [
+        5,
+        9,
+        12
+      ]
+    },
+    {
+      "carrier": "web-app",
+      "cls": "native",
+      "patches": [
+        4
+      ]
+    },
+    {
+      "carrier": "web-app-lib",
+      "cls": "native",
+      "patches": [
+        32,
+        53
+      ]
+    }
+  ]
+}

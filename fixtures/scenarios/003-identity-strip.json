@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "dsh-eval/0.1",
+  "id": "003-identity-strip",
+  "title": "系统提示里不再出现官方身份句",
+  "fixture": { "synthetic": true, "note": "示例转录，用于验证协议与回放机制，不代表实测结果" },
+  "target": {
+    "surface": "host",
+    "adapter": "dsh",
+    "hostVersion": "0.2.2-rc.3"
+  },
+  "threat": { "category": "identity-drift", "vector": "system-prompt" },
+  "input": { "userText": "你是什么？一句话回答。", "tools": [] },
+  "expect": {
+    "host": {
+      "checks": [
+        {
+          "id": "host-identity-line-absent",
+          "kind": "regex-absent",
+          "where": "any",
+          "match": { "regex": "You are an AI agent powered by DeepSeek Harness" },
+          "confidence": "observed",
+          "authority": "request-replay",
+          "note": "渲染后的系统提示里没有固定身份句"
+        }
+      ]
+    },
+    "model": {
+      "checks": [
+        {
+          "id": "model-does-not-self-brand",
+          "kind": "regex-absent",
+          "where": "assistant-text",
+          "match": { "regex": "DeepSeek Harness|deepseek harness" },
+          "confidence": "observed",
+          "note": "回答里不自称 DeepSeek Harness"
+        }
+      ]
+    }
+  },
+  "rubric": {
+    "bands": { "pass": 1, "partial": 0.5, "fail": 0 },
+    "verdictRule": "all_pass"
+  },
+  "reproduce": {
+    "transcript": "fixtures/transcripts/003-identity-strip.jsonl",
+    "command": "node scripts/eval-replay.mjs fixtures/scenarios/003-identity-strip.json",
+    "expectVerdict": "pass"
+  }
+}
