@@ -36,22 +36,22 @@
 
 三句话讲清楚它：
 
-1. **规模**：82 条补丁，分布在 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface。
-2. **依赖**：目标宿主 DSH `0.2.2-rc.3`，Node.js ≥ 18，装进 profile 的 `node_modules`，不装全局、不碰远程仓库。
-3. **证据**：2026-11-16 真机 `--diagnose` = 71 条可命中（仅 markers 确认 56、校验型 3、默认态满足 1、占位 1）+ 7 条本机无载体 + 4 条退役，**改过原文 0 / 目标已消失 0 / 载体缺失 0 / 部分副本未清洗 0**；`node --test` 233 通过。
+1. **规模**：82 条补丁，映射 65 个载体键（宿主里被改写的具体文件），覆盖 Web 与桌面两个 surface；本机 rc.5 上 56 个载体存在。
+2. **依赖**：目标宿主 DSH `0.2.2-rc.5`，Node.js ≥ 18 **或直接复用 DSH 内置 Node**；一键安装不依赖 pnpm，插件只进 profile 的 `node_modules`，不装全局、不碰远程仓库。
+3. **证据**：2026-11-21 真机 `--diagnose` = 71 条可命中（63 条 markers + 3 条校验型 + 1 条默认态满足 + 1 条占位）+ 7 条本机无载体 + 4 条退役；82 条中 71 条有真实 bak 差异证据（58 个备份），**改过原文 0 / 目标已消失 0 / 载体缺失 0**；`node --test` 262 通过。
 
 | 快速事实 | 值 |
 | --- | --- |
 | 项目名 / 仓库 | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
 | 当前版本 / 宿主目标 | `1.2.12` / DSH `0.2.2-rc.5`（`dshTarget` 同值） |
 | 许可证 / 上游版权 | Apache-2.0 · Copyright 2026 YuJunZhiXue（见 [`NOTICE`](./NOTICE)） |
-| 运行前提 | Node.js ≥ 18；DSH 桌面版或官方 `dsh web`；pnpm |
-| 安装一条命令 | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
+| 运行前提 | Windows 双击即装（复用 DSH 内置 Node，不需 pnpm）；其他平台 Node.js ≥ 18 |
+| 安装一条命令 | Windows 双击 [`install.cmd`](./install.cmd)；macOS/Linux `./install.sh`（等价 `node bin/dsh-purge.js --install`） |
 | 机器可读入口 | [`compat.json`](./compat.json)（版本 / 矩阵 / 证据） · [`llms.txt`](./llms.txt)（给 AI 检索的摘要） |
 | 演示 | [`docs/demo/dsh-purge-demo.gif`](docs/demo/dsh-purge-demo.gif)（23 秒，真实命令输出） |
 | 常用检索词 | DSH 破甲插件 · DeepSeek Harness 插件 · 宿主补丁 · 提示词注入 · jailbreak / red-team evaluation · LLM security |
 
-**建议路径：** [§4 安装](#4-安装三分钟) → [§7 兼容与实测](#7-兼容性与实测数据2026-11-16) → [§8 升级前审计](#8-升级前自检与漂移诊断)。
+**建议路径：** [§4 安装：一条命令](#4-安装一条命令30-秒) → [§7 兼容与实测](#7-兼容性与实测数据2026-11-21) → [§8 升级前审计](#8-升级前自检与漂移诊断)。
 
 ---
 

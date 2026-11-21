@@ -7,7 +7,10 @@
 - **profile 写入改成原子 + 备份（G3）**：`ensureProfileBundles` / `ensureProfileBodyInsert` / `ensurePnpmAllowBuild` 改为「临时文件 + rename」并保留单份 `.dshpurge.bak`；断电不再可能留下半截 JSON/YAML。
 - **postinstall 不再静默成功（G4）**：在插件仓库里跑 `pnpm install` 仍正常跳过；在其他目录找不到 profile 时退出码 2，并提示改用 `--install`，不再假装装好。
 - **安装器决策**：默认只装「正在运行的那个 profile」；多 profile 且无法判断时要求 `--profile desktop|web`；已有 URL/tarball 依赖原样保留，只补 vendor 与注册。
-- **测试**：新增 `test/install-autoload.test.js` 10 条（全新安装 / 幂等 / 试运行 / 未知 YAML 回滚 / URL 依赖保留 / 卸载归零 / insert 多实体 / 往返 / 错误翻译 / 发布清单）。全套 `node --test` **261 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
+- **双击入口实测修复**：`install.cmd` 改为 CRLF 并加 `.gitattributes`（`*.cmd eol=crlf`）——LF 换行会让 cmd 逐行解析错乱，真机双击会直接失败；同时用 `scripts/find-dsh-node.ps1` 在 DSH 未运行时也能从卸载注册表找到内置 Node。
+- **空 profile 文案**：`DSH_HOME` 下没有任何 profile 时报 `NO_PROFILE`（不再误报 `NO_PROFILE_MULTI`），并提示「先启动一次 DSH 生成 profile」；`NO_PROFILE_MULTI` 的翻译顺序修正。
+- **干净 profile 实测**：临时 `DSH_HOME` + 空 profile 首次安装 `copied 126 files`、4/4 回读通过；随后 `--uninstall` 后 `cordis.patch.yml` 无 `dsh-purge`，G1 在真实文件系统闭环。
+- **测试**：新增 `test/install-autoload.test.js` 11 条（全新安装 / 幂等 / 试运行 / 未知 YAML 回滚 / URL 依赖保留 / 卸载归零 / insert 多实体 / 往返 / 错误翻译 / 空 profile / 发布清单）。全套 `node --test` **262 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
 - 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
 
 ## English
@@ -17,7 +20,10 @@
 - **Atomic profile writes + backup (G3)**: `ensureProfileBundles` / `ensureProfileBodyInsert` / `ensurePnpmAllowBuild` now write via temp-file + rename and keep one `.dshpurge.bak`; a crash can no longer leave half-written JSON/YAML.
 - **postinstall no longer silently succeeds (G4)**: running `pnpm install` inside the plugin repo still skips normally; anywhere else, a missing profile exits with code 2 and points to `--install` instead of pretending success.
 - **Installer decisions**: install only the running profile by default; require `--profile desktop|web` when multiple profiles cannot be disambiguated; keep an existing URL/tarball dependency and only add the vendor copy plus registration.
-- **Tests**: new `test/install-autoload.test.js` (10 cases: fresh install / idempotency / dry-run / unknown-YAML rollback / URL dependency preserved / uninstall zero-reference / multi-entity insert / round-trip / error translation / pack list). `node --test` **261 passing / 0 failing**; compat / fixture / native / pack checks all green.
+- **Double-click entry fixed after real testing**: `install.cmd` is now CRLF with `.gitattributes` (`*.cmd eol=crlf`) — LF line endings make cmd misparse the script and fail on a real double-click; `scripts/find-dsh-node.ps1` also locates the bundled Node from the uninstall registry when DSH is not running.
+- **Empty-profile wording**: an empty `profiles` directory now reports `NO_PROFILE` instead of incorrectly reporting `NO_PROFILE_MULTI`, and tells the user to launch DSH once to create a profile; the `NO_PROFILE_MULTI` translation order is fixed.
+- **Clean-profile real test**: fresh `DSH_HOME` with an empty profile installed `copied 126 files` and passed 4/4 read-back checks; a following `--uninstall` left no `dsh-purge` in `cordis.patch.yml`, closing G1 on a real filesystem.
+- **Tests**: new `test/install-autoload.test.js` (11 cases: fresh install / idempotency / dry-run / unknown-YAML rollback / URL dependency preserved / uninstall zero-reference / multi-entity insert / round-trip / error translation / empty profile / pack list). `node --test` **262 passing / 0 failing**; compat / fixture / native / pack checks all green.
 - Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
 
 # 1.2.11

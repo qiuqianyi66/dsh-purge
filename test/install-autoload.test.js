@@ -192,6 +192,16 @@ test("错误翻译覆盖常见安装拦路石", () => {
   assert.match(humanizeInstallError(new Error("INSERT_UNRECOGNIZED")), /cordis\.patch\.yml/);
 });
 
+test("空 profiles 目录：报 NO_PROFILE，不误报 MULTI", () => {
+  const home = makeHome();
+  const report = installPurge({ dshHome: home, profiles: [], restart: false, sourceRoot: ROOT });
+  assert.equal(report.ok, false);
+  assert.match(report.error, /没有找到可安装的 DSH profile/);
+  assert.doesNotMatch(report.error, /多个 profile/);
+  assert.match(humanizeInstallError(new Error("NO_PROFILE_MULTI: desktop, web")), /多个 profile/);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
 test("profile 发现与发布清单只含白名单文件", () => {
   const home = makeHome();
   makeProfile(home, "desktop");

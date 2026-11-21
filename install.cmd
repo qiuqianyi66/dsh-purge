@@ -5,9 +5,8 @@ set "ROOT=%~dp0"
 set "NODE="
 set "DSHEXE="
 
-rem 1) 正在运行的 DSH：直接复用它的内置 Node，用户不需要自己装 Node
-for /f "usebackq delims=" %%P in (`powershell -NoProfile -NonInteractive -Command "$p=Get-Process 'DeepSeek Harness' -ErrorAction SilentlyContinue; if($p){($p|Where-Object {$_.Path}|Select-Object -First 1).Path}"`) do set "DSHEXE=%%P"
-if defined DSHEXE for %%D in ("%DSHEXE%") do if exist "%%~dpDresources\runtime\primary-runtime\dependencies\node\bin\node.exe" set "NODE=%%~dpDresources\runtime\primary-runtime\dependencies\node\bin\node.exe"
+rem 1) 已安装 / 正在运行的 DSH：复用它的内置 Node，用户不需要自己装 Node
+for /f "usebackq delims=" %%P in (`powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%ROOT%scripts\find-dsh-node.ps1"`) do set "NODE=%%P"
 
 rem 2) PATH 里的 node
 if not defined NODE for /f "delims=" %%N in ('where node 2^>nul') do if not defined NODE set "NODE=%%N"

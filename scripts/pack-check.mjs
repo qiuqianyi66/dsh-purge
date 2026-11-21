@@ -31,6 +31,7 @@ const REQUIRED = [
   "lib/install.js",
   "install.cmd",
   "install.sh",
+  "scripts/find-dsh-node.ps1",
   "client.js",
   "cordis.patch.yml",
   "compat.json",
