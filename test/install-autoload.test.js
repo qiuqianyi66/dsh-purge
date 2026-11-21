@@ -75,14 +75,31 @@ test("全新 profile：一条命令装好，4 项回读校验全过", () => {
 test("重复安装幂等：第二次不碰任何文件", () => {
   const home = makeHome();
   const dir = makeProfile(home);
-  assert.equal(install(home).ok, true);
+  const first = install(home);
+  assert.equal(first.ok, true);
+  assert.equal(first.profiles[0].changed, true);
   const files = ["package.json", "cordis.patch.yml", "dsh-purge-vendor/package.json"].map((rel) => path.join(dir, rel));
   const before = files.map((fp) => (fs.existsSync(fp) ? fs.statSync(fp).mtimeMs : 0));
   const second = install(home);
   assert.equal(second.ok, true);
+  assert.equal(second.profiles[0].changed, false);
   assert.equal(second.profiles[0].actions.vendor, "already");
   const after = files.map((fp) => (fs.existsSync(fp) ? fs.statSync(fp).mtimeMs : 0));
   assert.deepEqual(after, before);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("vendor 缺文件：重装自动补回，不因版本相同而跳过", () => {
+  const home = makeHome();
+  const dir = makeProfile(home);
+  assert.equal(install(home).ok, true);
+  const victim = path.join(dir, "dsh-purge-vendor", "scripts", "find-dsh-node.ps1");
+  assert.equal(fs.existsSync(victim), true);
+  fs.rmSync(victim);
+  const second = install(home);
+  assert.equal(second.ok, true, JSON.stringify(second));
+  assert.match(second.profiles[0].actions.vendor, /copied/);
+  assert.equal(fs.existsSync(victim), true);
   fs.rmSync(home, { recursive: true, force: true });
 });
 

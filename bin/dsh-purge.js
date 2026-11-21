@@ -267,6 +267,7 @@ async function main() {
       else if (!rep.dryRun) {
         const r = rep.restart;
         if (!r) console.log("  完成。请完全退出 DSH 再打开。");
+        else if (r.ok && r.reason === "already") console.log(`  ${r.message}`);
         else if (r.ok) console.log(`  完成，已重启 DSH（${r.exe}，进程 ${r.processes}）。重启后打开面板确认。`);
         else console.log(`  已装好，但${r.message || "自动重启未完成"} 请手动完全退出 DSH 再打开。`);
       }

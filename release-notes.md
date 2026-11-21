@@ -10,7 +10,9 @@
 - **双击入口实测修复**：`install.cmd` 改为 CRLF 并加 `.gitattributes`（`*.cmd eol=crlf`）——LF 换行会让 cmd 逐行解析错乱，真机双击会直接失败；同时用 `scripts/find-dsh-node.ps1` 在 DSH 未运行时也能从卸载注册表找到内置 Node。
 - **空 profile 文案**：`DSH_HOME` 下没有任何 profile 时报 `NO_PROFILE`（不再误报 `NO_PROFILE_MULTI`），并提示「先启动一次 DSH 生成 profile」；`NO_PROFILE_MULTI` 的翻译顺序修正。
 - **干净 profile 实测**：临时 `DSH_HOME` + 空 profile 首次安装 `copied 126 files`、4/4 回读通过；随后 `--uninstall` 后 `cordis.patch.yml` 无 `dsh-purge`，G1 在真实文件系统闭环。
-- **测试**：新增 `test/install-autoload.test.js` 11 条（全新安装 / 幂等 / 试运行 / 未知 YAML 回滚 / URL 依赖保留 / 卸载归零 / insert 多实体 / 往返 / 错误翻译 / 空 profile / 发布清单）。全套 `node --test` **262 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
+- **自愈**：回读校验新增 vendor 文件数比对；版本号相同但插件目录缺文件 / 残留旧文件时，重装会重新复制，不会误判「已装好」。
+- **不做无意义重启**：重复双击安装时，若 4 项校验全过、文件清单也一致，只输出「已经是最新版本，本次没有改动，未重启 DSH」，不再打断正在用的窗口。
+- **测试**：新增 `test/install-autoload.test.js` 12 条（全新安装 / 幂等 / 试运行 / 未知 YAML 回滚 / URL 依赖保留 / 卸载归零 / insert 多实体 / 往返 / 错误翻译 / 空 profile / 缺文件自愈 / 发布清单）。全套 `node --test` **263 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
 - 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
 
 ## English
@@ -23,7 +25,9 @@
 - **Double-click entry fixed after real testing**: `install.cmd` is now CRLF with `.gitattributes` (`*.cmd eol=crlf`) — LF line endings make cmd misparse the script and fail on a real double-click; `scripts/find-dsh-node.ps1` also locates the bundled Node from the uninstall registry when DSH is not running.
 - **Empty-profile wording**: an empty `profiles` directory now reports `NO_PROFILE` instead of incorrectly reporting `NO_PROFILE_MULTI`, and tells the user to launch DSH once to create a profile; the `NO_PROFILE_MULTI` translation order is fixed.
 - **Clean-profile real test**: fresh `DSH_HOME` with an empty profile installed `copied 126 files` and passed 4/4 read-back checks; a following `--uninstall` left no `dsh-purge` in `cordis.patch.yml`, closing G1 on a real filesystem.
-- **Tests**: new `test/install-autoload.test.js` (11 cases: fresh install / idempotency / dry-run / unknown-YAML rollback / URL dependency preserved / uninstall zero-reference / multi-entity insert / round-trip / error translation / empty profile / pack list). `node --test` **262 passing / 0 failing**; compat / fixture / native / pack checks all green.
+- **Self-healing**: read-back verification now compares the vendor file count; if the version matches but files are missing or stale, reinstall recopies instead of falsely reporting "already installed".
+- **No pointless restart**: re-running the installer when all four checks and the file list already match now prints "already up to date, nothing changed, DSH was not restarted" instead of interrupting a live window.
+- **Tests**: new `test/install-autoload.test.js` (12 cases: fresh install / idempotency / dry-run / unknown-YAML rollback / URL dependency preserved / uninstall zero-reference / multi-entity insert / round-trip / error translation / empty profile / missing-file self-heal / pack list). `node --test` **263 passing / 0 failing**; compat / fixture / native / pack checks all green.
 - Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
 
 # 1.2.11
