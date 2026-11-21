@@ -10,7 +10,9 @@ import {
   packageFileList,
   listProfiles,
   humanizeInstallError,
+  findBootAfter,
 } from "../lib/install.js";
+import { selfcheckLogPath } from "../lib/selfcheck-log.js";
 import {
   removeProfileBodyInsert,
   ensureProfileBodyInsert,
@@ -294,5 +296,42 @@ test("H1 清理清单只登记真实存在的目录，重复运行不留假路�
   for (const fp of second.cleanup) {
     assert.equal(fs.existsSync(fp), true, `已删除的路径不该再次进清单: ${fp}`);
   }
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+// ── H2：装完要确认插件真的加载了，不能只看进程数 ──
+
+function writeBootLog(home, lines) {
+  const fp = selfcheckLogPath(home);
+  fs.mkdirSync(path.dirname(fp), { recursive: true });
+  fs.writeFileSync(fp, lines.map((e) => JSON.stringify(e)).join("\n") + "\n", "utf8");
+  return fp;
+}
+
+test("H2 只认本次重启之后的 boot 记录，旧记录不算加载成功", () => {
+  const home = makeHome();
+  const old = { ts: "2026-01-01T00:00:00.000Z", action: "boot", plugin: "dsh-purge", outcome: "ok" };
+  const fresh = { ts: new Date(Date.now() + 5000).toISOString(), action: "boot", plugin: "dsh-purge", outcome: "loaded" };
+  writeBootLog(home, [old, fresh]);
+
+  const sinceMs = Date.now();
+  const hit = findBootAfter({ dshHome: home, sinceMs });
+  assert.equal(hit?.outcome, "loaded", "应命中晚于 sinceMs 的那条");
+  assert.equal(hit?.ts, fresh.ts);
+
+  // 只写旧记录：返回 null，而不是把旧 boot 冒充成本次加载
+  writeBootLog(home, [old]);
+  assert.equal(findBootAfter({ dshHome: home, sinceMs }), null);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("H2 非 boot 动作与缺 dshHome 都不算确认", () => {
+  const home = makeHome();
+  const sinceMs = Date.now();
+  const later = new Date(sinceMs + 5000).toISOString();
+  writeBootLog(home, [{ ts: later, action: "diagnose", plugin: "dsh-purge" }]);
+  assert.equal(findBootAfter({ dshHome: home, sinceMs }), null, "diagnose 记录不能当 boot");
+  assert.equal(findBootAfter({ dshHome: "", sinceMs }), null);
+  assert.equal(findBootAfter({ dshHome: path.join(home, "nope"), sinceMs }), null, "没有日志文件时返回 null 而不是抛错");
   fs.rmSync(home, { recursive: true, force: true });
 });
