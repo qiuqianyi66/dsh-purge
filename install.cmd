@@ -25,6 +25,17 @@ if not defined NODE (
   exit /b 1
 )
 
+rem 4) 版本校验：PATH 里的旧 node（<18）在这里拦住，别等到运行时才报错
+"%NODE%" -e "process.exit(+process.versions.node.split('.')[0]>=18?0:1)" >nul 2>nul
+if errorlevel 1 (
+  echo.
+  echo [dsh-purge] Node 版本太旧，需要 18 或更新版本：
+  "%NODE%" -v
+  echo            请打开一次 DeepSeek Harness 用它的内置 Node，或安装 Node 18+ 后重试。
+  echo.
+  pause
+  exit /b 1
+)
 echo.
 echo dsh-purge 一键安装
 echo   Node: %NODE%

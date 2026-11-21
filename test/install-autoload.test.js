@@ -11,6 +11,7 @@ import {
   listProfiles,
   humanizeInstallError,
   findBootAfter,
+  restartCountdown,
 } from "../lib/install.js";
 import { selfcheckLogPath } from "../lib/selfcheck-log.js";
 import {
@@ -369,4 +370,64 @@ test("H3 多 profile 文案：列出实际名字，不再写死 desktop/web", ()
   const named = humanizeInstallError(new Error("NO_PROFILE_NAMED: --profile deskop 不存在（现有：desktop, web）"));
   assert.match(named, /profile 名不存在/);
   assert.doesNotMatch(named, /先启动一次 DSH/);
+});
+
+// ── H4：重启倒计时 + Node 版本校验 ──
+
+test("H4 倒计时只在 TTY 且延迟 > 0 时走，非 TTY 不卡住", () => {
+  const writes = [];
+  let sleeps = 0;
+  const inject = { write: (s) => writes.push(s), sleep: () => { sleeps += 1; } };
+
+  assert.equal(restartCountdown({ seconds: 5, isTTY: false, ...inject }), 0, "非 TTY 不倒计时");
+  assert.equal(sleeps, 0, "非 TTY 不能等");
+  assert.equal(writes.length, 0, "非 TTY 不输出秒数");
+
+  assert.equal(restartCountdown({ seconds: 0, isTTY: true, ...inject }), 0, "--restart-delay 0 跳过");
+  assert.equal(sleeps, 0);
+
+  writes.length = 0;
+  sleeps = 0;
+  assert.equal(restartCountdown({ seconds: 3, isTTY: true, ...inject }), 3);
+  assert.equal(sleeps, 3, "每秒一次，共 3 次");
+  assert.match(writes[0], /3 秒后重启，按 Ctrl\+C 取消/);
+});
+
+test("H4 dry-run / no-restart 既不倒计时也不重启", () => {
+  const home = makeHome();
+  makeProfile(home);
+  const boom = () => {
+    throw new Error("dry-run 不该进倒计时");
+  };
+  const dry = installPurge({
+    dshHome: home,
+    profiles: ["desktop"],
+    dryRun: true,
+    restart: true,
+    restartDelay: 5,
+    isTTY: true,
+    write: boom,
+    sourceRoot: ROOT,
+  });
+  assert.equal(dry.ok, true);
+  assert.equal(dry.restart, null, "dry-run 不重启");
+
+  const noRestart = installPurge({ dshHome: home, profiles: ["desktop"], restart: false, sourceRoot: ROOT });
+  assert.equal(noRestart.restart, null, "--no-restart 不重启");
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("H4 两个安装脚本都带 Node 18 主版本校验，且 install.cmd 保持纯 CRLF", () => {
+  const cmdPath = path.join(ROOT, "install.cmd");
+  const shPath = path.join(ROOT, "install.sh");
+  const cmd = fs.readFileSync(cmdPath, "utf8");
+  const sh = fs.readFileSync(shPath, "utf8");
+  assert.match(cmd, /process\.versions\.node\.split\('\.'\)\[0\]>=18/, "install.cmd 要校验主版本");
+  assert.match(sh, /process\.versions\.node\.split\("\."\)\[0\] >= 18/, "install.sh 要校验主版本");
+  // 真机双击解析依赖 CRLF：混进一个 LF 就会逐行错乱
+  const buf = fs.readFileSync(cmdPath);
+  assert.equal((buf.toString("utf8").match(/(?<!\r)\n/g) || []).length, 0, "install.cmd 必须是纯 CRLF");
+  assert.equal(buf.toString("utf8").includes("\r\n"), true);
+  // shell 脚本保持 LF
+  assert.equal((fs.readFileSync(shPath).toString("utf8").match(/\r\n/g) || []).length, 0, "install.sh 保持 LF");
 });

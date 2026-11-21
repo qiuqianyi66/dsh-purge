@@ -21,6 +21,14 @@ if [ -z "$NODE" ]; then
   exit 1
 fi
 
+# 版本校验：PATH 里的旧 node（<18）在这里拦住，别等到运行时才报错
+if ! "$NODE" -e 'process.exit(+process.versions.node.split(".")[0] >= 18 ? 0 : 1)' >/dev/null 2>&1; then
+  echo
+  echo "[dsh-purge] Node 版本太旧：$("$NODE" -v 2>/dev/null || echo unknown)，需要 Node 18 或更新版本。"
+  echo "           请打开一次 DeepSeek Harness 用它的内置 Node，或安装 Node 18+ 后重试。"
+  echo
+  exit 1
+fi
 echo
 echo "dsh-purge 一键安装"
 echo "  Node: $NODE"

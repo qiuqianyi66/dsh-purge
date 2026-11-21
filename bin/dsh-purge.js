@@ -14,6 +14,17 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
+// H4：兜底版本检查。install.cmd / install.sh 已经按 PATH 的 Node 拦过一次，
+// 这里再拦，覆盖「直接 node bin/dsh-purge.js」和旧 Node 的 npm script 两种入口。
+// 放在静态 import 之后：import 阶段无法拦，但任何实际功能调用前一定会拦到。
+const NODE_MAJOR_MIN = 18;
+const runningMajor = Number(String(process.versions.node || "0").split(".")[0]);
+if (!(runningMajor >= NODE_MAJOR_MIN)) {
+  console.error(`[dsh-purge] 需要 Node ${NODE_MAJOR_MIN}+，当前 ${process.versions.node}。`);
+  console.error("  处置：打开一次 DSH 用它内置的 Node，或安装 Node 18 以上版本后重试。");
+  process.exit(1);
+}
+
 const sha256Of = (fp) => {
   try {
     return crypto.createHash("sha256").update(fs.readFileSync(fp)).digest("hex");
@@ -212,7 +223,8 @@ async function main() {
                           --no-restart 只清目录不重启；--json 输出机器可读结果
   dsh-purge --install    一条命令装进 DSH profile 并自动加载（含备份 / 回读校验）
                          加 --profile desktop 指定 profile；--dry-run 只预览；
-                         --no-restart 装完不自动重启；--json 机器可读
+                         --no-restart 装完不自动重启；--restart-delay 0 跳过 5 秒倒计时；
+                         --json 机器可读
   dsh-purge --edit       编辑注入文件 prompt-inject.md
   dsh-purge --help       帮助`);
     return;
@@ -241,10 +253,13 @@ async function main() {
   if (mode === "--install") {
     const { installPurge } = await import("../lib/install.js");
     const prof = argValue("--profile");
+    const delayArg = argValue("--restart-delay");
     const rep = installPurge({
       profiles: prof ? [prof] : [],
       dryRun: args.includes("--dry-run"),
       restart: !args.includes("--no-restart"),
+      // H4：默认 5 秒反悔时间；--restart-delay 0 直接跳过；非 TTY 不会倒数。
+      restartDelay: delayArg === "" ? 5 : Number(delayArg),
     });
     if (args.includes("--json")) {
       console.log(JSON.stringify(rep, null, 2));
