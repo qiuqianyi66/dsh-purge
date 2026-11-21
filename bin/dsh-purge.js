@@ -3,6 +3,7 @@
 import * as core from "../lib/core.js";
 import * as rules from "../lib/rules.js";
 import * as drift from "../lib/drift.js";
+import * as hostctl from "../lib/host.js";
 import * as preupdate from "../lib/preupdate.js";
 import * as restoreGuard from "../lib/restore-guard.js";
 import * as compatMatrix from "../lib/compat-matrix.js";
@@ -207,7 +208,8 @@ async function main() {
                          加 --json 输出机器可读结果
   dsh-purge --apply      应用全部清洗（提示词+代码+shim+override）
   dsh-purge --revert     回滚还原
-  dsh-purge --uninstall  卸载插件（已应用则先还原）
+  dsh-purge --uninstall  卸载插件（已应用则先还原），清掉插件目录并自动重启
+                          --no-restart 只清目录不重启；--json 输出机器可读结果
   dsh-purge --install    一条命令装进 DSH profile 并自动加载（含备份 / 回读校验）
                          加 --profile desktop 指定 profile；--dry-run 只预览；
                          --no-restart 装完不自动重启；--json 机器可读
@@ -652,20 +654,75 @@ async function main() {
     console.log("回滚完成 / Revert done。重启 dsh 后恢复 / restart to restore.");
     console.log("注: prompt-inject.md 保留（用户文件）/ prompt-inject.md kept (user file)");
   } else if (mode === "--uninstall") {
-    const { uninstallPurge } = await import("../lib/uninstall.js");
+    const { uninstallPurge, removeCleanupDirs } = await import("../lib/uninstall.js");
     const result = await uninstallPurge();
-    if (result.applied) console.log("  已检测到补丁，已还原回原版。");
-    else console.log("  未检测到已应用补丁，仍会清除插件文件。");
-    if (result.override?.removed) console.log(`  已删除 ${result.override.path}`);
-    if (result.stripped?.length) console.log(`  已从 profile 移除: ${result.stripped.join(", ")}`);
-    if (result.insert_removed?.length) console.log(`  已移除用户层 insert: ${result.insert_removed.join(", ")}`);
-    for (const e of result.errors || []) console.log(`  ⚠ ${e}`);
+    const jsonOut = args.includes("--json");
+    const noRestart = args.includes("--no-restart");
+    if (!jsonOut) {
+      if (result.applied) console.log("  已检测到补丁，已还原回原版。");
+      else console.log("  未检测到已应用补丁，仍会清除插件文件。");
+      if (result.override?.removed) console.log(`  已删除 ${result.override.path}`);
+      if (result.stripped?.length) console.log(`  已从 profile 移除: ${result.stripped.join(", ")}`);
+      if (result.insert_removed?.length) console.log(`  已移除用户层 insert: ${result.insert_removed.join(", ")}`);
+      for (const e of result.errors || []) console.log(`  ⚠ ${e}`);
+    }
     if (!result.ok) {
-      console.log("  卸载中止：还原失败，插件文件未删除。");
+      if (jsonOut) {
+        console.log(JSON.stringify({
+          ...result,
+          cleanup_removed: [],
+          cleanup_scheduled: false,
+          cleanup_left: Array.isArray(result.cleanup) ? result.cleanup : [],
+        }, null, 2));
+      } else {
+        console.log("  卸载中止：还原失败，插件文件未删除。");
+      }
       process.exit(1);
     }
+
+    // H1：把 uninstall 算出来的 cleanup 真正执行掉，并和面板走同一条重启路径。
+    const cleanup = Array.isArray(result.cleanup) ? result.cleanup.filter(Boolean) : [];
+    const inSession = Boolean(String(process.env.DSH_SURFACE || "").trim());
+    const desktop = String(process.env.DSH_SURFACE || "").toLowerCase() === "desktop" || aiBaseLooksDesktop(state?.ai_base);
+    let cleanup_removed = [];
+    let cleanup_scheduled = false;
+    let cleanup_left = [];
+    if (cleanup.length) {
+      if (noRestart || inSession) {
+        // 本会话内 / 明确不重启：不能杀当前宿主，就地删能删的，剩下的如实报出来。
+        cleanup_left = removeCleanupDirs(cleanup);
+        cleanup_removed = cleanup.filter((d) => !cleanup_left.includes(d));
+      } else if (desktop) {
+        try {
+          hostctl.scheduleCleanupRestart({ cleanup });
+          cleanup_scheduled = true;
+        } catch (e) {
+          cleanup_left = removeCleanupDirs(cleanup);
+          cleanup_removed = cleanup.filter((d) => !cleanup_left.includes(d));
+          if (!jsonOut) console.log(`  ⚠ 自动重启未启动（${(e && e.message) || e}），已尽力清理目录。`);
+        }
+      } else {
+        // web / 未知宿主：CLI 拿不到端口与重启参数，退化为就地删 + 提示手动重启。
+        cleanup_left = removeCleanupDirs(cleanup);
+        cleanup_removed = cleanup.filter((d) => !cleanup_left.includes(d));
+      }
+    }
+
+    if (jsonOut) {
+      console.log(JSON.stringify({ ...result, cleanup_removed, cleanup_scheduled, cleanup_left }, null, 2));
+      return;
+    }
+    if (cleanup_removed.length) console.log(`  已删除 ${cleanup_removed.length} 个插件目录。`);
+    if (cleanup_scheduled) console.log("  已安排退出 DSH 后删除插件目录并自动重启。");
+    if (cleanup_left.length) {
+      console.log(`  ⚠ 还有 ${cleanup_left.length} 个目录被占用未删除：`);
+      for (const d of cleanup_left) console.log(`     · ${d}`);
+      console.log("    处置：完全退出 DSH 后再跑一次 `dsh-purge --uninstall`，或手动删除上述目录。");
+    }
     console.log("");
-    console.log("卸载完成。请重启 dsh。");
+    if (cleanup_scheduled) console.log("卸载完成，DSH 将自动重启。");
+    else if (cleanup_left.length) console.log("卸载完成。完全退出 DSH 后再跑一次 --uninstall 清掉残留。");
+    else console.log("卸载完成。请重启 dsh。");
   } else if (mode === "--edit") {
     const r = core.editOverride(state.dsh_home);
     if (!r.ok && r.needCreate) {

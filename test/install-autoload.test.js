@@ -16,7 +16,7 @@ import {
   ensureProfileBodyInsert,
   INSERT_BLOCK,
 } from "../lib/profile-insert.js";
-import { uninstallPurge } from "../lib/uninstall.js";
+import { uninstallPurge, removeCleanupDirs } from "../lib/uninstall.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")).version;
@@ -229,5 +229,70 @@ test("profile 发现与发布清单只含白名单文件", () => {
   assert.equal(files.includes("install.cmd"), true);
   assert.equal(files.includes("docs/plans/开箱即用与人性化路线-20261121.md"), false);
   assert.equal(files.some((rel) => rel.startsWith("test/")), false);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+// ── H1：--uninstall 要真的把插件目录清干净，且只清安装器自己的产物 ──
+
+function uninstallState(home) {
+  return { state: { dsh_home: home, ai_base: "", has_backup: false, patches_applied: 0, shim_cmd: "", shim_ps1: "", shim_bin: "" } };
+}
+
+test("H1 卸载 cleanup 覆盖 vendor/previous/安装器备份/staging，执行后全部消失", async () => {
+  const home = makeHome();
+  const dir = makeProfile(home);
+  assert.equal(install(home).ok, true);
+
+  // 安装器会留下的三个固定产物（真机残留就是它们）
+  const previous = path.join(dir, "dsh-purge-vendor.previous");
+  fs.mkdirSync(previous, { recursive: true });
+  fs.writeFileSync(path.join(previous, "package.json"), "{}\n", "utf8");
+  const staging = path.join(dir, ".dsh-purge-vendor.tmp-4242");
+  fs.mkdirSync(staging, { recursive: true });
+  // 数据目录
+  const dataDir = path.join(home, "dsh-purge");
+  fs.mkdirSync(dataDir, { recursive: true });
+  // 用户手工留档：名字不在安装器清单里，必须原地保留
+  const userKeep = path.join(dir, "dsh-purge-vendor.1.2.10.bak-20261121");
+  fs.mkdirSync(userKeep, { recursive: true });
+  fs.writeFileSync(path.join(userKeep, "package.json"), "{}\n", "utf8");
+
+  const report = await uninstallPurge(uninstallState(home));
+  assert.equal(report.ok, true, JSON.stringify(report.errors));
+
+  const cleanup = report.cleanup.map((p) => p.toLowerCase());
+  const has = (fp) => cleanup.includes(fs.realpathSync(fp).toLowerCase());
+  assert.equal(has(path.join(dir, "dsh-purge-vendor")), true, "vendor 本体必须进清单");
+  assert.equal(has(previous), true, "vendor.previous 必须进清单");
+  assert.equal(has(staging), true, "staging 残留必须进清单");
+  assert.equal(has(path.join(dir, ".dsh-purge-install-backup")), true, "安装器备份必须进清单");
+  assert.equal(has(dataDir), true, "数据目录必须进清单");
+  assert.equal(has(userKeep), false, "用户手工备份不能被清");
+
+  const left = removeCleanupDirs(report.cleanup);
+  assert.deepEqual(left, [], "清理后不应有残留");
+  assert.equal(fs.existsSync(path.join(dir, "dsh-purge-vendor")), false);
+  assert.equal(fs.existsSync(previous), false);
+  assert.equal(fs.existsSync(staging), false);
+  assert.equal(fs.existsSync(path.join(dir, ".dsh-purge-install-backup")), false);
+  assert.equal(fs.existsSync(dataDir), false);
+  // 不误删：profile 本体文件与用户留档都还在
+  assert.equal(fs.existsSync(userKeep), true);
+  assert.equal(fs.existsSync(path.join(dir, "package.json")), true);
+  assert.equal(fs.existsSync(path.join(dir, "cordis.patch.yml")), true);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("H1 清理清单只登记真实存在的目录，重复运行不留假路径", async () => {
+  const home = makeHome();
+  makeProfile(home);
+  assert.equal(install(home).ok, true);
+  const first = await uninstallPurge(uninstallState(home));
+  removeCleanupDirs(first.cleanup);
+  const second = await uninstallPurge(uninstallState(home));
+  assert.equal(second.ok, true);
+  for (const fp of second.cleanup) {
+    assert.equal(fs.existsSync(fp), true, `已删除的路径不该再次进清单: ${fp}`);
+  }
   fs.rmSync(home, { recursive: true, force: true });
 });
