@@ -4,13 +4,13 @@
 
 # dsh-purge
 
-**A local red-team evaluation plugin for DeepSeek Harness: 82 host patches plus per-model prompts, one-click revert. Requires DSH `0.2.2-rc.3`, Node ≥ 18.**
+**A local red-team evaluation plugin for DeepSeek Harness: 82 host patches plus per-model prompts, one-click revert. Requires DSH `0.2.2-rc.5`, Node ≥ 18 or the Node bundled with DSH.**
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/qiuqianyi66/dsh-purge?label=Release)](https://github.com/qiuqianyi66/dsh-purge/releases/latest)
 [![Test](https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml/badge.svg)](https://github.com/qiuqianyi66/dsh-purge/actions/workflows/test.yml)
 [![Patches](https://img.shields.io/badge/patches-82-informational)](lib/core.js)
-[![Audit](https://img.shields.io/badge/rc.3%20audit-0%20drift-brightgreen)](compat.json)
+[![Audit](https://img.shields.io/badge/rc.5%20audit-0%20drift-brightgreen)](compat.json)
 
 **Read this first:** authorized, self-owned environments only. Licensing in [§1](#1-license-copyright-and-redistribution), safety limits in [§2](#2-hard-safety-limits).
 
@@ -30,22 +30,22 @@
 
 > dsh-purge is a local red-team evaluation plugin for **DeepSeek Harness (DSH)**: 82 grouped host patches plus per-model prompt presets separate a host-layer policy block from a model refusal, every touched file is backed up and revertible, and an isolated audit tells you before upgrading whether the patterns will silently stop matching.
 
-1. **Scale** — 82 patches across 65 carrier keys (concrete host files), covering both the web and desktop surfaces.
-2. **Requirements** — target host DSH `0.2.2-rc.3`, Node.js ≥ 18, installed into a profile's `node_modules`; nothing global, nothing written to remote repositories.
-3. **Evidence** — live `--diagnose` on 2026-11-16: 71 matched (56 marker-confirmed, 3 verify-only, 1 default-state, 1 placeholder) + 7 carriers absent on this host + 4 retired, with **0 changed source, 0 dead target, 0 missing carriers, 0 partially-patched copies and 0 no-file-field**; `node --test` 233 passing.
+1. **Scale** — 82 patches mapped to 65 carrier keys (concrete host files), covering both the web and desktop surfaces; 56 carriers exist on this rc.5 host.
+2. **Requirements** — target host DSH `0.2.2-rc.5`, Node.js ≥ 18 **or the Node bundled with DSH**; the one-command installer does not use pnpm and installs only into a profile's `node_modules`; nothing global, nothing written to remote repositories.
+3. **Evidence** — live `--diagnose` on 2026-11-21: 71 matched (63 marker-confirmed, 3 verify-only, 1 default-state, 1 placeholder) + 7 carriers absent on this host + 4 retired; 71 of 82 have real backup-diff evidence (58 backups), with **0 changed source, 0 dead target, 0 missing carriers**; `node --test` 263 passing.
 
 | Quick fact | Value |
 | --- | --- |
 | Project / repository | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
 | Version / host target | `1.2.12` / DSH `0.2.2-rc.5` (same as `dshTarget`) |
 | License / upstream copyright | Apache-2.0 · Copyright 2026 YuJunZhiXue (see [`NOTICE`](./NOTICE)) |
-| Requirements | Node.js ≥ 18; DSH desktop app or official `dsh web`; pnpm |
-| One-line install | `dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main` |
+| Requirements | Windows: double-click, reuses DSH's bundled Node (no pnpm needed); other platforms: Node.js ≥ 18 |
+| One-command install | Windows: double-click [`install.cmd`](./install.cmd); macOS/Linux: `./install.sh` (same as `node bin/dsh-purge.js --install`) |
 | Machine-readable | [`compat.json`](./compat.json) (version / matrix / evidence) · [`llms.txt`](./llms.txt) |
 | Demo | [`docs/demo/dsh-purge-demo.gif`](docs/demo/dsh-purge-demo.gif) (23 s, real output) |
 | Search terms | DSH jailbreak plugin · DeepSeek Harness plugin · host patches · prompt injection · red-team evaluation · LLM security |
 
-**Suggested path:** [§4 Install](#4-install-two-minutes) → [§7 Compatibility](#7-compatibility-and-measured-data-2026-11-16) → [§8 Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis).
+**Suggested path:** [§4 Install: one command](#4-install-one-command-30-seconds) → [§7 Compatibility](#7-compatibility-and-measured-data-2026-11-21) → [§8 Pre-upgrade audit](#8-audit-before-upgrading-and-drift-diagnosis).
 
 ---
 
