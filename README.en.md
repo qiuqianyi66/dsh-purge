@@ -37,7 +37,7 @@
 | Quick fact | Value |
 | --- | --- |
 | Project / repository | `dsh-purge` · [qiuqianyi66/dsh-purge](https://github.com/qiuqianyi66/dsh-purge) |
-| Version / host target | `1.2.13` / DSH `0.2.2-rc.5` (same as `dshTarget`) |
+| Version / host target | `1.2.14` / DSH `0.2.2-rc.5` (same as `dshTarget`) |
 | License / upstream copyright | Apache-2.0 · Copyright 2026 YuJunZhiXue (see [`NOTICE`](./NOTICE)) |
 | Requirements | Windows: double-click, reuses DSH's bundled Node (no pnpm needed); other platforms: Node.js ≥ 18 |
 | One-command install | Windows: double-click [`install.cmd`](./install.cmd); macOS/Linux: `./install.sh` (same as `node bin/dsh-purge.js --install`) |
@@ -132,7 +132,7 @@ node node_modules/dsh-purge/bin/dsh-purge.js --preupdate         # pre-upgrade c
 # step 1 — install (use "desktop" for the desktop app, "web" for dsh web)
 dsh plugin --profile desktop add https://codeload.github.com/qiuqianyi66/dsh-purge/tar.gz/refs/heads/main
 
-# step 2 — confirm version (expect 1.2.13), run inside $DSH_HOME
+# step 2 — confirm version (expect 1.2.14), run inside $DSH_HOME
 node -p "require('./profiles/desktop/node_modules/dsh-purge/package.json').version"
 
 # step 3 — confirm the host will load it (must print true)
@@ -181,12 +181,12 @@ Sample of what a patch touches: #82 restores `DSH_PROFILE` when the desktop exe 
 
 ## 7. Compatibility and measured data (2026-11-21)
 
-Current release `1.2.13` targets DSH `0.2.2-rc.5` (same value as `dshTarget`); rc.3 stays covered as a legacy row. `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
+Current release `1.2.14` targets DSH `0.2.2-rc.5` (same value as `dshTarget`); rc.3 stays covered as a legacy row. `0.1.x` and `0.2.1-rc.x` are out of scope for this version — pick an older tag from [Releases](https://github.com/qiuqianyi66/dsh-purge/releases).
 
 | dsh version | This repo | Evidence | Notes |
 | --- | --- | --- | --- |
-| **0.2.2-rc.5** | **1.2.13** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | Promoted on a real host: the official NSIS installer was blocked from writing its temp file by security software, so the payload was extracted and laid down directly; 21,782 files / 338 `@deepseek-ai` packages unpacked, `--apply` 70/71, `--diagnose` 56 carriers / 0 changed source / 0 dead target, main window boots normally |
-| **0.2.2-rc.3** | **≤1.2.10** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. 1.2.13 still covers rc.3, but the supported target moved to rc.5 |
+| **0.2.2-rc.5** | **1.2.14** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | Promoted on a real host: the official NSIS installer was blocked from writing its temp file by security software, so the payload was extracted and laid down directly; 21,782 files / 338 `@deepseek-ai` packages unpacked, `--apply` 70/71, `--diagnose` 56 carriers / 0 changed source / 0 dead target, main window boots normally |
+| **0.2.2-rc.3** | **≤1.2.10** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | rc.3 desktop packs the runtime into `resources/app.asar`; Apply unpacks it, moves the asar aside and restarts. 1.2.14 still covers rc.3, but the supported target moved to rc.5 |
 | **0.2.2-rc.1** | **1.1.88** | contract ✓ / apply-sim ✓ / host smoke ✓ / device ✗ | Only rc.1 matches the old patterns; rc.2 and later need 1.1.89 patterns |
 | **0.2.1-rc.x** | unknown | — | Not a target of this version |
 | **0.2.0-rc.2** | **1.1.40+** | — | Older line, see Releases |
@@ -237,7 +237,7 @@ Few DSH plugins patch host sources; the known lines, checked 2026-11-15 against 
 | --- | --- |
 | Original `YuJunZhiXue/dsh-purge` | removed / private; last artifact verified only against `0.2.2-rc.1` |
 | Mirror `mmparko/dsh-purge` | frozen at `1.1.71` / `dshTarget 0.2.0-rc.2` |
-| This repo `qiuqianyi66/dsh-purge` | `1.2.13` / `0.2.2-rc.5` (promoted on a real host), with isolated audit, four evidence levels and `compat.json` |
+| This repo `qiuqianyi66/dsh-purge` | `1.2.14` / `0.2.2-rc.5` (promoted on a real host), with isolated audit, four evidence levels and `compat.json` |
 
 **How to verify a fork really adapted:** do not trust `dshTarget` or the version string — grep its `lib/core.js` for text the new host introduced, such as `SandboxEscalationError`, `approvalDenial`, `this exact`. Missing means the patterns were never added and the install will silently mismatch.
 

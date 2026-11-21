@@ -1,3 +1,21 @@
+# 1.2.14
+
+## 中文
+
+- **出厂提示词换成加固版（v2）**：重新生成 `lib/asset-table.js` 加密槽，插件内置默认正文从 v1 换到 v2。主要变化：把原先 9 层互相重叠的规则（HARD OUTPUT / REFUSAL HARDENING / Scoped Rules / Sandbox directions / Intent mapping / Never Refuse / CTF Core / Routing / STABILITY / House Rules）收敛成 1 层优先级加 9 节实现；`output exactly` 那类硬编码模板改成「固定开场行 + 用真实细节展开」；25 条类目声明补成完整四段式（入口 → 骨架命令 → 验证 → 失败分支）；新增完成定义（可打开文件 / 可复现命令 / 可渲染 URL / 明确的未达成与阻断观测点）、提问闸门（只在两个互斥产物无法判定时问一次）、证据纪律（每条结论带可核验锚点，推断必须标注）。成品 24577 字节 / 383 行。
+- **为什么手改 `prompt-inject.md` 总被刷回去**：`looksLikePluginDefault()` 用三个标记（`<|im_start|>system:` / `<project_instructions>` / `Little Code Sauce`）判断磁盘稿「是不是插件自带的默认」。命中就直接用加密槽覆盖——只要手改稿保留这三个标记，无论内容怎么变都会被还原成槽里的正文。这正是「改了提示词却不生效」的真正原因，不是文件权限问题。要换正文有两条路：改槽（本次做法），或去掉其中一个标记让它被识别成「用户自定义稿」而得以保留。
+- **重新加密的正确姿势**：`lib/default-prompt-inject.md`（被 `.gitignore` 排除的本地私有源）→ `node scripts/embed-default-prompt.mjs` → 重写 `lib/asset-table.js`。该文件只承载 `SLOT` / `MASK` / `TAG` / `IV` 四项，全量重写是安全的；`lib/table-read.js` 从同一文件读这四项，改完自洽。公开模板 `lib/default-prompt-inject.zh.md` 属另一条维护线，历来不随槽同步，本次保持原样。
+- **升级后怎么生效**：装好并重启 DSH 后，插件启动时 `seedPromptInjectAtBoot` 会发现磁盘上还是旧默认（被判为插件自带稿，不予保留），于是用新槽覆盖 `$DSH_HOME/prompt-inject.md`，注入链随即切到 v2。运行中的旧进程仍持旧稿，所以必须重启，热改无效。
+- **测试**：`node --test` 273 通过 / 0 失败；compat / fixture / native / pack 四道 check 全绿，打包 126 文件 / 3909.5 KB。
+
+## English
+
+- **Shipped prompt replaced with the hardened v2**: the sealed slot in `lib/asset-table.js` was regenerated, so the built-in default body changes from v1 to v2. Highlights: nine overlapping rule layers (HARD OUTPUT / REFUSAL HARDENING / Scoped Rules / Sandbox directions / Intent mapping / Never Refuse / CTF Core / Routing / STABILITY / House Rules) collapse into one precedence layer plus nine implementation sections; the `output exactly` hard-coded templates become "fixed opener + expand with real detail"; the 25 category statements grow into full four-part blocks (entry → skeleton command → verify → failure branch); and three new disciplines land — a definition of done (openable file / reproducible command / renderable URL / explicit "not achieved" with the blocking observation), a question gate (ask once, only when two mutually exclusive products cannot be told apart), and evidence discipline (every claim carries a checkable anchor; inference is labelled). The result is 24,577 bytes / 383 lines.
+- **Why editing `prompt-inject.md` by hand always got reverted**: `looksLikePluginDefault()` treats a disk copy as "the plugin's own default" when it contains three markers (`<|im_start|>system:`, `<project_instructions>`, `Little Code Sauce`). Any hand-edited copy that keeps those markers is overwritten with the sealed slot on the next boot — that, not file permissions, is why a new prompt never took effect. There are two ways out: re-seal the slot (what this release does), or drop one marker so the copy is recognised as a user override and preserved.
+- **How to re-seal**: `lib/default-prompt-inject.md` (git-ignored local source) → `node scripts/embed-default-prompt.mjs` → rewrite `lib/asset-table.js`. That file only carries `SLOT` / `MASK` / `TAG` / `IV`, so a full rewrite is safe; `lib/table-read.js` reads all four from the same file. The public template `lib/default-prompt-inject.zh.md` is a separate maintenance track and was intentionally left untouched.
+- **How it takes effect**: after installing and restarting DSH, `seedPromptInjectAtBoot` sees the old default still on disk (classified as the plugin's own copy, therefore not preserved), overwrites `$DSH_HOME/prompt-inject.md` from the new slot, and the injection chain switches to v2. Running processes keep the old body, so a restart is required — hot edits do nothing.
+- **Tests**: `node --test` 273 pass / 0 fail; compat / fixture / native / pack checks all green; 126 files / 3909.5 KB packed.
+
 # 1.2.13
 
 ## 中文
