@@ -11,6 +11,7 @@ import { readAnchorOverrides } from "../lib/anchor-overrides.js";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { fileURLToPath } from "node:url";
 
 const sha256Of = (fp) => {
   try {
@@ -188,7 +189,13 @@ function sealedAsarHint(aiBase) {
 }
 
 async function main() {
-  const mode = args.find((a) => ["--apply", "--revert", "--uninstall", "--status", "--edit", "--diagnose", "--preupdate", "--anchors", "--help"].includes(a));
+  const mode = args.find((a) => ["--apply", "--revert", "--uninstall", "--status", "--edit", "--diagnose", "--preupdate", "--anchors", "--install", "--help"].includes(a));
+  const argValue = (name) => {
+    const eq = args.find((a) => a.startsWith(`${name}=`));
+    if (eq) return eq.slice(name.length + 1);
+    const i = args.indexOf(name);
+    return i >= 0 && args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : "";
+  };
 
   if (mode === "--help" || args.includes("-h")) {
     console.log(`dsh-purge 用法:
@@ -201,6 +208,9 @@ async function main() {
   dsh-purge --apply      应用全部清洗（提示词+代码+shim+override）
   dsh-purge --revert     回滚还原
   dsh-purge --uninstall  卸载插件（已应用则先还原）
+  dsh-purge --install    一条命令装进 DSH profile 并自动加载（含备份 / 回读校验）
+                         加 --profile desktop 指定 profile；--dry-run 只预览；
+                         --no-restart 装完不自动重启；--json 机器可读
   dsh-purge --edit       编辑注入文件 prompt-inject.md
   dsh-purge --help       帮助`);
     return;
@@ -222,6 +232,46 @@ async function main() {
       console.log('  用法 / usage：新建该文件，内容形如 { "patches": { "57": { "pattern": "…", "replacement": "…", "note": "rc.3 改句" } } }');
       console.log("  apply / status / diagnose 会自动读取；删掉文件即恢复原状。");
     }
+    return;
+  }
+
+  // 一条命令安装：不经过 pnpm，不要求用户先找 profile（G2）。
+  if (mode === "--install") {
+    const { installPurge } = await import("../lib/install.js");
+    const prof = argValue("--profile");
+    const rep = installPurge({
+      profiles: prof ? [prof] : [],
+      dryRun: args.includes("--dry-run"),
+      restart: !args.includes("--no-restart"),
+    });
+    if (args.includes("--json")) {
+      console.log(JSON.stringify(rep, null, 2));
+    } else {
+      const pkg = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "package.json"), "utf8"));
+      console.log("dsh-purge 安装 / install");
+      console.log(`  版本 / version   ${rep.version || "?"}  → 宿主 ${pkg.dshTarget || "?"}`);
+      console.log(`  DSH_HOME         ${rep.dshHome}（${rep.source}）`);
+      for (const p of rep.profiles || []) {
+        console.log(`  profile          ${p.name}`);
+        if (p.backup) console.log(`    备份           ${p.backup}`);
+        console.log(`    插件文件       ${p.actions?.vendor || "-"}`);
+        console.log(`    依赖           ${p.actions?.dependency || "-"}`);
+        console.log(`    bundles        ${p.actions?.bundles || "-"}`);
+        console.log(`    insert         ${p.actions?.insert || "-"}`);
+        console.log(`    allowBuilds    ${p.actions?.allowBuilds || "-"}`);
+        console.log(`    node_modules   ${p.actions?.link || "-"}`);
+        console.log(`    回读校验       ${p.ok ? (p.dryRun ? "跳过（试运行）" : "✓ 4/4") : "✗"}`);
+      }
+      if (rep.dryRun) console.log("  试运行：没有写任何文件。去掉 --dry-run 才真正安装。");
+      if (!rep.ok) console.log(`  ✗ 安装未完成：${rep.error || "见上方 profile 明细"}`);
+      else if (!rep.dryRun) {
+        const r = rep.restart;
+        if (!r) console.log("  完成。请完全退出 DSH 再打开。");
+        else if (r.ok) console.log(`  完成，已重启 DSH（${r.exe}，进程 ${r.processes}）。重启后打开面板确认。`);
+        else console.log(`  已装好，但${r.message || "自动重启未完成"} 请手动完全退出 DSH 再打开。`);
+      }
+    }
+    if (!rep.ok) process.exit(1);
     return;
   }
 
@@ -607,6 +657,7 @@ async function main() {
     else console.log("  未检测到已应用补丁，仍会清除插件文件。");
     if (result.override?.removed) console.log(`  已删除 ${result.override.path}`);
     if (result.stripped?.length) console.log(`  已从 profile 移除: ${result.stripped.join(", ")}`);
+    if (result.insert_removed?.length) console.log(`  已移除用户层 insert: ${result.insert_removed.join(", ")}`);
     for (const e of result.errors || []) console.log(`  ⚠ ${e}`);
     if (!result.ok) {
       console.log("  卸载中止：还原失败，插件文件未删除。");

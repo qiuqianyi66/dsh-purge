@@ -60,9 +60,28 @@ function ensureProfileInsert(profileDir) {
   return result.wrote;
 }
 
+function isPluginRepo() {
+  const seeds = [process.env.INIT_CWD, process.cwd()].filter(Boolean);
+  for (const seed of seeds) {
+    const pkg = readJson(path.join(path.resolve(seed), "package.json"));
+    if (pkg?.name === NAME) return true;
+  }
+  return false;
+}
+
 function main() {
   const profileDir = findProfileDir();
-  if (!profileDir) return;
+  if (!profileDir) {
+    // G4：在插件仓库里跑 pnpm install 属正常跳过；在别处找不到 profile 必须
+    // 明确报错，不能 exit 0 让用户以为「装好了」。
+    if (isPluginRepo()) return;
+    process.stderr.write(
+      "dsh-purge: 没找到 DSH profile（未写入 bundles / insert）。\n" +
+      "  请在 DSH 的 profile 目录里安装，或用一条命令安装：\n" +
+      "    node bin/dsh-purge.js --install\n",
+    );
+    process.exit(2);
+  }
 
   const fp = path.join(profileDir, "package.json");
   const pkg = readJson(fp);

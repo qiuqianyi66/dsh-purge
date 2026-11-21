@@ -1,3 +1,25 @@
+# 1.2.12
+
+## 中文
+
+- **一条命令安装（P0 开箱即用）**：新增 `node bin/dsh-purge.js --install`，以及 Windows 双击入口 `install.cmd`、macOS/Linux 入口 `install.sh`。安装器自动定位 `DSH_HOME` 与正在运行的 profile，备份 `package.json` / `cordis.patch.yml`，把插件复制到 `dsh-purge-vendor`，写依赖 / `dsh.profile.bundles` / 用户层 insert / `allowBuilds`，回读校验 4 项，然后重启 DSH。**不经过 pnpm**，因此不再受 `ERR_PNPM_IGNORED_BUILDS` 影响；任何一步失败自动回滚，错误翻译成人话。
+- **修卸载残留（G1）**：`--uninstall` 以前只删 `package.json` 的依赖与 bundles，`cordis.patch.yml` 里的 `id: dsh-purge` insert 会留下，下次启动 loader 指向已删除的包。现在卸载会一并摘除该 insert 实体（同组其它插件实体保留），临时 profile 集成测试已覆盖。
+- **profile 写入改成原子 + 备份（G3）**：`ensureProfileBundles` / `ensureProfileBodyInsert` / `ensurePnpmAllowBuild` 改为「临时文件 + rename」并保留单份 `.dshpurge.bak`；断电不再可能留下半截 JSON/YAML。
+- **postinstall 不再静默成功（G4）**：在插件仓库里跑 `pnpm install` 仍正常跳过；在其他目录找不到 profile 时退出码 2，并提示改用 `--install`，不再假装装好。
+- **安装器决策**：默认只装「正在运行的那个 profile」；多 profile 且无法判断时要求 `--profile desktop|web`；已有 URL/tarball 依赖原样保留，只补 vendor 与注册。
+- **测试**：新增 `test/install-autoload.test.js` 10 条（全新安装 / 幂等 / 试运行 / 未知 YAML 回滚 / URL 依赖保留 / 卸载归零 / insert 多实体 / 往返 / 错误翻译 / 发布清单）。全套 `node --test` **261 通过 / 0 失败**；compat / fixture / native / pack 四道 check 全绿。
+- 维护者 qiuqianyi66；衍生作品，Apache-2.0，保留 LICENSE/NOTICE。
+
+## English
+
+- **One-command install (P0 out-of-the-box)**: new `node bin/dsh-purge.js --install`, plus `install.cmd` (Windows double-click) and `install.sh` (macOS/Linux). The installer detects `DSH_HOME` and the running profile, backs up `package.json` / `cordis.patch.yml`, copies the plugin to `dsh-purge-vendor`, writes the dependency / `dsh.profile.bundles` / user-layer insert / `allowBuilds`, verifies 4 items by reading back, then restarts DSH. It **bypasses pnpm**, so `ERR_PNPM_IGNORED_BUILDS` no longer blocks first install; any failure rolls back and translates the cause into plain language.
+- **Fixed dangling insert on uninstall (G1)**: `--uninstall` used to strip only the `package.json` dependency and bundles, leaving `id: dsh-purge` in `cordis.patch.yml`; the next boot pointed the loader at a deleted package. Uninstall now removes that insert entity (other plugin entities in the same group are preserved), covered by a temp-profile integration test.
+- **Atomic profile writes + backup (G3)**: `ensureProfileBundles` / `ensureProfileBodyInsert` / `ensurePnpmAllowBuild` now write via temp-file + rename and keep one `.dshpurge.bak`; a crash can no longer leave half-written JSON/YAML.
+- **postinstall no longer silently succeeds (G4)**: running `pnpm install` inside the plugin repo still skips normally; anywhere else, a missing profile exits with code 2 and points to `--install` instead of pretending success.
+- **Installer decisions**: install only the running profile by default; require `--profile desktop|web` when multiple profiles cannot be disambiguated; keep an existing URL/tarball dependency and only add the vendor copy plus registration.
+- **Tests**: new `test/install-autoload.test.js` (10 cases: fresh install / idempotency / dry-run / unknown-YAML rollback / URL dependency preserved / uninstall zero-reference / multi-entity insert / round-trip / error translation / pack list). `node --test` **261 passing / 0 failing**; compat / fixture / native / pack checks all green.
+- Maintainer qiuqianyi66. Derivative work, Apache-2.0, LICENSE/NOTICE retained.
+
 # 1.2.11
 
 ## 中文
