@@ -215,7 +215,9 @@ test("空 profiles 目录：报 NO_PROFILE，不误报 MULTI", () => {
   const home = makeHome();
   const report = installPurge({ dshHome: home, profiles: [], restart: false, sourceRoot: ROOT });
   assert.equal(report.ok, false);
-  assert.match(report.error, /没有找到可安装的 DSH profile/);
+  // H3 把文案从「没有找到可安装的 DSH profile」改成「先启动一次 DSH」：
+  // 断言目标随需求变更，行为断言（ok=false / 不误报 MULTI）不变。
+  assert.match(report.error, /先启动一次 DSH/);
   assert.doesNotMatch(report.error, /多个 profile/);
   assert.match(humanizeInstallError(new Error("NO_PROFILE_MULTI: desktop, web")), /多个 profile/);
   fs.rmSync(home, { recursive: true, force: true });
@@ -334,4 +336,37 @@ test("H2 非 boot 动作与缺 dshHome 都不算确认", () => {
   assert.equal(findBootAfter({ dshHome: "", sinceMs }), null);
   assert.equal(findBootAfter({ dshHome: path.join(home, "nope"), sinceMs }), null, "没有日志文件时返回 null 而不是抛错");
   fs.rmSync(home, { recursive: true, force: true });
+});
+
+// ── H3：拼错 profile 名要和「没启动过 DSH」分开说 ──
+
+test("H3 --profile 拼错：报实际名字 + 可复制的重试命令，不说「先启动 DSH」", () => {
+  const home = makeHome();
+  makeProfile(home, "desktop");
+  makeProfile(home, "web");
+  const rep = installPurge({ dshHome: home, profiles: ["deskop"], restart: false, sourceRoot: ROOT });
+  assert.equal(rep.ok, false);
+  assert.match(rep.error, /desktop, web/, "错误里要列出实际 profile 名");
+  assert.match(rep.hint, /--profile desktop/, "要给出可直接复制的重试命令");
+  assert.doesNotMatch(rep.error, /先启动一次 DSH/, "名字拼错不能被说成没启动过 DSH");
+  assert.equal(rep.profiles.length, 0, "不能拿别的 profile 凑数装上");
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("H3 空 profiles：仍提示先启动 DSH，与拼错名字区分开", () => {
+  const home = makeHome();
+  const rep = installPurge({ dshHome: home, profiles: [], restart: false, sourceRoot: ROOT });
+  assert.equal(rep.ok, false);
+  assert.match(rep.error, /先启动一次 DSH/);
+  assert.doesNotMatch(rep.error, /不存在/);
+  fs.rmSync(home, { recursive: true, force: true });
+});
+
+test("H3 多 profile 文案：列出实际名字，不再写死 desktop/web", () => {
+  const text = humanizeInstallError(new Error("NO_PROFILE_MULTI: desktop, web, work"));
+  assert.match(text, /多个 profile/);
+  assert.match(text, /重试|--profile/);
+  const named = humanizeInstallError(new Error("NO_PROFILE_NAMED: --profile deskop 不存在（现有：desktop, web）"));
+  assert.match(named, /profile 名不存在/);
+  assert.doesNotMatch(named, /先启动一次 DSH/);
 });

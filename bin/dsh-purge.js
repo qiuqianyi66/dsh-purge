@@ -251,7 +251,10 @@ async function main() {
     } else {
       const pkg = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "package.json"), "utf8"));
       console.log("dsh-purge 安装 / install");
-      console.log(`  版本 / version   ${rep.version || "?"}  → 宿主 ${pkg.dshTarget || "?"}`);
+      // H3：dshTarget 是「插件声明的目标宿主」，不是实测的当前宿主。
+      // 找不到实测版本时只显示目标，绝不把目标写成当前。
+      console.log(`  版本 / version   ${rep.version || "?"}`);
+      console.log(`  目标宿主 / target   ${pkg.dshTarget || "?"}`);
       console.log(`  DSH_HOME         ${rep.dshHome}（${rep.source}）`);
       for (const p of rep.profiles || []) {
         console.log(`  profile          ${p.name}`);
@@ -265,8 +268,11 @@ async function main() {
         console.log(`    回读校验       ${p.ok ? (p.dryRun ? "跳过（试运行）" : "✓ 4/4") : "✗"}`);
       }
       if (rep.dryRun) console.log("  试运行：没有写任何文件。去掉 --dry-run 才真正安装。");
-      if (!rep.ok) console.log(`  ✗ 安装未完成：${rep.error || "见上方 profile 明细"}`);
-      else if (!rep.dryRun) {
+      if (!rep.ok && args.includes("--verbose") && rep.error) console.log(`  原始错误：${rep.error}`);
+      if (!rep.ok) {
+        console.log(`  ✗ 安装未完成：${rep.error || "见上方 profile 明细"}`);
+        if (rep.hint) console.log(`  ${rep.hint}`);
+      } else if (!rep.dryRun) {
         const r = rep.restart;
         if (!r) console.log("  完成。请完全退出 DSH 再打开。");
         else if (r.ok && r.reason === "already") console.log(`  ${r.message}`);
