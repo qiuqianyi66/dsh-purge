@@ -1,3 +1,19 @@
+# 1.2.15
+
+## 中文
+
+- **宿主选择统一到 `--diagnose` 口径**：真机上 CLI 在普通 node 下被判成 web，`findAiBaseWeb()` 顺着 profile 链路命中 npm-cache 里的旧副本，于是 `--status` 报 web / `0.1.5-rc.3` / 6-69 已清洗 / 8 漂移，同一时刻 `--diagnose` 报 desktop / rc.5 / 漂移 0。现在 `findAiBase()` 命中 npx / npm-cache / .pnpm 缓存路径时抬升真实桌面安装，切面后清掉路径 memo；`preferLiveBase()` 只对归档/缓存路径走 `rankBases`，正常路径不再额外枚举（真机 `--status` 11.4s，未翻倍）。
+- **卸载还原所有宿主**：`--uninstall` 以前只 `revertAll(state.ai_base)`。宿主选偏时会还原旧 web 副本，桌面宿主上的 54 个 `.dshpurge.bak` 不还原，插件目录却删掉，留下「补丁无主」。现在无注入 state 时枚举所有宿主 + `state.ai_base` 逐个还原，版本不匹配的宿主由守卫拦下并如实列出；注入 state 的测试/编排路径仍只处理单 base。
+- **卸载的自动重启恢复可达**：`bin` 为探测会把 `DSH_SURFACE` 写成 desktop，卸载又把「变量非空」当成「在会话内」，桌面自动重启分支因此永远走不到。现在进程启动时固定 `sessionSurface`，探测写入不再影响会话判定；外部终端卸载会走「先退进程、删目录、再拉起」，会话内仍按原规则就地删。
+- **测试**：新增 2 条（缓存副本让位给活宿主、卸载还原所有宿主）；全套 `node --test` **275 通过 / 0 失败**，compat / fixture / native / pack 四道 check 全绿，打包 126 文件 / 3913.6 KB。
+
+## English
+
+- **Host selection now matches `--diagnose`**: on a real machine the CLI is classified as web under plain node, so `findAiBaseWeb()` followed the profile chain into an old npm-cache copy — `--status` reported web / `0.1.5-rc.3` / 6-69 cleaned / 8 drifted while `--diagnose` reported desktop / rc.5 / drift 0 at the same moment. `findAiBase()` now promotes the real desktop install when the web hit is an npx / npm-cache / .pnpm path, and the path memo is reset after switching surface; `preferLiveBase()` only runs `rankBases` for archived or cache paths, so normal paths no longer pay a second enumeration (real-machine `--status` is 11.4s, not doubled).
+- **Uninstall reverts every host**: `--uninstall` used to call `revertAll(state.ai_base)` only. With a mis-detected host it reverted the stale web copy, left the desktop host's 54 `.dshpurge.bak` unrestored, and deleted the plugin tree anyway — a patched host with no plugin managing it. Without an injected state, uninstall now enumerates every host plus `state.ai_base` and reverts each; hosts blocked by the version guard are reported explicitly. Calls that inject state (tests / external orchestration) still touch a single base only.
+- **Uninstall auto-restart is reachable again**: `bin` wrote `DSH_SURFACE=desktop` for surface detection, and the uninstall branch treated any non-empty value as "inside a DSH session", so the desktop auto-restart path was dead code. The session surface is now captured once at process start; detection no longer changes that verdict. Running from an external terminal goes back to "exit process → delete dirs → relaunch", while an in-session run still deletes in place.
+- **Tests**: +2 (cache copy yields to the live host; uninstall reverts all hosts); `node --test` **275 pass / 0 fail**; compat / fixture / native / pack checks all green; 126 files / 3913.6 KB packed.
+
 # 1.2.14
 
 ## 中文
