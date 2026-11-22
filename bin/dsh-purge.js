@@ -110,6 +110,10 @@ const dirSizeMB = (dir, maxFiles = 20000) => {
 
 
 const args = process.argv.slice(2);
+// H1-fix：进程启动时的宿主面才是「是否在 DSH 会话内」的证据。
+// 后面为了探测会把 DSH_SURFACE 写成 desktop，不能再用它判会话，
+// 否则外部终端卸载永远被当成「在会话内」，自动重启分支成了死代码。
+const sessionSurface = String(process.env.DSH_SURFACE || "").trim();
 
 function printStatus(state) {
   const out = [];
@@ -575,6 +579,9 @@ async function main() {
   // diagnose/preupdate 走独立的只读枚举，不受影响。
   if (!process.env.DSH_SURFACE && aiBaseLooksDesktop(state.ai_base)) {
     process.env.DSH_SURFACE = "desktop";
+    // findAiBase() 会按第一次的 web 面做 memo；换面后必须清掉，
+    // 否则第二次 gatherState 仍拿旧 web base（真机上就是 npx 缓存里的 0.1.5）。
+    core.resetPathMemo();
     state = await core.gatherState();
   }
   console.log(printStatus(state));
@@ -681,8 +688,12 @@ async function main() {
     const jsonOut = args.includes("--json");
     const noRestart = args.includes("--no-restart");
     if (!jsonOut) {
-      if (result.applied) console.log("  已检测到补丁，已还原回原版。");
+      if (result.reverted) console.log(`  已还原宿主补丁（${result.patches?.reverted?.length || 0} 个文件）。`);
+      else if (result.applied) console.log("  检测到补丁痕迹，但没有可还原的备份。");
       else console.log("  未检测到已应用补丁，仍会清除插件文件。");
+      for (const b of result.revert_blocked || []) {
+        console.log(`  ⚠ 跳过宿主 ${b.aiBase}：${b.message || "版本不匹配"}（补丁留在该宿主上）`);
+      }
       if (result.override?.removed) console.log(`  已删除 ${result.override.path}`);
       if (result.stripped?.length) console.log(`  已从 profile 移除: ${result.stripped.join(", ")}`);
       if (result.insert_removed?.length) console.log(`  已移除用户层 insert: ${result.insert_removed.join(", ")}`);
@@ -704,8 +715,8 @@ async function main() {
 
     // H1：把 uninstall 算出来的 cleanup 真正执行掉，并和面板走同一条重启路径。
     const cleanup = Array.isArray(result.cleanup) ? result.cleanup.filter(Boolean) : [];
-    const inSession = Boolean(String(process.env.DSH_SURFACE || "").trim());
-    const desktop = String(process.env.DSH_SURFACE || "").toLowerCase() === "desktop" || aiBaseLooksDesktop(state?.ai_base);
+    const inSession = Boolean(sessionSurface);
+    const desktop = sessionSurface.toLowerCase() === "desktop" || aiBaseLooksDesktop(state?.ai_base);
     let cleanup_removed = [];
     let cleanup_scheduled = false;
     let cleanup_left = [];

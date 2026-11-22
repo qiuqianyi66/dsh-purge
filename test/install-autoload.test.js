@@ -20,6 +20,7 @@ import {
   INSERT_BLOCK,
 } from "../lib/profile-insert.js";
 import { uninstallPurge, removeCleanupDirs } from "../lib/uninstall.js";
+import { preferLiveBase } from "../lib/core.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")).version;
@@ -430,4 +431,58 @@ test("H4 两个安装脚本都带 Node 18 主版本校验，且 install.cmd 保�
   assert.equal(buf.toString("utf8").includes("\r\n"), true);
   // shell 脚本保持 LF
   assert.equal((fs.readFileSync(shPath).toString("utf8").match(/\r\n/g) || []).length, 0, "install.sh 保持 LF");
+});
+
+// ── H1-fix：CLI 宿主选择与卸载还原范围 ──
+
+test("H1 宿主选择与 --diagnose 同口径：陈旧 web 副本让位给活宿主", () => {
+  const oldWeb = "C:/Users/x/AppData/Local/npm-cache/_npx/old/node_modules/@deepseek-ai";
+  const desktop = "D:/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai";
+  const rows = [
+    { aiBase: oldWeb, live: false, score: 174 },
+    { aiBase: desktop, live: true, score: 200 },
+  ];
+
+  assert.equal(preferLiveBase(oldWeb, rows, {}), desktop, "探测到旧副本时要切到活宿主");
+  assert.equal(preferLiveBase(desktop, rows, {}), desktop, "已经是活宿主就不动");
+  assert.equal(preferLiveBase(oldWeb, rows, { DSH_SURFACE: "web" }), oldWeb, "显式指定宿主面不跨面纠偏");
+  assert.equal(preferLiveBase(oldWeb, rows, { DSH_BASE: "C:/custom" }), oldWeb, "显式 DSH_BASE 不纠偏");
+  assert.equal(
+    preferLiveBase("C:/not-enumerated", rows, {}),
+    "C:/not-enumerated",
+    "未枚举的自定义 base 保持原值",
+  );
+  assert.equal(preferLiveBase(null, rows, {}), null, "没有探测结果时不凭空造 base");
+  assert.equal(preferLiveBase(oldWeb, [], {}), oldWeb, "枚举为空时保持原值");
+});
+
+function seedRevertBase(home, name, patched) {
+  const base = path.join(home, name);
+  fs.mkdirSync(path.join(base, "dsh-agent-instructions", "lib"), { recursive: true });
+  const fp = path.join(base, "dsh-agent-instructions", "lib", "index.js");
+  fs.writeFileSync(fp, patched, "utf8");
+  fs.writeFileSync(`${fp}.dshpurge.bak`, `ORIG-${name}`, "utf8");
+  return { base, fp, orig: `ORIG-${name}` };
+}
+
+test("H1 卸载还原所有宿主，不只 state.ai_base", async () => {
+  const home = makeHome();
+  const a = seedRevertBase(home, "base-a", "PATCHED-A");
+  const b = seedRevertBase(home, "base-b", "PATCHED-B");
+
+  // 注入 state 指到 a，但显式给出两个 base：卸载必须把 b 也还原。
+  const report = await uninstallPurge({
+    state: { dsh_home: home, ai_base: a.base, has_backup: true, patches_applied: 1 },
+    bases: [a.base, b.base],
+    onStage: () => {},
+  });
+
+  assert.equal(report.ok, true, JSON.stringify(report.errors));
+  assert.equal(fs.readFileSync(a.fp, "utf8"), a.orig, "base-a 要还原");
+  assert.equal(fs.readFileSync(b.fp, "utf8"), b.orig, "base-b 也要还原");
+  assert.equal(fs.existsSync(`${a.fp}.dshpurge.bak`), false, "还原后 bak 清掉");
+  assert.equal(fs.existsSync(`${b.fp}.dshpurge.bak`), false, "还原后 bak 清掉");
+  assert.equal(report.reverted, true, "报告要显示已还原");
+  assert.equal(report.patches?.reverted?.length, 2, "两个宿主各记一个还原文件");
+  fs.rmSync(home, { recursive: true, force: true });
 });
